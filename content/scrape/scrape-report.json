@@ -1,0 +1,814 @@
+{
+  "generatedAt": "2026-08-28T22:21:50.557Z",
+  "source": "https://www.stylemyspacedesign.com",
+  "args": {
+    "only": null,
+    "skipDownload": false,
+    "headed": false,
+    "channel": null
+  },
+  "versions": {
+    "node": "v20.17.0",
+    "playwright": "1.62.1",
+    "chromium": "151.0.7922.34",
+    "sharp": "0.35.4"
+  },
+  "pages": [
+    {
+      "url": "https://www.stylemyspacedesign.com/",
+      "slug": "home",
+      "kind": "home",
+      "status": 200,
+      "attempts": 1,
+      "ms": 9409,
+      "counts": {
+        "warmup": 25,
+        "domBefore": 11,
+        "domAfter": 33,
+        "unionOwner": 29,
+        "downloaded": 0,
+        "skippedUpToDate": 1,
+        "failed": 0
+      },
+      "discrepancies": [
+        "gallery comp-m4bqrr0s warmup lists 25 of totalItemsCount=34 items"
+      ],
+      "excluded": [
+        {
+          "mediaId": "01c3aff52f2a4dffa526d7a9843d46ea.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/01c3aff52f2a4dffa526d7a9843d46ea.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/01c3aff52f2a4dffa526d7a9843d46ea.png"
+        },
+        {
+          "mediaId": "0fdef751204647a3bbd7eaa2827ed4f9.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/0fdef751204647a3bbd7eaa2827ed4f9.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/0fdef751204647a3bbd7eaa2827ed4f9.png"
+        },
+        {
+          "mediaId": "6ea5b4a88f0b4f91945b40499aa0af00.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/6ea5b4a88f0b4f91945b40499aa0af00.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/6ea5b4a88f0b4f91945b40499aa0af00.png"
+        },
+        {
+          "mediaId": "11062b_a212ef611b9749c0ab04659fa3c929ce",
+          "reason": "Wix stock media (11062b_ prefix)",
+          "url": "https://static.wixstatic.com/media/11062b_a212ef611b9749c0ab04659fa3c929ce~mv2.jpg/v1/fill/w_828,h_1038,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/11062b_a212ef611b9749c0ab04659fa3c929ce~mv2.jpg"
+        }
+      ],
+      "failures": [],
+      "zeroImages": false,
+      "coverOnly": false
+    },
+    {
+      "url": "https://www.stylemyspacedesign.com/portfolio",
+      "slug": "portfolio",
+      "kind": "portfolio",
+      "status": 200,
+      "attempts": 1,
+      "ms": 6118,
+      "counts": {
+        "warmup": 7,
+        "domBefore": 9,
+        "domAfter": 10,
+        "unionOwner": 7,
+        "downloaded": 0,
+        "skippedUpToDate": 0,
+        "failed": 0
+      },
+      "discrepancies": [],
+      "excluded": [
+        {
+          "mediaId": "01c3aff52f2a4dffa526d7a9843d46ea.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/01c3aff52f2a4dffa526d7a9843d46ea.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/01c3aff52f2a4dffa526d7a9843d46ea.png"
+        },
+        {
+          "mediaId": "0fdef751204647a3bbd7eaa2827ed4f9.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/0fdef751204647a3bbd7eaa2827ed4f9.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/0fdef751204647a3bbd7eaa2827ed4f9.png"
+        },
+        {
+          "mediaId": "6ea5b4a88f0b4f91945b40499aa0af00.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/6ea5b4a88f0b4f91945b40499aa0af00.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/6ea5b4a88f0b4f91945b40499aa0af00.png"
+        }
+      ],
+      "failures": [],
+      "zeroImages": false,
+      "coverOnly": false
+    },
+    {
+      "url": "https://www.stylemyspacedesign.com/blog",
+      "slug": "blog",
+      "kind": "blog",
+      "status": 200,
+      "attempts": 1,
+      "ms": 6499,
+      "counts": {
+        "warmup": 0,
+        "domBefore": 5,
+        "domAfter": 6,
+        "unionOwner": 3,
+        "downloaded": 0,
+        "skippedUpToDate": 3,
+        "failed": 0
+      },
+      "discrepancies": [],
+      "excluded": [
+        {
+          "mediaId": "01c3aff52f2a4dffa526d7a9843d46ea.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/01c3aff52f2a4dffa526d7a9843d46ea.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/01c3aff52f2a4dffa526d7a9843d46ea.png"
+        },
+        {
+          "mediaId": "0fdef751204647a3bbd7eaa2827ed4f9.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/0fdef751204647a3bbd7eaa2827ed4f9.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/0fdef751204647a3bbd7eaa2827ed4f9.png"
+        },
+        {
+          "mediaId": "6ea5b4a88f0b4f91945b40499aa0af00.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/6ea5b4a88f0b4f91945b40499aa0af00.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/6ea5b4a88f0b4f91945b40499aa0af00.png"
+        }
+      ],
+      "failures": [],
+      "zeroImages": false,
+      "coverOnly": false
+    },
+    {
+      "url": "https://www.stylemyspacedesign.com/post/functional-and-tranquil-interior-design-solutions-by-style-my-space",
+      "slug": "post-functional-and-tranquil-interior-design-solutions-by-style-my-space",
+      "kind": "post",
+      "status": 200,
+      "attempts": 1,
+      "ms": 9763,
+      "counts": {
+        "warmup": 0,
+        "domBefore": 6,
+        "domAfter": 6,
+        "unionOwner": 3,
+        "downloaded": 0,
+        "skippedUpToDate": 1,
+        "failed": 0
+      },
+      "discrepancies": [],
+      "excluded": [
+        {
+          "mediaId": "01c3aff52f2a4dffa526d7a9843d46ea.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/01c3aff52f2a4dffa526d7a9843d46ea.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/01c3aff52f2a4dffa526d7a9843d46ea.png"
+        },
+        {
+          "mediaId": "0fdef751204647a3bbd7eaa2827ed4f9.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/0fdef751204647a3bbd7eaa2827ed4f9.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/0fdef751204647a3bbd7eaa2827ed4f9.png"
+        },
+        {
+          "mediaId": "6ea5b4a88f0b4f91945b40499aa0af00.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/6ea5b4a88f0b4f91945b40499aa0af00.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/6ea5b4a88f0b4f91945b40499aa0af00.png"
+        }
+      ],
+      "failures": [],
+      "zeroImages": false,
+      "coverOnly": false
+    },
+    {
+      "url": "https://www.stylemyspacedesign.com/post/residential-wellness-spaces-inspiring-design-for-home-environments",
+      "slug": "post-residential-wellness-spaces-inspiring-design-for-home-environments",
+      "kind": "post",
+      "status": 200,
+      "attempts": 1,
+      "ms": 8943,
+      "counts": {
+        "warmup": 0,
+        "domBefore": 6,
+        "domAfter": 6,
+        "unionOwner": 3,
+        "downloaded": 0,
+        "skippedUpToDate": 1,
+        "failed": 0
+      },
+      "discrepancies": [],
+      "excluded": [
+        {
+          "mediaId": "01c3aff52f2a4dffa526d7a9843d46ea.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/01c3aff52f2a4dffa526d7a9843d46ea.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/01c3aff52f2a4dffa526d7a9843d46ea.png"
+        },
+        {
+          "mediaId": "0fdef751204647a3bbd7eaa2827ed4f9.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/0fdef751204647a3bbd7eaa2827ed4f9.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/0fdef751204647a3bbd7eaa2827ed4f9.png"
+        },
+        {
+          "mediaId": "6ea5b4a88f0b4f91945b40499aa0af00.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/6ea5b4a88f0b4f91945b40499aa0af00.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/6ea5b4a88f0b4f91945b40499aa0af00.png"
+        }
+      ],
+      "failures": [],
+      "zeroImages": false,
+      "coverOnly": false
+    },
+    {
+      "url": "https://www.stylemyspacedesign.com/post/elegant-wellness-space-designs-for-commercial-businesses",
+      "slug": "post-elegant-wellness-space-designs-for-commercial-businesses",
+      "kind": "post",
+      "status": 200,
+      "attempts": 1,
+      "ms": 9173,
+      "counts": {
+        "warmup": 0,
+        "domBefore": 6,
+        "domAfter": 6,
+        "unionOwner": 3,
+        "downloaded": 0,
+        "skippedUpToDate": 1,
+        "failed": 0
+      },
+      "discrepancies": [],
+      "excluded": [
+        {
+          "mediaId": "01c3aff52f2a4dffa526d7a9843d46ea.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/01c3aff52f2a4dffa526d7a9843d46ea.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/01c3aff52f2a4dffa526d7a9843d46ea.png"
+        },
+        {
+          "mediaId": "0fdef751204647a3bbd7eaa2827ed4f9.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/0fdef751204647a3bbd7eaa2827ed4f9.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/0fdef751204647a3bbd7eaa2827ed4f9.png"
+        },
+        {
+          "mediaId": "6ea5b4a88f0b4f91945b40499aa0af00.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/6ea5b4a88f0b4f91945b40499aa0af00.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/6ea5b4a88f0b4f91945b40499aa0af00.png"
+        }
+      ],
+      "failures": [],
+      "zeroImages": false,
+      "coverOnly": false
+    },
+    {
+      "url": "https://www.stylemyspacedesign.com/book-online",
+      "slug": "book-online",
+      "kind": "book-online",
+      "status": 200,
+      "attempts": 1,
+      "ms": 5850,
+      "counts": {
+        "warmup": 0,
+        "domBefore": 6,
+        "domAfter": 6,
+        "unionOwner": 0,
+        "downloaded": 0,
+        "skippedUpToDate": 0,
+        "failed": 0
+      },
+      "discrepancies": [],
+      "excluded": [
+        {
+          "mediaId": "11062b_d353fc3e2a36461ca1cdc47105c3475a",
+          "reason": "Wix stock media (11062b_ prefix)",
+          "url": "https://static.wixstatic.com/media/11062b_d353fc3e2a36461ca1cdc47105c3475a~mv2.jpg/v1/fill/w_290,h_194,fp_0.50_0.50,q_80,enc_auto/11062b_d353fc3e2a36461ca1cdc47105c3475a~mv2.jpg"
+        },
+        {
+          "mediaId": "15637655658f4709831e4be2f9a77b79.jpg",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/15637655658f4709831e4be2f9a77b79.jpg/v1/fill/w_290,h_194,fp_0.50_0.50,q_80,enc_auto/15637655658f4709831e4be2f9a77b79.jpg"
+        },
+        {
+          "mediaId": "d6c8679e2ba04fb094ec47f24b95ad4e.jpg",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/d6c8679e2ba04fb094ec47f24b95ad4e.jpg/v1/fill/w_290,h_194,fp_0.50_0.50,q_80,enc_auto/d6c8679e2ba04fb094ec47f24b95ad4e.jpg"
+        },
+        {
+          "mediaId": "01c3aff52f2a4dffa526d7a9843d46ea.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/01c3aff52f2a4dffa526d7a9843d46ea.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/01c3aff52f2a4dffa526d7a9843d46ea.png"
+        },
+        {
+          "mediaId": "0fdef751204647a3bbd7eaa2827ed4f9.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/0fdef751204647a3bbd7eaa2827ed4f9.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/0fdef751204647a3bbd7eaa2827ed4f9.png"
+        },
+        {
+          "mediaId": "6ea5b4a88f0b4f91945b40499aa0af00.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/6ea5b4a88f0b4f91945b40499aa0af00.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/6ea5b4a88f0b4f91945b40499aa0af00.png"
+        }
+      ],
+      "failures": [],
+      "zeroImages": true,
+      "coverOnly": false
+    },
+    {
+      "url": "https://www.stylemyspacedesign.com/portfolio-collections/my-portfolio/oceanside",
+      "slug": "oceanside",
+      "kind": "project",
+      "status": 200,
+      "attempts": 1,
+      "ms": 10946,
+      "counts": {
+        "warmup": 14,
+        "domBefore": 6,
+        "domAfter": 17,
+        "unionOwner": 14,
+        "downloaded": 0,
+        "skippedUpToDate": 14,
+        "failed": 0
+      },
+      "discrepancies": [],
+      "excluded": [
+        {
+          "mediaId": "01c3aff52f2a4dffa526d7a9843d46ea.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/01c3aff52f2a4dffa526d7a9843d46ea.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/01c3aff52f2a4dffa526d7a9843d46ea.png"
+        },
+        {
+          "mediaId": "0fdef751204647a3bbd7eaa2827ed4f9.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/0fdef751204647a3bbd7eaa2827ed4f9.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/0fdef751204647a3bbd7eaa2827ed4f9.png"
+        },
+        {
+          "mediaId": "6ea5b4a88f0b4f91945b40499aa0af00.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/6ea5b4a88f0b4f91945b40499aa0af00.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/6ea5b4a88f0b4f91945b40499aa0af00.png"
+        }
+      ],
+      "failures": [],
+      "zeroImages": false,
+      "coverOnly": false
+    },
+    {
+      "url": "https://www.stylemyspacedesign.com/portfolio-collections/my-portfolio/las-olas",
+      "slug": "las-olas",
+      "kind": "project",
+      "status": 200,
+      "attempts": 1,
+      "ms": 10242,
+      "counts": {
+        "warmup": 9,
+        "domBefore": 6,
+        "domAfter": 12,
+        "unionOwner": 9,
+        "downloaded": 0,
+        "skippedUpToDate": 9,
+        "failed": 0
+      },
+      "discrepancies": [],
+      "excluded": [
+        {
+          "mediaId": "01c3aff52f2a4dffa526d7a9843d46ea.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/01c3aff52f2a4dffa526d7a9843d46ea.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/01c3aff52f2a4dffa526d7a9843d46ea.png"
+        },
+        {
+          "mediaId": "0fdef751204647a3bbd7eaa2827ed4f9.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/0fdef751204647a3bbd7eaa2827ed4f9.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/0fdef751204647a3bbd7eaa2827ed4f9.png"
+        },
+        {
+          "mediaId": "6ea5b4a88f0b4f91945b40499aa0af00.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/6ea5b4a88f0b4f91945b40499aa0af00.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/6ea5b4a88f0b4f91945b40499aa0af00.png"
+        }
+      ],
+      "failures": [],
+      "zeroImages": false,
+      "coverOnly": false
+    },
+    {
+      "url": "https://www.stylemyspacedesign.com/portfolio-collections/my-portfolio/aromatherapy-and-natural-elements",
+      "slug": "aromatherapy-and-natural-elements",
+      "kind": "project",
+      "status": 200,
+      "attempts": 1,
+      "ms": 7834,
+      "counts": {
+        "warmup": 1,
+        "domBefore": 4,
+        "domAfter": 4,
+        "unionOwner": 1,
+        "downloaded": 0,
+        "skippedUpToDate": 1,
+        "failed": 0
+      },
+      "discrepancies": [
+        "no <h2>Project type</h2> + <p> category on the page"
+      ],
+      "excluded": [
+        {
+          "mediaId": "01c3aff52f2a4dffa526d7a9843d46ea.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/01c3aff52f2a4dffa526d7a9843d46ea.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/01c3aff52f2a4dffa526d7a9843d46ea.png"
+        },
+        {
+          "mediaId": "0fdef751204647a3bbd7eaa2827ed4f9.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/0fdef751204647a3bbd7eaa2827ed4f9.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/0fdef751204647a3bbd7eaa2827ed4f9.png"
+        },
+        {
+          "mediaId": "6ea5b4a88f0b4f91945b40499aa0af00.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/6ea5b4a88f0b4f91945b40499aa0af00.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/6ea5b4a88f0b4f91945b40499aa0af00.png"
+        }
+      ],
+      "failures": [],
+      "zeroImages": false,
+      "coverOnly": true
+    },
+    {
+      "url": "https://www.stylemyspacedesign.com/portfolio-collections/my-portfolio/wellness-space-with-city-view",
+      "slug": "wellness-space-with-city-view",
+      "kind": "project",
+      "status": 200,
+      "attempts": 1,
+      "ms": 7641,
+      "counts": {
+        "warmup": 1,
+        "domBefore": 4,
+        "domAfter": 4,
+        "unionOwner": 1,
+        "downloaded": 0,
+        "skippedUpToDate": 1,
+        "failed": 0
+      },
+      "discrepancies": [
+        "no <h2>Project type</h2> + <p> category on the page"
+      ],
+      "excluded": [
+        {
+          "mediaId": "01c3aff52f2a4dffa526d7a9843d46ea.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/01c3aff52f2a4dffa526d7a9843d46ea.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/01c3aff52f2a4dffa526d7a9843d46ea.png"
+        },
+        {
+          "mediaId": "0fdef751204647a3bbd7eaa2827ed4f9.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/0fdef751204647a3bbd7eaa2827ed4f9.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/0fdef751204647a3bbd7eaa2827ed4f9.png"
+        },
+        {
+          "mediaId": "6ea5b4a88f0b4f91945b40499aa0af00.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/6ea5b4a88f0b4f91945b40499aa0af00.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/6ea5b4a88f0b4f91945b40499aa0af00.png"
+        }
+      ],
+      "failures": [],
+      "zeroImages": false,
+      "coverOnly": true
+    },
+    {
+      "url": "https://www.stylemyspacedesign.com/portfolio-collections/my-portfolio/classroom-designs",
+      "slug": "classroom-designs",
+      "kind": "project",
+      "status": 200,
+      "attempts": 1,
+      "ms": 7708,
+      "counts": {
+        "warmup": 2,
+        "domBefore": 5,
+        "domAfter": 5,
+        "unionOwner": 2,
+        "downloaded": 0,
+        "skippedUpToDate": 2,
+        "failed": 0
+      },
+      "discrepancies": [
+        "no <h2>Project type</h2> + <p> category on the page"
+      ],
+      "excluded": [
+        {
+          "mediaId": "01c3aff52f2a4dffa526d7a9843d46ea.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/01c3aff52f2a4dffa526d7a9843d46ea.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/01c3aff52f2a4dffa526d7a9843d46ea.png"
+        },
+        {
+          "mediaId": "0fdef751204647a3bbd7eaa2827ed4f9.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/0fdef751204647a3bbd7eaa2827ed4f9.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/0fdef751204647a3bbd7eaa2827ed4f9.png"
+        },
+        {
+          "mediaId": "6ea5b4a88f0b4f91945b40499aa0af00.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/6ea5b4a88f0b4f91945b40499aa0af00.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/6ea5b4a88f0b4f91945b40499aa0af00.png"
+        }
+      ],
+      "failures": [],
+      "zeroImages": false,
+      "coverOnly": false
+    },
+    {
+      "url": "https://www.stylemyspacedesign.com/portfolio-collections/my-portfolio/wellness-space-designs",
+      "slug": "wellness-space-designs",
+      "kind": "project",
+      "status": 200,
+      "attempts": 1,
+      "ms": 8203,
+      "counts": {
+        "warmup": 3,
+        "domBefore": 6,
+        "domAfter": 6,
+        "unionOwner": 3,
+        "downloaded": 0,
+        "skippedUpToDate": 3,
+        "failed": 0
+      },
+      "discrepancies": [
+        "no <h2>Project type</h2> + <p> category on the page"
+      ],
+      "excluded": [
+        {
+          "mediaId": "01c3aff52f2a4dffa526d7a9843d46ea.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/01c3aff52f2a4dffa526d7a9843d46ea.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/01c3aff52f2a4dffa526d7a9843d46ea.png"
+        },
+        {
+          "mediaId": "0fdef751204647a3bbd7eaa2827ed4f9.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/0fdef751204647a3bbd7eaa2827ed4f9.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/0fdef751204647a3bbd7eaa2827ed4f9.png"
+        },
+        {
+          "mediaId": "6ea5b4a88f0b4f91945b40499aa0af00.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/6ea5b4a88f0b4f91945b40499aa0af00.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/6ea5b4a88f0b4f91945b40499aa0af00.png"
+        }
+      ],
+      "failures": [],
+      "zeroImages": false,
+      "coverOnly": false
+    },
+    {
+      "url": "https://www.stylemyspacedesign.com/portfolio-collections/my-portfolio/modern-interior-design",
+      "slug": "modern-interior-design",
+      "kind": "project",
+      "status": 200,
+      "attempts": 1,
+      "ms": 7754,
+      "counts": {
+        "warmup": 3,
+        "domBefore": 6,
+        "domAfter": 6,
+        "unionOwner": 3,
+        "downloaded": 0,
+        "skippedUpToDate": 3,
+        "failed": 0
+      },
+      "discrepancies": [
+        "no <h2>Project type</h2> + <p> category on the page"
+      ],
+      "excluded": [
+        {
+          "mediaId": "01c3aff52f2a4dffa526d7a9843d46ea.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/01c3aff52f2a4dffa526d7a9843d46ea.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/01c3aff52f2a4dffa526d7a9843d46ea.png"
+        },
+        {
+          "mediaId": "0fdef751204647a3bbd7eaa2827ed4f9.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/0fdef751204647a3bbd7eaa2827ed4f9.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/0fdef751204647a3bbd7eaa2827ed4f9.png"
+        },
+        {
+          "mediaId": "6ea5b4a88f0b4f91945b40499aa0af00.png",
+          "reason": "bare 32-hex Wix asset without ~mv2 form (social icon / system asset)",
+          "url": "https://static.wixstatic.com/media/6ea5b4a88f0b4f91945b40499aa0af00.png/v1/fill/w_39,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/6ea5b4a88f0b4f91945b40499aa0af00.png"
+        }
+      ],
+      "failures": [],
+      "zeroImages": false,
+      "coverOnly": false
+    }
+  ],
+  "totals": {
+    "pages": 14,
+    "pagesOk": 14,
+    "pagesFailed": 0,
+    "projectImages": 33,
+    "portrait": true,
+    "blogCovers": 3,
+    "downloaded": 0,
+    "skippedUpToDate": 40,
+    "downloadFailures": 0,
+    "excluded": 46,
+    "discrepancies": 6
+  },
+  "unreferencedUploads": [
+    {
+      "mediaId": "6af838_edd5b224517a4195a1ed649c9e47dcd7",
+      "file": "6af838_edd5b224517a4195a1ed649c9e47dcd7~mv2.jpg",
+      "fileName": "Photo May 19, 8 56 34 AM.jpg",
+      "width": 960,
+      "height": 640,
+      "galleryCompId": "comp-m4bqrr0s",
+      "seenOnPages": [
+        "home"
+      ]
+    },
+    {
+      "mediaId": "6af838_f9b280fdaca14e49a7be07c5bd88e8f6",
+      "file": "6af838_f9b280fdaca14e49a7be07c5bd88e8f6~mv2.jpg",
+      "fileName": "Walk-in Closet with Sneakers Collection.jpg",
+      "width": 3600,
+      "height": 2403,
+      "galleryCompId": "comp-m4bqrr0s",
+      "seenOnPages": [
+        "home"
+      ]
+    },
+    {
+      "mediaId": "6af838_30acb8950ef84f83a3f07a5593f850b5",
+      "file": "6af838_30acb8950ef84f83a3f07a5593f850b5~mv2.png",
+      "fileName": "Master's Bedroom.png",
+      "width": 2880,
+      "height": 1620,
+      "galleryCompId": "comp-m4bqrr0s",
+      "seenOnPages": [
+        "home"
+      ]
+    },
+    {
+      "mediaId": "6af838_9fc622b826ef4a5bb0575a33c64d51a6",
+      "file": "6af838_9fc622b826ef4a5bb0575a33c64d51a6~mv2.jpg",
+      "fileName": "Master Bedroom 1.jpg",
+      "width": 3600,
+      "height": 2403,
+      "galleryCompId": "comp-m4bqrr0s",
+      "seenOnPages": [
+        "home"
+      ]
+    },
+    {
+      "mediaId": "6af838_4b449c17a8844c99b6ee014796b043f2",
+      "file": "6af838_4b449c17a8844c99b6ee014796b043f2~mv2.png",
+      "fileName": "IMG_0527_8_9-2 (1).png",
+      "width": 3175,
+      "height": 4490,
+      "galleryCompId": "comp-m4bqrr0s",
+      "seenOnPages": [
+        "home"
+      ]
+    },
+    {
+      "mediaId": "6af838_a819a4ae50604fd49590fbb9151010fa",
+      "file": "6af838_a819a4ae50604fd49590fbb9151010fa~mv2.jpg",
+      "fileName": "Living Room 4.jpg",
+      "width": 3600,
+      "height": 2403,
+      "galleryCompId": "comp-m4bqrr0s",
+      "seenOnPages": [
+        "home"
+      ]
+    },
+    {
+      "mediaId": "6af838_f922d83d2cd548aa9afd2f01bae7113d",
+      "file": "6af838_f922d83d2cd548aa9afd2f01bae7113d~mv2.jpg",
+      "fileName": "Kitchen 2.jpg",
+      "width": 3600,
+      "height": 2402,
+      "galleryCompId": "comp-m4bqrr0s",
+      "seenOnPages": [
+        "home"
+      ]
+    },
+    {
+      "mediaId": "6af838_bd5f9d3072f54eafa44d70754b268063",
+      "file": "6af838_bd5f9d3072f54eafa44d70754b268063~mv2.jpg",
+      "fileName": "Kids Bedroom 1.jpg",
+      "width": 840,
+      "height": 560,
+      "galleryCompId": "comp-m4bqrr0s",
+      "seenOnPages": [
+        "home"
+      ]
+    },
+    {
+      "mediaId": "6af838_e6f5dfe26b514e8a91dc24cb188af18c",
+      "file": "6af838_e6f5dfe26b514e8a91dc24cb188af18c~mv2.jpg",
+      "fileName": "IMG_1166_7_8.jpg",
+      "width": 3600,
+      "height": 2403,
+      "galleryCompId": "comp-m4bqrr0s",
+      "seenOnPages": [
+        "home"
+      ]
+    },
+    {
+      "mediaId": "6af838_bc7ac5550b0a453d83094833375f965f",
+      "file": "6af838_bc7ac5550b0a453d83094833375f965f~mv2.jpg",
+      "fileName": "IMG_0410_1_2.jpg",
+      "width": 3600,
+      "height": 2403,
+      "galleryCompId": "comp-m4bqrr0s",
+      "seenOnPages": [
+        "home"
+      ]
+    },
+    {
+      "mediaId": "6af838_2d3f32ce271b49c098e5463a3ba17ce2",
+      "file": "6af838_2d3f32ce271b49c098e5463a3ba17ce2~mv2.jpg",
+      "fileName": "Dining 5.jpg",
+      "width": 3600,
+      "height": 2403,
+      "galleryCompId": "comp-m4bqrr0s",
+      "seenOnPages": [
+        "home"
+      ]
+    },
+    {
+      "mediaId": "6af838_d8ec2f38cb4542f39ae840dbb1ff728b",
+      "file": "6af838_d8ec2f38cb4542f39ae840dbb1ff728b~mv2.jpg",
+      "fileName": "IMG_0392_3_4.jpg",
+      "width": 3600,
+      "height": 2402,
+      "galleryCompId": "comp-m4bqrr0s",
+      "seenOnPages": [
+        "home"
+      ]
+    },
+    {
+      "mediaId": "6af838_4c6853e5625345388fb77eacbbc7bb2c",
+      "file": "6af838_4c6853e5625345388fb77eacbbc7bb2c~mv2.jpg",
+      "fileName": "IMG_0005_6_7.jpg",
+      "width": 3600,
+      "height": 2403,
+      "galleryCompId": "comp-m4bqrr0s",
+      "seenOnPages": [
+        "home"
+      ]
+    },
+    {
+      "mediaId": "6af838_32e768ef4b2741a9a0be833cef031d70",
+      "file": "6af838_32e768ef4b2741a9a0be833cef031d70~mv2.jpg",
+      "fileName": "Halls 6.jpg",
+      "width": 1798,
+      "height": 2700,
+      "galleryCompId": "comp-m4bqrr0s",
+      "seenOnPages": [
+        "home"
+      ]
+    },
+    {
+      "mediaId": "6af838_0aa77643d22c4300b21056fd7ae8ba1c",
+      "file": "6af838_0aa77643d22c4300b21056fd7ae8ba1c~mv2.jpg",
+      "fileName": "Photo May 19, 9 56 16 AM.jpg",
+      "width": 960,
+      "height": 640,
+      "galleryCompId": "comp-m4bqrr0s",
+      "seenOnPages": [
+        "home"
+      ]
+    }
+  ],
+  "sitemapCheck": {
+    "url": "https://www.stylemyspacedesign.com/portfolio-projects-sitemap.xml",
+    "ok": true,
+    "error": null,
+    "sitemapSlugs": [
+      "las-olas",
+      "oceanside",
+      "modern-interior-design",
+      "aromatherapy-and-natural-elements",
+      "wellness-space-with-city-view",
+      "wellness-space-designs",
+      "classroom-designs"
+    ],
+    "expectedSlugs": [
+      "oceanside",
+      "las-olas",
+      "aromatherapy-and-natural-elements",
+      "wellness-space-with-city-view",
+      "classroom-designs",
+      "wellness-space-designs",
+      "modern-interior-design"
+    ],
+    "missingFromSitemap": [],
+    "extraInSitemap": [],
+    "orderMatches": false,
+    "portfolioOrder": [
+      "oceanside",
+      "las-olas",
+      "aromatherapy-and-natural-elements",
+      "wellness-space-with-city-view",
+      "classroom-designs",
+      "wellness-space-designs",
+      "modern-interior-design"
+    ],
+    "portfolioMatchesExpected": true
+  },
+  "filesWritten": [
+    "content/scrape/pages/home.json",
+    "content/scrape/pages/portfolio.json",
+    "content/scrape/pages/blog.json",
+    "content/scrape/pages/post-functional-and-tranquil-interior-design-solutions-by-style-my-space.json",
+    "content/scrape/pages/post-residential-wellness-spaces-inspiring-design-for-home-environments.json",
+    "content/scrape/pages/post-elegant-wellness-space-designs-for-commercial-businesses.json",
+    "content/scrape/pages/book-online.json",
+    "content/scrape/pages/oceanside.json",
+    "content/scrape/pages/las-olas.json",
+    "content/scrape/pages/aromatherapy-and-natural-elements.json",
+    "content/scrape/pages/wellness-space-with-city-view.json",
+    "content/scrape/pages/classroom-designs.json",
+    "content/scrape/pages/wellness-space-designs.json",
+    "content/scrape/pages/modern-interior-design.json"
+  ]
+}

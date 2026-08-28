@@ -1,0 +1,4 @@
+{
+  "_doc": "Suppress specific QA issues. Each entry needs a reason. kind = issue kind from report.json (console-error, console-warning, pageerror, request-failed, http-status, unexpected-status, preloader-timeout, motion-tier, horizontal-overflow, stuck-end-state, rm-hidden-first-paint, focus-lost, skip-link-first, focus-not-visible, focus-order, script-error) or '*'. urlPattern / textPattern are JS regex sources tested against issue.url / issue.text. Suppressed issues are echoed in qa/report.md.",
+  "entries": []
+}
