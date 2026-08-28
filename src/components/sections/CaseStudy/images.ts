@@ -1,5 +1,6 @@
 import type { Project, ProjectImage } from "@/lib/content.schema";
 import { getCover } from "@/lib/content";
+// SERVER-ONLY: importing this file from a "use client" component would ship zod + projects.json to the browser.
 
 /** How many non-cover images the editorial blocks take before the gallery strip begins. */
 export const BLOCK_COUNT = 4;

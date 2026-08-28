@@ -32,6 +32,9 @@ type Props = {
 /** Distance from the viewport at which deferred images start loading. */
 const ROOT_MARGIN = "600px 0px";
 
+/** Same URL shape the default next/image loader produces. */
+const optimizedSrc = (file: string, w: number, q: number) => `/_next/image?url=${encodeURIComponent(file)}&w=${w}&q=${q}`;
+
 /**
  * Project imagery through next/image with the stored dimensions, blur placeholder and alt text.
  * Non-LCP images are requested only when they come within 600px of the viewport (IntersectionObserver),
@@ -122,7 +125,8 @@ export function SmartImage({
           <>
             <div role="img" aria-label={resolvedAlt || undefined} aria-hidden={resolvedAlt ? undefined : true} className="absolute inset-0" style={placeholderStyle} />
             <noscript>
-              <Image {...common} alt={resolvedAlt} fill className={cn("object-cover", imgClassName)} />
+              {/* eslint-disable-next-line @next/next/no-img-element -- no-JS fallback; one candidate keeps the HTML small */}
+              <img src={optimizedSrc(image.file, 1080, quality)} alt={resolvedAlt} className={cn("absolute inset-0 h-full w-full object-cover", imgClassName)} style={imgStyle} />
             </noscript>
           </>
         )}
@@ -146,7 +150,8 @@ export function SmartImage({
         <>
           <div role="img" aria-label={resolvedAlt || undefined} aria-hidden={resolvedAlt ? undefined : true} className="absolute inset-0" style={placeholderStyle} />
           <noscript>
-            <Image {...common} alt={resolvedAlt} width={image.width} height={image.height} className={cn("h-auto w-full", imgClassName)} />
+            {/* eslint-disable-next-line @next/next/no-img-element -- no-JS fallback; one candidate keeps the HTML small */}
+            <img src={optimizedSrc(image.file, 1080, quality)} alt={resolvedAlt} width={image.width} height={image.height} className={cn("h-auto w-full", imgClassName)} style={imgStyle} />
           </noscript>
         </>
       )}

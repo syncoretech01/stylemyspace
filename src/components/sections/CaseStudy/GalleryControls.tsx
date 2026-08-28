@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/Button";
-import { pad2 } from "./images";
+// Local copy of images.ts#pad2: that module imports the server-side content loader (zod + projects.json)
+// and must never be pulled into a client bundle.
+const pad2 = (n: number) => String(n).padStart(2, "0");
 
 type Props = { scrollerId: string; total: number };
 

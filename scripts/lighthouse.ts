@@ -93,7 +93,7 @@ export type Summary = {
   results: CellResult[];
 };
 
-type Options = { baseUrl: string; serve: boolean; runs: number; routes: string[]; modes: Mode[]; headed: boolean; run: string };
+type Options = { baseUrl: string; serve: boolean; runs: number; routes: string[]; modes: Mode[]; headed: boolean; run: string; extraChromeFlags?: string[] };
 
 const startedAt = Date.now();
 const log = (line: string) => console.log(`[lighthouse +${((Date.now() - startedAt) / 1000).toFixed(1)}s] ${line}`);
@@ -121,6 +121,7 @@ export function parseArgs(argv: string[]): Options {
     if (arg.startsWith("--base-url=")) opts.baseUrl = value(arg).replace(/\/$/, "");
     else if (arg === "--serve") opts.serve = true;
     else if (arg === "--headed") opts.headed = true;
+    else if (arg.startsWith("--chrome-flags=")) opts.extraChromeFlags = arg.slice("--chrome-flags=".length).split(/\s+/).filter(Boolean);
     else if (arg.startsWith("--runs=")) opts.runs = Math.max(1, Math.floor(Number(value(arg))) || 1);
     else if (arg.startsWith("--routes=")) opts.routes = list(arg).map((r) => (r.startsWith("/") ? r : `/${r}`));
     else if (arg.startsWith("--modes=")) {
@@ -210,8 +211,8 @@ async function stopServer(child: ChildProcess): Promise<void> {
 // Lighthouse (child process, plain Node — see the header note)
 // ---------------------------------------------------------------------------------------------
 
-async function launchChrome(headed: boolean): Promise<LaunchedChrome> {
-  const chromeFlags = ["--no-sandbox", ...(headed ? ["--window-size=1440,1000"] : ["--headless=new", "--disable-gpu"])];
+async function launchChrome(headed: boolean, extra: string[] = []): Promise<LaunchedChrome> {
+  const chromeFlags = ["--no-sandbox", ...(headed ? ["--window-size=1440,1000"] : ["--headless=new", "--disable-gpu"]), ...extra];
   const chrome = await launch({ chromeFlags, logLevel: "error" });
   log(`Chrome launched on port ${chrome.port} (${headed ? "headed — WebGL available" : "headless=new — WebGL falls back to SwiftShader"})`);
   return chrome;
@@ -578,7 +579,7 @@ async function main() {
     if (warmed.failedRoutes) log(`WARNING: ${warmed.failedRoutes} route(s) failed to warm`);
     if (warmed.dev) log("WARNING: next dev detected — dev builds are unminified and HMR-instrumented; scores are not meaningful. Use `pnpm build` + --serve.");
 
-    chrome = await launchChrome(opts.headed);
+    chrome = await launchChrome(opts.headed, opts.extraChromeFlags ?? []);
     const cells = opts.routes.flatMap((route) => opts.modes.map((mode) => ({ route, mode })));
     const results: CellResult[] = [];
     for (const [i, { route, mode }] of cells.entries()) {

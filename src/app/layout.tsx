@@ -29,7 +29,7 @@ const fraunces = Fraunces({
 
 const interTight = Inter_Tight({
   subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: "400",
   display: "swap",
   // Not preloaded: on throttled mobile the body font competed with the hero image for bandwidth
   // and pushed LCP past 2.5 s. It still self-hosts via @font-face and swaps in once loaded.
