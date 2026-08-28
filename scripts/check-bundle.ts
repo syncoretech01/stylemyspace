@@ -20,7 +20,7 @@ export const MARKERS = [
   { lib: "gsap", marker: "ScrollTrigger | gsap.registerPlugin | _gsap", re: /ScrollTrigger|gsap\.registerPlugin|\b_gsap\b/ },
   { lib: "lenis", marker: "lenis", re: /lenis/ },
   // The content loader (zod + content/projects.json) is server-only; a client import ships ~100 KB gz.
-  { lib: "content loader (zod + projects.json)", marker: "ZodError | blurDataURL", re: /ZodError|blurDataURL/ },
+  { lib: "content loader (zod + projects.json)", marker: "ZodError | 6af838_<mediaId>", re: /ZodError|6af838_[0-9a-f]{32}/ },
 ] as const;
 
 export type InitialScript = { url: string; kind: "script" | "modulepreload" | "preload" };
