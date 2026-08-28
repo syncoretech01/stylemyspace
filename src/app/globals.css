@@ -1,0 +1,194 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ */
+/* Brand tokens — the only colours, type sizes and easings on the site */
+/* ------------------------------------------------------------------ */
+@theme {
+  --color-*: initial;
+  --color-bone: #f7f4ed;
+  --color-sand: #e7dcca;
+  --color-taupe: #c9bba4;
+  --color-olive: #5c6247;
+  --color-olive-deep: #363b2b;
+  --color-ink: #1b1c18;
+  --color-brass: #a8875a;
+  /* Only non-palette token: form validation errors (7:1 on bone). */
+  --color-clay: #8a3b2f;
+
+  /* 8px scale: p-1 = 8px, p-2 = 16px, p-3 = 24px … */
+  --spacing: 0.5rem;
+
+  --breakpoint-*: initial;
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
+  --breakpoint-2xl: 96rem;
+
+  --container-content: 90rem;
+  --container-prose: 68ch;
+
+  --radius-*: initial;
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-full: 9999px;
+
+  /* Fluid editorial type scale (line-height / tracking sub-tokens) */
+  --text-display: clamp(3rem, 1.25rem + 7vw, 8.5rem);
+  --text-display--line-height: 0.94;
+  --text-display--letter-spacing: -0.025em;
+  --text-h1: clamp(2.5rem, 1.4rem + 4vw, 5rem);
+  --text-h1--line-height: 1;
+  --text-h1--letter-spacing: -0.02em;
+  --text-h2: clamp(1.875rem, 1.2rem + 2.4vw, 3.25rem);
+  --text-h2--line-height: 1.06;
+  --text-h2--letter-spacing: -0.015em;
+  --text-h3: clamp(1.375rem, 1.1rem + 1.1vw, 1.875rem);
+  --text-h3--line-height: 1.2;
+  --text-h3--letter-spacing: -0.01em;
+  --text-lead: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+  --text-lead--line-height: 1.5;
+  --text-body: 1.0625rem;
+  --text-body--line-height: 1.65;
+  --text-small: 0.875rem;
+  --text-small--line-height: 1.5;
+  --text-eyebrow: 0.75rem;
+  --text-eyebrow--line-height: 1.2;
+  --text-eyebrow--letter-spacing: 0.16em;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-brand: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@theme inline {
+  --font-display: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
+  --font-sans: var(--font-inter-tight), "Inter", system-ui, sans-serif;
+}
+
+/* Motion tiers written by the inline <head> script (see layout.tsx) */
+@custom-variant motion-on (&:where(html[data-motion="full"] *, html[data-motion="mobile"] *));
+@custom-variant motion-full (&:where(html[data-motion="full"] *));
+@custom-variant motion-mobile (&:where(html[data-motion="mobile"] *));
+@custom-variant motion-reduced (&:where(html[data-motion="reduced"] *));
+@custom-variant pointer-fine (&:where(html[data-pointer="fine"] *));
+@custom-variant theme-dark (&:where([data-theme="dark"] *));
+
+:root {
+  /* CSS mirrors of src/lib/motion/tokens.ts */
+  --dur-micro: 300ms;
+  --dur-short: 600ms;
+  --dur-enter: 900ms;
+  --header-h: 4.5rem;
+}
+
+@layer base {
+  html {
+    background: var(--color-bone);
+    color: var(--color-ink);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    scrollbar-gutter: stable;
+  }
+  body {
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    min-height: 100svh;
+    background: var(--color-bone);
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    text-wrap: balance;
+  }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-sand); color: var(--color-ink); }
+  :focus-visible { outline: 2px solid var(--color-olive); outline-offset: 4px; border-radius: 2px; }
+  :focus:not(:focus-visible) { outline: none; }
+  [data-theme="dark"] :focus-visible { outline-color: var(--color-sand); }
+  [data-theme="dark"] ::selection { background: var(--color-olive); color: var(--color-bone); }
+  button, [role="button"] { cursor: pointer; }
+  /* Lenis */
+  html.lenis, html.lenis body { height: auto; }
+  .lenis.lenis-smooth { scroll-behavior: auto !important; }
+  .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+  .lenis.lenis-stopped { overflow: hidden; }
+}
+
+@utility visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@utility measure {
+  max-width: var(--container-prose);
+}
+
+@utility eyebrow {
+  font-family: var(--font-sans);
+  font-size: var(--text-eyebrow);
+  line-height: var(--text-eyebrow--line-height);
+  letter-spacing: var(--text-eyebrow--letter-spacing);
+  text-transform: uppercase;
+}
+
+/* ------------------------------------------------------------------ */
+/* Final-state-by-default reveal gating.                               */
+/* Elements marked [data-reveal] inside a [data-motion-root] are hidden */
+/* ONLY when a motion tier is active and that root's motion module has */
+/* not yet taken over with inline styles. No JS / reduced motion / SSR  */
+/* always render the finished state. A 4s keyframe is the safety net.   */
+/* ------------------------------------------------------------------ */
+html[data-motion="full"] [data-motion-root]:not([data-motion-ready]) [data-reveal],
+html[data-motion="mobile"] [data-motion-root]:not([data-motion-ready]) [data-reveal] {
+  opacity: 0;
+  translate: 0 24px;
+  animation: reveal-fallback 500ms var(--ease-out-expo) 4s forwards;
+}
+@keyframes reveal-fallback {
+  to { opacity: 1; translate: 0 0; }
+}
+
+/* Skip link */
+.skip-link {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 200;
+  padding: 0.75rem 1.25rem;
+  background: var(--color-olive);
+  color: var(--color-bone);
+  font-size: var(--text-small);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transform: translateY(-200%);
+  transition: transform var(--dur-micro) var(--ease-out-expo);
+}
+.skip-link:focus-visible { transform: translateY(0); outline-color: var(--color-sand); }
+
+/* Sticky footer reveal: <main> scrolls over the footer that waits beneath. */
+main { position: relative; z-index: 10; background: var(--color-bone); }
+footer[data-site-footer] { position: sticky; bottom: 0; z-index: 0; }
+@media (prefers-reduced-motion: reduce) {
+  footer[data-site-footer] { position: static; }
+}
+
+/* Generic hairline rule */
+.rule { height: 1px; background: var(--color-taupe); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

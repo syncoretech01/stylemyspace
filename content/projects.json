@@ -1,0 +1,140 @@
+{
+  "_generated": "STUB written by hand during foundation (P0). Replaced by scripts/optimize-images.ts — do not edit by hand.",
+  "generatedAt": "2026-08-28T00:00:00.000Z",
+  "source": "https://www.stylemyspacedesign.com",
+  "projects": [
+    {
+      "slug": "oceanside",
+      "title": "Oceanside",
+      "category": "Residential",
+      "categorySource": "site",
+      "categoryNote": null,
+      "description": "Welcome to the Oceanside project, a stunning residential development that skillfully combines masculinity, functionality, and elegance. This project features innovative design and luxurious finishes, creating a modern and sophisticated living space that is sure to impress.",
+      "sourceUrl": "https://www.stylemyspacedesign.com/portfolio-collections/my-portfolio/oceanside",
+      "order": 0,
+      "cover": null,
+      "published": true,
+      "images": []
+    },
+    {
+      "slug": "las-olas",
+      "title": "Las Olas",
+      "category": "Residential",
+      "categorySource": "site",
+      "categoryNote": "Described on the live site as an investment property used as an Airbnb.",
+      "description": "Las Olas is our recent project that involved a full gut renovation, design, and decor for an investment property to be used as an Airbnb. We transformed the property into a stylish and modern space, focusing on creating an inviting and comfortable atmosphere for guests. Our goal was to create a space that offers a memorable experience for visitors, while also maximizing the property's potential for our client.",
+      "sourceUrl": "https://www.stylemyspacedesign.com/portfolio-collections/my-portfolio/las-olas",
+      "order": 1,
+      "cover": null,
+      "published": true,
+      "images": []
+    },
+    {
+      "slug": "aromatherapy-and-natural-elements",
+      "title": "Aromatherapy and Natural Elements",
+      "category": "Wellness",
+      "categorySource": "override",
+      "categoryNote": "No category on the live site; grouped under Wellness by title.",
+      "description": "A collection of images featuring aromatherapy oils, incense, and natural elements on a wooden tray. These images showcase the beauty and tranquility of natural elements, creating a peaceful and harmonious atmosphere.",
+      "sourceUrl": "https://www.stylemyspacedesign.com/portfolio-collections/my-portfolio/aromatherapy-and-natural-elements",
+      "order": 2,
+      "cover": null,
+      "published": true,
+      "images": []
+    },
+    {
+      "slug": "wellness-space-with-city-view",
+      "title": "Wellness Space with City View",
+      "category": "Wellness",
+      "categorySource": "override",
+      "categoryNote": "No category on the live site; grouped under Wellness by title.",
+      "description": "A modern wellness space with manicure tools, city view, and elegant decor elements. This design offers a luxurious and stylish setting with a stunning urban backdrop, perfect for relaxation and pampering.",
+      "sourceUrl": "https://www.stylemyspacedesign.com/portfolio-collections/my-portfolio/wellness-space-with-city-view",
+      "order": 3,
+      "cover": null,
+      "published": true,
+      "images": []
+    },
+    {
+      "slug": "classroom-designs",
+      "title": "Classroom Designs",
+      "category": "Education",
+      "categorySource": "override",
+      "categoryNote": "No category on the live site; the live home page lists an Education card (\"Innovative Learning Spaces\").",
+      "description": "Vibrant and bright classroom designs with round tables, chairs, wooden furniture, and plants. These designs create an engaging and lively learning environment, promoting creativity and collaboration.",
+      "sourceUrl": "https://www.stylemyspacedesign.com/portfolio-collections/my-portfolio/classroom-designs",
+      "order": 4,
+      "cover": null,
+      "published": true,
+      "images": []
+    },
+    {
+      "slug": "wellness-space-designs",
+      "title": "Wellness Space Designs",
+      "category": "Wellness",
+      "categorySource": "override",
+      "categoryNote": "No category on the live site; grouped under Wellness by title.",
+      "description": "A series of minimalist wellness spaces with natural decor, massage table, yoga mats, exercise balls, and aromatherapy oils. These designs create a serene and calming environment, perfect for relaxation and rejuvenation.",
+      "sourceUrl": "https://www.stylemyspacedesign.com/portfolio-collections/my-portfolio/wellness-space-designs",
+      "order": 5,
+      "cover": null,
+      "published": true,
+      "images": []
+    },
+    {
+      "slug": "modern-interior-design",
+      "title": "Modern Interior Design",
+      "category": null,
+      "categorySource": "none",
+      "categoryNote": "No category on the live site and none inferable from the title.",
+      "description": "A collection of modern interior designs with marble, gold accents, natural light, and elegant decor elements. These designs showcase a blend of luxury and contemporary style, creating a sophisticated and inviting atmosphere.",
+      "sourceUrl": "https://www.stylemyspacedesign.com/portfolio-collections/my-portfolio/modern-interior-design",
+      "order": 6,
+      "cover": null,
+      "published": true,
+      "images": []
+    }
+  ],
+  "home": {
+    "headline": "Transforming Spaces & Creating Experiences",
+    "hero": null,
+    "manifesto": null,
+    "materials": [],
+    "meetTheDesigner": {
+      "heading": "Meet the Designer",
+      "role": "Principal Designer",
+      "name": "Eve Jean",
+      "bio": [
+        "Eve Jean is a passionate interior designer with over 5 years of experience and is a certified MWBE.",
+        "Eve excels at building strong relationships with her clients, taking the time to understand their vision and translating it into stunning, livable environments."
+      ],
+      "pressMention": "Eve's work has been featured in prominent publications such as Voyage ATL, Business of Home, Bold Journey, CanvasRebel, Home and Texture, and Mic.",
+      "pressConfirmed": false,
+      "portrait": null
+    },
+    "liveCards": [
+      { "label": "Commercial", "title": "Transforming Workspaces", "body": "Our commercial design projects prioritize enhancing productivity and aesthetics in work environments" },
+      { "label": "Education", "title": "Innovative Learning Spaces", "body": "Our work with education centers focuses on creating engaging and stimulating environments tailored to all learners." },
+      { "label": "Residential", "title": "Personalized Home Retreats", "body": "In residential projects, we blend elegance with comfort to craft personalized living spaces that reflect the individual style and preferences of homeowners. From cozy retreats to luxurious sanctuaries, we bring dreams to life." }
+    ],
+    "recentProjects": ["oceanside", "las-olas", "aromatherapy-and-natural-elements", "wellness-space-with-city-view", "classroom-designs", "wellness-space-designs", "modern-interior-design"]
+  },
+  "portfolio": {
+    "title": "My Portfolio",
+    "intro": "Welcome to my portfolio. Here you'll find a selection of my work. Explore my projects to learn more about what I do."
+  },
+  "blog": [],
+  "consultations": [
+    { "name": "Home Design Refresh", "duration": "2 hr", "price": "$500", "sourceUrl": "https://www.stylemyspacedesign.com/book-online" },
+    { "name": "Move-In Design Guidance", "duration": "1 hr", "price": "$200", "sourceUrl": "https://www.stylemyspacedesign.com/book-online" },
+    { "name": "Office Design Consultation", "duration": "1 hr 30 min", "price": "$300", "sourceUrl": "https://www.stylemyspacedesign.com/book-online" }
+  ],
+  "site": {
+    "legalName": "Style My Space Inc.",
+    "emailDisplayed": "info@stylemyspacedesign.com",
+    "emailMailto": "info@stylemyspaceinc.com",
+    "phone": "516-500-5886",
+    "showPricing": true
+  },
+  "todos": []
+}

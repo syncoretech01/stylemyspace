@@ -1,0 +1,50 @@
+/* Preloader — CSS-driven logotype draw + curtain; JS only drives the counter and the exit. */
+#preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: var(--color-olive-deep);
+  color: var(--color-bone);
+  clip-path: inset(0 0 0 0);
+  transition: clip-path 800ms var(--ease-in-out-quart);
+  /* Failsafe: if JS never finishes the sequence, the curtain leaves on its own. */
+  animation: preloader-failsafe 800ms var(--ease-in-out-quart) 4s forwards;
+}
+html:not([data-preloader="pending"]) #preloader { display: none; }
+#preloader.is-done { clip-path: inset(0 0 100% 0); animation: none; }
+@keyframes preloader-failsafe { to { clip-path: inset(0 0 100% 0); } }
+
+.preloader__inner { display: grid; gap: 1.5rem; justify-items: center; width: min(80vw, 40rem); }
+.preloader__logo { width: 100%; height: auto; overflow: visible; }
+.preloader__text {
+  font-family: var(--font-display);
+  font-size: 44px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  fill: transparent;
+  stroke: var(--color-bone);
+  stroke-width: 0.9;
+  stroke-linejoin: round;
+  stroke-dasharray: 420;
+  stroke-dashoffset: 420;
+  opacity: 0;
+}
+#preloader.is-drawing .preloader__text {
+  animation:
+    logo-draw 1100ms var(--ease-in-out-quart) forwards,
+    logo-fill 500ms ease-out 900ms forwards;
+}
+@keyframes logo-draw { from { opacity: 1; stroke-dashoffset: 420; } to { opacity: 1; stroke-dashoffset: 0; } }
+@keyframes logo-fill { to { fill: var(--color-bone); stroke-opacity: 0; } }
+
+.preloader__pct {
+  font-family: var(--font-sans);
+  font-size: var(--text-eyebrow);
+  letter-spacing: var(--text-eyebrow--letter-spacing);
+  color: var(--color-sand);
+  min-width: 4ch;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}

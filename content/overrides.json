@@ -1,0 +1,24 @@
+{
+  "_comment": "Hand-authored decisions merged into projects.json by scripts/optimize-images.ts. Keys: projects.<slug>.{category, categoryNote, cover (mediaId), published, captions{mediaId: string|null}}; home.{hero, manifesto, materials, pressConfirmed}; site.showPricing.",
+  "projects": {
+    "oceanside": { "cover": "6af838_16545cbb3b46414e8d079337dd6f2bd9" },
+    "las-olas": { "cover": "6af838_4797bd478c3e4a3085c85f2e01c52f12", "categoryNote": "Described on the live site as an investment property used as an Airbnb.", "captions": { "6af838_3198adb0dd8242c5899fc9d7947bcc53": null } },
+    "aromatherapy-and-natural-elements": { "category": "Wellness", "categoryNote": "No category on the live site; grouped under Wellness by title." },
+    "wellness-space-with-city-view": { "category": "Wellness", "categoryNote": "No category on the live site; grouped under Wellness by title." },
+    "classroom-designs": { "category": "Education", "categoryNote": "No category on the live site; the live home page lists an Education card (\"Innovative Learning Spaces\")." },
+    "wellness-space-designs": { "category": "Wellness", "categoryNote": "No category on the live site; grouped under Wellness by title." },
+    "modern-interior-design": { "category": null, "categoryNote": "No category on the live site and none inferable from the title." }
+  },
+  "home": {
+    "hero": { "slug": "oceanside", "mediaId": "6af838_16545cbb3b46414e8d079337dd6f2bd9" },
+    "manifesto": { "slug": "oceanside", "mediaId": "6af838_ac92150204054e37bb93bb791be18a57" },
+    "pressConfirmed": false,
+    "materials": [
+      { "id": "wood", "label": "Wood", "quote": "warm beiges, soft greens, and subtle wood tones", "quoteSource": "https://www.stylemyspacedesign.com/post/functional-and-tranquil-interior-design-solutions-by-style-my-space", "image": { "slug": "las-olas", "mediaId": "6af838_4797bd478c3e4a3085c85f2e01c52f12" }, "objectPosition": "50% 85%" },
+      { "id": "stone", "label": "Stone", "quote": "marble, gold accents, natural light, and elegant decor elements", "quoteSource": "https://www.stylemyspacedesign.com/portfolio-collections/my-portfolio/modern-interior-design", "image": { "slug": "las-olas", "mediaId": "6af838_f8e79c545f2b47778b768e61159a2478" }, "objectPosition": "70% 40%" },
+      { "id": "textile", "label": "Textile", "quote": "textures like soft fabrics and warm wood invite relaxation and productivity", "quoteSource": "https://www.stylemyspacedesign.com/post/elegant-wellness-space-designs-for-commercial-businesses", "image": { "slug": "oceanside", "mediaId": "6af838_707a3bcfd3984735b59dc48b13681026" }, "objectPosition": "10% 80%" },
+      { "id": "brass", "label": "Brass", "quote": "Every color, texture, and material is selected to evoke calm and balance.", "quoteSource": "https://www.stylemyspacedesign.com/post/functional-and-tranquil-interior-design-solutions-by-style-my-space", "image": { "slug": "oceanside", "mediaId": "6af838_ac92150204054e37bb93bb791be18a57" }, "objectPosition": "50% 12%" }
+    ]
+  },
+  "site": { "showPricing": true }
+}
