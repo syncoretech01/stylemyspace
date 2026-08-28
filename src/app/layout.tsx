@@ -7,6 +7,8 @@ import { Footer } from "@/components/layout/Footer";
 import { JsonLd, localBusinessGraph } from "@/components/layout/JsonLd";
 import { Preloader } from "@/components/preloader/Preloader";
 import { MotionRuntime } from "@/components/motion/MotionRuntime";
+import { TransitionProvider } from "@/components/transition/TransitionProvider";
+import { CustomCursor } from "@/components/cursor/CustomCursor";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -59,11 +61,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <SkipLink />
         <Preloader />
         <MotionRuntime />
-        <SiteHeader />
-        <main id="main" tabIndex={-1} className="overflow-x-clip outline-none">
-          {children}
-        </main>
-        <Footer />
+        <TransitionProvider>
+          <SiteHeader />
+          <main id="main" tabIndex={-1} className="overflow-x-clip outline-none">
+            {children}
+          </main>
+          <Footer />
+        </TransitionProvider>
+        <CustomCursor />
         <JsonLd data={localBusinessGraph()} />
       </body>
     </html>

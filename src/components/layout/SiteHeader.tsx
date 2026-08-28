@@ -9,13 +9,17 @@ import { Wordmark } from "@/components/ui/Wordmark";
 
 export function SiteHeader() {
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
+  // The menu is "open for a pathname": navigating closes it without an effect.
+  const [openFor, setOpenFor] = useState<string | null>(null);
+  const open = openFor === pathname;
+  const setOpen = (next: boolean) => setOpenFor(next ? pathname : null);
   const menuId = useId();
 
-  useEffect(() => setOpen(false), [pathname]);
   useEffect(() => {
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpenFor(null);
+    };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
@@ -54,7 +58,7 @@ export function SiteHeader() {
           className="eyebrow -mr-1 rounded-xs px-1 py-1 text-ink md:hidden"
           aria-expanded={open}
           aria-controls={menuId}
-          onClick={() => setOpen((v) => !v)}
+          onClick={() => setOpen(!open)}
         >
           {open ? "Close" : "Menu"}
         </button>
