@@ -29,6 +29,9 @@ Every literal `{{TODO: …}}` token rendered on the site is listed in section B.
 | OI-16 | **No vector logo exists** (the live favicon is a 192 px JPEG). | Live site head | A typographic wordmark (Fraunces, letter-spaced) and a simple "S" SVG favicon are used. An SVG mark would replace both. |
 | OI-17 | **Blog posts** (3, dated Dec 5 2024) are not migrated: the brief's sitemap has no blog route. Their copy is quoted on About/Materials. | `/blog` | Add a `/blog` route if wanted; bodies are captured in `content/scrape/pages/post-*.json`. |
 | OI-18 | **15 duplicate uploads** of Oceanside photography exist in the live home page's "Our Recent Projects" gallery under different media ids (e.g. "Kitchen 2.jpg", "Master's Bedroom.png" 2880×1620, "IMG_0527_8_9-2 (1).png" 3175×4490), reachable only by scrolling that gallery sideways; 9 further gallery items never load and are unknown. | Home warmup JSON (`content/scrape/scrape-report.json` → unreferencedUploads) | Not downloaded (duplicates of images already in the Oceanside collection). If any are distinct photographs, please supply them. |
+| OI-34 | **Materials "Stone" swatch** pairs a sentence from the Modern Interior Design collection description ("marble, gold accents…") with a Las Olas bathroom photograph (credited as Las Olas). | `content/overrides.json` → `home.materials` | Kept (both are the firm's own words/photos); swap the quote in `overrides.json` if the pairing is not wanted. |
+| OI-35 | **Hospitality discipline image** is the Las Olas cover, a 960×640 original that renders soft when the column expands on wide screens. | `src/lib/disciplines.ts` | Kept; a higher-resolution Las Olas frame would fix it. |
+| OI-36 | **Hero on phones**: the scroll cue is hidden below 1024 px and the CTA row sits just under the first fold at 390×844 so the photograph stays clean. | Hero section | Kept; lower `pt-[46svh]` in `src/components/sections/Hero/index.tsx` to lift the CTAs. |
 
 ## B. `{{TODO}}` inventory (rendered on the site)
 
@@ -65,6 +68,9 @@ _Alt-text TODOs are tracked by `pnpm content:check` and must be zero before rele
 | OI-27 | The custom cursor is an olive halo that follows the pointer; the native cursor stays visible for accessibility. | `HIDE_NATIVE_CURSOR` in `src/components/cursor/CursorImpl.tsx`. |
 | OI-28 | Raw Wix originals are kept in `content/raw/` (gitignored) rather than `public/projects/`; only optimized WebP files ship from `public/projects/<slug>/`. | — |
 | OI-29 | Lighthouse is run headless (software GL), so the WebGL probe falls back to the static hero during audits; a headed run with WebGL active is reported separately. | `pnpm qa:lighthouse --headed`. |
+| OI-37 | Service areas have no hover *image* reveal (the Abvtek borrow): the regions have no project imagery of their own, so the interaction is the underline draw + "Get in touch" hint. | Add region imagery to `content/` and the section if wanted. |
+| OI-38 | Disciplines on touch devices render all four rows expanded (no accordion toggles) — everything is reachable without JS. | Add toggles in `src/components/sections/Disciplines` if collapsing is preferred. |
+| OI-39 | The Education note under Commercial reads "Including education centers: engaging and stimulating environments tailored to all learners." (from the live Education card). | `src/lib/disciplines.ts`. |
 
 ## F. Tooling / environment
 

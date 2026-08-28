@@ -41,6 +41,6 @@ export const DISCIPLINES: Discipline[] = [
     blurb: "Workplaces and learning environments that prioritize productivity and aesthetics.",
     source: "Live home page, Commercial and Education cards",
     image: { slug: "classroom-designs", mediaId: "6af838_8850314cc2ca4ec9a7abde0b5961df2f" },
-    note: "The live site lists Education as its own category; classroom work is shown here under Commercial.",
+    note: "Including education centers: engaging and stimulating environments tailored to all learners.",
   },
 ];

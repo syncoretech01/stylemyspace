@@ -1,0 +1,33 @@
+/* Service areas — one-line rows with a brass underline that draws in on hover / focus. */
+
+.word {
+  background-image: linear-gradient(var(--color-brass), var(--color-brass));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  padding-bottom: 0.08em;
+  transition: background-size var(--dur-short) var(--ease-out-expo);
+}
+
+.link:hover .word,
+.link:focus-visible .word {
+  background-size: 100% 1px;
+}
+
+.hint {
+  transition:
+    opacity var(--dur-micro) var(--ease-out-expo),
+    transform var(--dur-micro) var(--ease-out-expo);
+}
+
+@media (min-width: 64rem) {
+  .hint {
+    opacity: 0;
+    transform: translateX(-0.5rem);
+  }
+  .link:hover .hint,
+  .link:focus-visible .hint {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

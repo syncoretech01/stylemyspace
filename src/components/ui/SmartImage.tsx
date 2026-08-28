@@ -56,7 +56,13 @@ export function SmartImage({
   };
   if (fill) {
     return (
-      <div className={cn("relative overflow-clip", className)}>
+      <div
+        className={cn(
+          "overflow-clip",
+          !/(^|\s)(absolute|fixed|sticky)(\s|$)/.test(className ?? "") && "relative",
+          className,
+        )}
+      >
         <Image {...common} alt={common.alt} fill className={cn("object-cover", imgClassName)} />
       </div>
     );

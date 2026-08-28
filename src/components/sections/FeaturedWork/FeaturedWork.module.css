@@ -1,0 +1,58 @@
+/*
+ * Featured work track — static P2 state.
+ * Desktop: a native horizontal scroller (P3 pins the section and translates .track instead).
+ * Mobile: the same list, 85vw cards, scroll-snap.
+ */
+.track {
+  --pad: 1.5rem;
+  --card-w: 85vw;
+  --gap: 1rem;
+  display: flex;
+  gap: var(--gap);
+  overflow-x: auto;
+  overflow-y: clip;
+  padding-inline: var(--pad);
+  padding-block: 0.5rem 1.5rem; /* room for the focus ring and the scrollbar */
+  scroll-padding-inline: var(--pad);
+  scroll-snap-type: x proximity;
+  touch-action: pan-x pan-y;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-olive) transparent;
+}
+.track::-webkit-scrollbar {
+  height: 4px;
+}
+.track::-webkit-scrollbar-track {
+  background: transparent;
+}
+.track::-webkit-scrollbar-thumb {
+  background: var(--color-olive);
+  border-radius: 9999px;
+}
+
+.card {
+  flex: 0 0 auto;
+  width: var(--card-w);
+  scroll-snap-align: start;
+}
+
+@media (min-width: 48rem) {
+  .track {
+    --pad: 3rem;
+    --gap: 1.5rem;
+    --card-w: clamp(20rem, 42vw, 44rem);
+  }
+}
+
+@media (min-width: 64rem) {
+  .track {
+    /* Align the first card with the Container edge at every viewport width. */
+    --pad: max(5rem, calc((100% - 90rem) / 2 + 5rem));
+    /*
+     * 4:5 frame + caption + section header must fit one viewport once P3 pins the stage:
+     * frame height = (100svh − ~26rem of chrome) → width = that × 0.8. 42vw at wide viewports.
+     */
+    --card-w: clamp(20rem, min(42vw, calc((100svh - 26rem) * 0.8)), 44rem);
+  }
+}

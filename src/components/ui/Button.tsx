@@ -6,13 +6,13 @@ import { cn } from "./cn";
 type Variant = "primary" | "outline" | "ghost";
 
 const base =
-  "inline-flex min-h-6 items-center justify-center gap-1 rounded-xs px-3 eyebrow transition-[background-color,color,border-color] duration-(--dur-micro) ease-(--ease-out-expo)";
+  "inline-flex min-h-6 items-center justify-center gap-1 rounded-xs eyebrow transition-[background-color,color,border-color] duration-(--dur-micro) ease-(--ease-out-expo)";
 
 const variants: Record<Variant, string> = {
   primary:
-    "bg-olive text-bone hover:bg-olive-deep theme-dark:bg-bone theme-dark:text-olive-deep theme-dark:hover:bg-sand",
+    "px-3 bg-olive text-bone hover:bg-olive-deep theme-dark:bg-bone theme-dark:text-olive-deep theme-dark:hover:bg-sand",
   outline:
-    "border border-olive text-olive hover:bg-olive hover:text-bone theme-dark:border-bone theme-dark:text-bone theme-dark:hover:bg-bone theme-dark:hover:text-olive-deep",
+    "px-3 border border-olive text-olive hover:bg-olive hover:text-bone theme-dark:border-bone theme-dark:text-bone theme-dark:hover:bg-bone theme-dark:hover:text-olive-deep",
   ghost: "px-0 text-olive underline-offset-6 hover:underline theme-dark:text-bone",
 };
 

@@ -1,0 +1,163 @@
+/*
+ * Disciplines — pure CSS column slider.
+ * Mobile / tablet: stacked rows, everything visible, no hover dependency.
+ * ≥ lg (64rem): four full-height columns; :hover / :focus-within expands one,
+ * siblings dim via :has(). Global prefers-reduced-motion zeroes the transitions.
+ */
+
+.row {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-olive-deep);
+}
+
+.col {
+  position: relative;
+  display: flex;
+  flex: 1 1 0%;
+  min-width: 0;
+  min-height: 28svh;
+  overflow: clip;
+  color: var(--color-bone);
+  background: var(--color-olive-deep);
+  transition: flex-grow var(--dur-short) var(--ease-out-expo);
+}
+
+.link {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* The column clips its image, so the focus ring sits inside the frame. */
+.link:focus-visible {
+  outline-offset: -6px;
+}
+
+.col + .col {
+  border-top: 1px solid color-mix(in srgb, var(--color-bone) 18%, transparent);
+}
+
+.media {
+  position: absolute;
+  inset: 0;
+  opacity: 0.82;
+  transform: scale(1.001);
+  transition:
+    opacity var(--dur-short) var(--ease-out-expo),
+    transform var(--dur-short) var(--ease-out-expo);
+  will-change: opacity, transform;
+}
+
+/* Olive-deep ramp from the foot of the frame, where the label and blurb sit. Stronger on the
+   short mobile rows (text covers most of the frame), lighter on the tall desktop columns. */
+.scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--color-olive-deep) 92%, transparent) 0%,
+    color-mix(in srgb, var(--color-olive-deep) 70%, transparent) 45%,
+    color-mix(in srgb, var(--color-olive-deep) 25%, transparent) 100%
+  );
+}
+
+.content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: 100%;
+  transition: opacity var(--dur-short) var(--ease-out-expo);
+}
+
+.label {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.blurb {
+  transition:
+    opacity var(--dur-short) var(--ease-out-expo),
+    transform var(--dur-short) var(--ease-out-expo);
+}
+
+@media (min-width: 64rem) {
+  .row {
+    flex-direction: row;
+    height: clamp(34rem, 76svh, 54rem);
+  }
+
+  .col + .col {
+    border-top: 0;
+    border-left: 1px solid color-mix(in srgb, var(--color-bone) 18%, transparent);
+  }
+
+  .scrim {
+    background:
+      linear-gradient(
+        to bottom,
+        color-mix(in srgb, var(--color-olive-deep) 30%, transparent) 0%,
+        transparent 35%
+      ),
+      linear-gradient(
+        to top,
+        color-mix(in srgb, var(--color-olive-deep) 90%, transparent) 0%,
+        color-mix(in srgb, var(--color-olive-deep) 45%, transparent) 40%,
+        transparent 68%
+      );
+  }
+
+  .col:hover,
+  .col:focus-within {
+    flex-grow: 3;
+  }
+
+  .col:hover .media,
+  .col:focus-within .media {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+
+  /* Siblings of the active column dim. */
+  .row:has(.col:hover) .col:not(:hover) .content,
+  .row:has(.col:focus-within) .col:not(:focus-within) .content {
+    opacity: 0.55;
+  }
+
+  .content {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: flex-start;
+    gap: 1.5rem;
+  }
+
+  /* Label reads bottom-to-top along the left edge, like a book spine. */
+  .label {
+    flex-direction: row;
+    align-items: center;
+    flex: none;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    max-height: 100%;
+  }
+
+  .blurb {
+    flex: none;
+    width: 30ch;
+    max-width: calc(100% - 6rem);
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+
+  .col:hover .blurb,
+  .col:focus-within .blurb {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

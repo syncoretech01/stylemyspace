@@ -7,9 +7,10 @@ export const alt = `${SITE.name} — interior design, New York`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-async function tryRead(path: string) {
+async function tryReadHomeOg() {
   try {
-    return await readFile(join(process.cwd(), path));
+    // Statically scoped path so Turbopack traces only this file (not the whole project).
+    return await readFile(join(process.cwd(), "public", "site", "og-home.jpg"));
   } catch {
     return null;
   }
@@ -19,7 +20,7 @@ export default async function OpenGraphImage() {
   const [display, sans, photo] = await Promise.all([
     readFile(join(process.cwd(), "src/assets/fonts/Fraunces-400.ttf")),
     readFile(join(process.cwd(), "src/assets/fonts/InterTight-400.ttf")),
-    tryRead("public/site/og-home.jpg"),
+    tryReadHomeOg(),
   ]);
   const photoSrc = photo ? `data:image/jpeg;base64,${photo.toString("base64")}` : null;
 
