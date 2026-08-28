@@ -45,7 +45,8 @@ next-env.d.ts
 /content/scrape/pages/
 /qa/screenshots/
 /qa/contact-sheets/
-/qa/lighthouse/
+/qa/lighthouse/*
+!/qa/lighthouse/README.md
 /qa/report.json
 /qa/report.md
 /.playwright/
