@@ -46,7 +46,36 @@ Tokens live in `src/app/globals.css` (`@theme`): palette (`bone`, `sand`, `taupe
 
 ## Motion architecture
 
-_(completed at close-out — see the "Animation techniques" section below.)_
+Final state by default. Every page is server-rendered in its finished state; an inline script in
+`<head>` (`src/app/layout.tsx`) classifies the visitor before first paint into a motion tier —
+`full` (desktop, fine pointer), `mobile` (touch or < 1024 px) or `reduced` (`prefers-reduced-motion`)
+— and CSS in `globals.css` pre-hides only `[data-reveal]` elements inside a `[data-motion-root]`
+whose motion module has not taken over yet (with a 4 s safety keyframe). Under `reduced`, with
+JavaScript disabled, or before hydration, nothing is ever hidden.
+
+Each animated section pairs a server-rendered component with a framework-free
+`<Name>.motion.ts` module (`src/components/sections/<Name>/`) loaded lazily through
+`MotionRoot` → `useMotionModule` once the preloader has exited and the main thread is idle. GSAP core,
+ScrollTrigger, Flip, SplitText, Observer, Lenis and three.js are therefore never in the initial
+bundle (`pnpm qa:bundle` asserts this). Tokens for easing, duration and distance live in
+`src/lib/motion/tokens.ts`; media queries in `src/lib/motion/queries.ts`; nothing bounces.
+
+| Technique | Where | Notes |
+|---|---|---|
+| Preloader (SVG logotype stroke draw + real asset-progress counter + `clip-path` curtain, ≤ 2.5 s, once per session) | `src/components/preloader/` | CSS-driven; `assetLoader.ts` tracks fonts, the LCP image and the WebGL chunk |
+| Three.js displacement plane on the hero photo (single WebGL context, DPR ≤ 2, IntersectionObserver pause, disposed on unmount) | `src/components/three/` | Mounts on the `full` tier after the preloader when hardware GL is available; the `<img>` beneath stays the LCP element |
+| Headline masked line reveal (SplitText `mask: "lines"`) | `src/lib/motion/split.ts`, Hero, CaseHero | Plays after the preloader / after a Flip lands |
+| Custom cursor (olive halo with labels from `data-cursor`) | `src/components/cursor/` | Fine pointers only; never reacts to keyboard focus |
+| Pinned manifesto (word-by-word scrub, background scale 1 → 1.08) | `sections/Manifesto` | Pin distance reserved in CSS (`motion-full:h-[220svh]`) so pinning never shifts layout |
+| Disciplines column slider | `sections/Disciplines` | Pure CSS `flex-grow` on hover / `:focus-within`; stacked on touch |
+| Horizontal parallax track (pinned, image layers at differing speeds via `containerAnimation`) | `sections/FeaturedWork` | Native scroll-snap list on mobile / reduced |
+| Portfolio grid entrance + 3D tilt (≤ 6°) + name mask | `sections/PortfolioGrid` | Tilt on fine pointers only |
+| Cross-route FLIP zoom (tile → case-study hero) | `src/components/transition/` | Persistent overlay clone; abort paths for back/blur/timeout |
+| Case study parallax blocks, sticky title, 3D gallery slider (Observer drag, arrow keys, live region) | `sections/CaseStudy` | Native scroll-snap strip on mobile / reduced |
+| Exploding material swatches with SVG connector lines | `sections/Materials` | Exploded layout is the CSS end state |
+| Stacked process cards (sticky + scale scrub) | `sections/Process` | No pin |
+| Service-area hover underline draw | `sections/ServiceAreas` | CSS |
+| Magnetic CTA, floating-label form with live validation, footer revealed from beneath `<main>` | `sections/CtaBlock`, `sections/Contact`, `globals.css` | Footer reveal is `position: sticky; bottom: 0` |
 
 ## QA
 
