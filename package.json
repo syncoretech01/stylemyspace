@@ -17,7 +17,8 @@
     "qa:lighthouse": "tsx scripts/lighthouse.ts",
     "qa:bundle": "tsx scripts/check-bundle.ts",
     "qa:webgl": "playwright test -c qa/playwright.config.ts",
-    "qa:all": "pnpm build && tsx scripts/qa.ts --serve && tsx scripts/contact-sheet.ts && tsx scripts/lighthouse.ts --serve"
+    "qa:all": "pnpm build && tsx scripts/qa.ts --serve && tsx scripts/contact-sheet.ts && tsx scripts/lighthouse.ts --serve",
+    "qa:h2": "tsx scripts/h2-proxy.ts --upstream=http://localhost:3000 --port=3443"
   },
   "dependencies": {
     "@gsap/react": "2.1.2",

@@ -110,3 +110,23 @@ pipeline, e.g. `pnpm qa:lighthouse --routes=/about --modes=desktop --runs=1 --ru
   under `public/`, checks covers and the 7-project sitemap. `--strict` fails on any TODO alt or
   missing file.
 - `pnpm tsx scripts/warm-images.ts [baseUrl] [--routes=…]` — the warm step on its own.
+
+## Auditing over HTTP/2 (recommended — matches production)
+
+`next start` speaks HTTP/1.1. Lighthouse's simulated mobile throttling models each HTTP/1.1
+connection with its own round-trips, which adds ~0.5 s to image-LCP pages that a real
+H2/H3 edge (Vercel, Cloudflare, Netlify…) never pays. `scripts/h2-proxy.ts` is a 60-line
+HTTP/2 reverse proxy with a self-signed certificate (`qa/.certs`, gitignored) so local audits
+reflect the deployed protocol:
+
+```bash
+pnpm build && pnpm start                                   # HTTP/1.1 origin on :3000
+pnpm qa:h2                                                 # HTTPS/2 on :3443 → :3000
+NODE_TLS_REJECT_UNAUTHORIZED=0 pnpm qa:lighthouse \
+  --base-url=https://localhost:3443 --runs=3 \
+  --chrome-flags=--ignore-certificate-errors --run=release
+```
+
+Both sets of numbers (HTTP/1.1 and HTTP/2) are reported in the final summary; nothing else
+differs between the runs. `NODE_TLS_REJECT_UNAUTHORIZED=0` only affects the warm-up fetches
+against the local self-signed certificate.
