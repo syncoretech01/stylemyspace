@@ -28,7 +28,7 @@ Every literal `{{TODO: …}}` token rendered on the site is listed in section B.
 | OI-15 | Claims shown verbatim from the live site that the client should re-confirm: "over 5 years of experience", "certified MWBE". | Live `/` bio | Rendered on `/about` exactly as on the live site. |
 | OI-16 | **No vector logo exists** (the live favicon is a 192 px JPEG). | Live site head | A typographic wordmark (Fraunces, letter-spaced) and a simple "S" SVG favicon are used. An SVG mark would replace both. |
 | OI-17 | **Blog posts** (3, dated Dec 5 2024) are not migrated: the brief's sitemap has no blog route. Their copy is quoted on About/Materials. | `/blog` | Add a `/blog` route if wanted; bodies are captured in `content/scrape/pages/post-*.json`. |
-| OI-18 | **Unreferenced uploads** in the Wix media manager (files like "Halls 6.jpg", "Master Bedroom 1.jpg") are not shown on any live page. | Home warmup JSON | Not downloaded. They may be additional Oceanside photography worth supplying. |
+| OI-18 | **15 duplicate uploads** of Oceanside photography exist in the live home page's "Our Recent Projects" gallery under different media ids (e.g. "Kitchen 2.jpg", "Master's Bedroom.png" 2880×1620, "IMG_0527_8_9-2 (1).png" 3175×4490), reachable only by scrolling that gallery sideways; 9 further gallery items never load and are unknown. | Home warmup JSON (`content/scrape/scrape-report.json` → unreferencedUploads) | Not downloaded (duplicates of images already in the Oceanside collection). If any are distinct photographs, please supply them. |
 
 ## B. `{{TODO}}` inventory (rendered on the site)
 
@@ -47,6 +47,7 @@ _Alt-text TODOs are tracked by `pnpm content:check` and must be zero before rele
 | OI-20 | The portrait's alt on the live site is a filename ("Eve Oceanside Portrait Retouched.jpeg"). | Rewritten to describe the photograph. |
 | OI-21 | Wix Bookings config contains a template phone number `123-456-7890`. | Ignored; only 516-500-5886 is used. |
 | OI-22 | Hidden Wix editor placeholder text ("Create Your First Project…") exists in every project page's HTML. | Excluded by visibility checks in the scraper. |
+| OI-33 | The live "Previous / Next Project" buttons stop at the first and last project (not circular); `portfolio-projects-sitemap.xml` lists the projects in a different order from the `/portfolio` gallery and the brief. | Site navigation follows the brief/portfolio order and is not circular (ends link back to `/portfolio`). |
 
 ## D. Assets excluded
 

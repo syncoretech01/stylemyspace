@@ -19,14 +19,14 @@ export const getContent = () => data;
 export const getProjects = (): Project[] => sorted;
 export const getProject = (slug: string): Project | null => sorted.find((p) => p.slug === slug) ?? null;
 
-/** Circular prev/next, matching the live site's "Previous / Next Project" buttons. */
-export function getAdjacentProjects(slug: string): { prev: Project; next: Project } | null {
+/**
+ * Previous/next in portfolio order. NOT circular — the live site's "Previous / Next Project" buttons
+ * stop at the first and last project (verified in content/scrape/pages/<slug>.json → text.hasPrevNext).
+ */
+export function getAdjacentProjects(slug: string): { prev: Project | null; next: Project | null } | null {
   const i = sorted.findIndex((p) => p.slug === slug);
-  if (i < 0 || sorted.length < 2) return null;
-  return {
-    prev: sorted[(i - 1 + sorted.length) % sorted.length]!,
-    next: sorted[(i + 1) % sorted.length]!,
-  };
+  if (i < 0) return null;
+  return { prev: sorted[i - 1] ?? null, next: sorted[i + 1] ?? null };
 }
 
 export const getCover = (p: Project): ProjectImage | null => (p.cover === null ? null : (p.images[p.cover] ?? null));

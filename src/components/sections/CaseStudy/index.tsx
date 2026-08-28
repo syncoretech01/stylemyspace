@@ -67,17 +67,31 @@ export function CaseGallery({ project }: { project: Project }) {
   );
 }
 
-export function NextProject({ next, prev }: { next: Project; prev: Project }) {
+/** prev/next follow portfolio order and are null at the ends (like the live site). */
+export function NextProject({ next, prev }: { next: Project | null; prev: Project | null }) {
   return (
     <Section tone="dark" aria-label="Project navigation" flush className="py-8">
       <Container className="flex flex-wrap items-center justify-between gap-4">
-        <Link href={`/portfolio/${prev.slug}` as Route} className="eyebrow rounded-xs py-1 hover:underline">
-          ← {prev.title}
-        </Link>
-        <Link href={`/portfolio/${next.slug}` as Route} className="group rounded-xs" data-cursor="Open">
-          <Eyebrow>Next project</Eyebrow>
-          <span className="mt-1 block font-display text-h2">{next.title} →</span>
-        </Link>
+        {prev ? (
+          <Link href={`/portfolio/${prev.slug}` as Route} className="eyebrow rounded-xs py-1 hover:underline">
+            ← {prev.title}
+          </Link>
+        ) : (
+          <Link href="/portfolio" className="eyebrow rounded-xs py-1 hover:underline">
+            ← All projects
+          </Link>
+        )}
+        {next ? (
+          <Link href={`/portfolio/${next.slug}` as Route} className="group rounded-xs" data-cursor="Open">
+            <Eyebrow>Next project</Eyebrow>
+            <span className="mt-1 block font-display text-h2">{next.title} →</span>
+          </Link>
+        ) : (
+          <Link href="/portfolio" className="group rounded-xs" data-cursor="View">
+            <Eyebrow>End of the portfolio</Eyebrow>
+            <span className="mt-1 block font-display text-h2">Back to all projects →</span>
+          </Link>
+        )}
       </Container>
     </Section>
   );
