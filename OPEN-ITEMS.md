@@ -44,7 +44,7 @@ _Alt-text TODOs are tracked by `pnpm content:check` and must be zero before rele
 | ID | Item | Handling |
 |---|---|---|
 | OI-19 | Las Olas gallery item 05 carries the caption "AM" (filename noise). | Caption nulled in `content/overrides.json`. |
-| OI-20 | The portrait's alt on the live site is a filename ("Eve Oceanside Portrait Retouched.jpeg"). | Rewritten to describe the photograph. |
+| OI-20 | The portrait's alt on the live site is a filename ("Eve Oceanside Portrait Retouched.jpeg"); the Oceanside gallery captions ("Kitchen 2", "Dining 5"…) are gallery labels, not descriptions. | Alt text for every image is authored by looking at each image (`content/alt-overrides.json`); captions are kept verbatim as captions. |
 | OI-21 | Wix Bookings config contains a template phone number `123-456-7890`. | Ignored; only 516-500-5886 is used. |
 | OI-22 | Hidden Wix editor placeholder text ("Create Your First Project…") exists in every project page's HTML. | Excluded by visibility checks in the scraper. |
 | OI-33 | The live "Previous / Next Project" buttons stop at the first and last project (not circular); `portfolio-projects-sitemap.xml` lists the projects in a different order from the `/portfolio` gallery and the brief. | Site navigation follows the brief/portfolio order and is not circular (ends link back to `/portfolio`). |
