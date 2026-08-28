@@ -48,6 +48,8 @@ export function SmartImage({
     sizes,
     quality,
     preload: lcp,
+    // The LCP image must win the bandwidth race against fonts and scripts on slow connections.
+    fetchPriority: lcp ? ("high" as const) : undefined,
     placeholder: "blur" as const,
     blurDataURL: image.blurDataURL,
     "data-lcp": lcp ? "" : undefined,

@@ -40,7 +40,6 @@ export function CaseGallery({ project }: { project: Project }) {
         {gallery.map((img, i) => (
           <li
             key={img.mediaId}
-            role="group"
             aria-roledescription="slide"
             aria-label={`${i + 1} of ${gallery.length}`}
             className="w-[84vw] shrink-0 snap-start sm:w-[60vw] lg:w-[44vw] lg:max-w-[56rem]"

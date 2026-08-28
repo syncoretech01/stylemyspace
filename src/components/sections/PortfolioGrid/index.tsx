@@ -90,6 +90,8 @@ export function PortfolioGrid({ projects, title, intro }: Props) {
                       <SmartImage
                         image={cover}
                         sizes={SIZES[span]}
+                        lcp={i === 0}
+                        quality={i === 0 ? 85 : 75}
                         className="h-full w-full"
                         imgClassName="transition-transform duration-(--dur-short) ease-(--ease-out-expo) group-hover:scale-[1.04] group-focus-visible:scale-[1.04]"
                         imgProps={{ "data-flip-id": p.slug }}

@@ -2,6 +2,25 @@
 
 import { useEffect, type RefObject } from "react";
 import { useMotionPreference } from "./useMotionPreference";
+import { onPreloaderDone } from "@/components/preloader/assetLoader";
+
+/** Run `cb` after the preloader has exited and the main thread is idle — keeps GSAP off the LCP critical path. */
+export function whenIdleAfterPreloader(cb: () => void, timeout = 1500) {
+  let cancelIdle = () => {};
+  const off = onPreloaderDone(() => {
+    if (typeof requestIdleCallback === "function") {
+      const id = requestIdleCallback(() => cb(), { timeout });
+      cancelIdle = () => cancelIdleCallback(id);
+    } else {
+      const id = window.setTimeout(cb, 200);
+      cancelIdle = () => window.clearTimeout(id);
+    }
+  });
+  return () => {
+    off();
+    cancelIdle();
+  };
+}
 
 export type MotionContext = { tier: "full" | "mobile"; fine: boolean };
 /** A motion module mounts onto a section root and returns a cleanup. Framework-free, lazily loaded. */
@@ -23,17 +42,20 @@ export function useMotionModule(
     if (!root) return;
     let cancelled = false;
     let cleanup: void | (() => void);
-    load()
-      .then((mod) => {
-        if (cancelled) return;
-        cleanup = mod.default(root, { tier, fine });
-      })
-      .catch(() => {
-        // Motion chunk failed: reveal the final state instead of leaving content hidden.
-        root.dataset.motionReady = "1";
-      });
+    const stop = whenIdleAfterPreloader(() => {
+      load()
+        .then((mod) => {
+          if (cancelled) return;
+          cleanup = mod.default(root, { tier, fine });
+        })
+        .catch(() => {
+          // Motion chunk failed: reveal the final state instead of leaving content hidden.
+          root.dataset.motionReady = "1";
+        });
+    });
     return () => {
       cancelled = true;
+      stop();
       cleanup?.();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

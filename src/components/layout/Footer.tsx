@@ -25,7 +25,7 @@ export function Footer() {
       <div className="mx-auto w-full max-w-content px-3 pt-12 pb-4 md:px-6 md:pt-16 lg:px-10 lg:pt-20">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-12 md:gap-x-6 lg:gap-x-8">
           <div className="col-span-2 md:col-span-12 lg:col-span-5">
-            <Link href="/" className="inline-flex min-h-[2.75rem] items-center rounded-xs" aria-label={`${SITE.name} — home`}>
+            <Link href="/" className="inline-flex min-h-[2.75rem] items-center rounded-xs">
               <Wordmark />
             </Link>
             <p className="mt-3 max-w-[38ch] text-small text-sand">{SITE.positioning}</p>

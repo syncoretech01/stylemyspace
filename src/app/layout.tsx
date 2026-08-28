@@ -17,9 +17,11 @@ import "@/components/sections/Disciplines/Disciplines.module.css";
 import "@/components/sections/ServiceAreas/ServiceAreas.module.css";
 import "@/components/sections/FeaturedWork/FeaturedWork.module.css";
 
+// Static 400 instance (the family's default optical size) instead of the 68 KB variable file:
+// the font is on the mobile LCP path (text pages' LCP is the webfont swap).
 const fraunces = Fraunces({
   subsets: ["latin"],
-  axes: ["opsz"],
+  weight: ["400"],
   display: "swap",
   variable: "--font-fraunces",
   fallback: ["Iowan Old Style", "Georgia", "serif"],
@@ -27,7 +29,11 @@ const fraunces = Fraunces({
 
 const interTight = Inter_Tight({
   subsets: ["latin"],
+  weight: ["400", "500"],
   display: "swap",
+  // Not preloaded: on throttled mobile the body font competed with the hero image for bandwidth
+  // and pushed LCP past 2.5 s. It still self-hosts via @font-face and swaps in once loaded.
+  preload: false,
   variable: "--font-inter-tight",
   fallback: ["system-ui", "sans-serif"],
 });

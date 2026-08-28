@@ -25,9 +25,9 @@ export function SiteHeader() {
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-40 h-(--header-h) w-full border-b border-taupe/40 bg-bone/85 backdrop-blur-md">
+    <header className="sticky top-0 z-40 h-(--header-h) w-full border-b border-taupe/40 bg-bone/95 backdrop-blur-md">
       <div className="mx-auto flex h-full w-full max-w-content items-center justify-between px-3 md:px-6 lg:px-10">
-        <Link href="/" aria-label={`${SITE.name} — home`} className="rounded-xs" data-cursor="Home">
+        <Link href="/" className="rounded-xs" data-cursor="Home">
           <Wordmark />
         </Link>
 
