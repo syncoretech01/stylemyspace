@@ -1,5 +1,5 @@
 import Image from "next/image";
-import type { CSSProperties } from "react";
+import type { ComponentPropsWithoutRef, CSSProperties } from "react";
 import type { ProjectImage, SiteImage } from "@/lib/content.schema";
 import { cn } from "./cn";
 import { PlaceholderBlock } from "./PlaceholderBlock";
@@ -20,6 +20,9 @@ type Props = {
   alt?: string;
   placeholderTodo?: string;
   style?: CSSProperties;
+  /** Extra attributes for the <img> (e.g. data-flip-id / data-flip-target for the Flip transition). */
+  imgProps?: Omit<ComponentPropsWithoutRef<"img">, "src" | "alt" | "width" | "height" | "sizes" | "style" | "className"> &
+    Record<`data-${string}`, string | undefined>;
 };
 
 export function SmartImage({
@@ -34,6 +37,7 @@ export function SmartImage({
   alt,
   placeholderTodo,
   style,
+  imgProps,
 }: Props) {
   if (!image) {
     return <PlaceholderBlock className={className} todo={placeholderTodo} />;
@@ -48,6 +52,7 @@ export function SmartImage({
     blurDataURL: image.blurDataURL,
     "data-lcp": lcp ? "" : undefined,
     style: { ...(objectPosition ? { objectPosition } : {}), ...style },
+    ...imgProps,
   };
   if (fill) {
     return (
