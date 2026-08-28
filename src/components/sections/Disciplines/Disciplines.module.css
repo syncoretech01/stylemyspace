@@ -147,17 +147,16 @@
     max-height: 100%;
   }
 
+  /* Visible at rest (final state by default); expanding the column brings it to full strength. */
   .blurb {
     flex: none;
     width: 30ch;
     max-width: calc(100% - 6rem);
-    opacity: 0;
-    transform: translateY(0.5rem);
+    opacity: 0.8;
   }
 
   .col:hover .blurb,
   .col:focus-within .blurb {
     opacity: 1;
-    transform: translateY(0);
   }
 }

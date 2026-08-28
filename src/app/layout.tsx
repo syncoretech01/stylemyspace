@@ -10,6 +10,12 @@ import { MotionRuntime } from "@/components/motion/MotionRuntime";
 import { TransitionProvider } from "@/components/transition/TransitionProvider";
 import { CustomCursor } from "@/components/cursor/CustomCursor";
 import "./globals.css";
+// Section CSS modules are imported here too so Turbopack emits ONE stylesheet for every route:
+// route-specific CSS chunks get <link rel=preload> injected by prefetch and Chrome warns
+// "preloaded using link preload but not used" on routes that don't render the section.
+import "@/components/sections/Disciplines/Disciplines.module.css";
+import "@/components/sections/ServiceAreas/ServiceAreas.module.css";
+import "@/components/sections/FeaturedWork/FeaturedWork.module.css";
 
 const fraunces = Fraunces({
   subsets: ["latin"],

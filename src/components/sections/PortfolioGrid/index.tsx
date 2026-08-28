@@ -98,7 +98,7 @@ export function PortfolioGrid({ projects, title, intro }: Props) {
                     </div>
                     <figcaption className="mt-2 flex items-start justify-between gap-3">
                       <div className="min-w-0">
-                        {p.category && <Eyebrow>{p.category}</Eyebrow>}
+                        {p.category ? <Eyebrow>{p.category}</Eyebrow> : <span aria-hidden="true" className="eyebrow block">&nbsp;</span>}
                         <h2 className="mt-1 font-display text-h3 text-ink">
                           <span className="tile-name-mask inline-block overflow-clip align-bottom">
                             <span className="tile-name inline-block">{p.title}</span>
