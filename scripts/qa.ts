@@ -204,6 +204,25 @@ function rel(p: string) {
   return path.relative(ROOT, p).split(path.sep).join("/");
 }
 
+
+/**
+ * Chromium resolves `position: sticky; bottom: 0` against the ORIGINAL viewport when capturing a
+ * full page, so the site footer (which is revealed by <main> scrolling over it) paints behind
+ * <main> and leaves an empty band at the bottom of every full-page screenshot. That artefact reads
+ * as "the footer is missing" to a reviewer. Pin the footer into flow for full-page captures only —
+ * the scroll-position captures still show the real sticky reveal.
+ */
+async function fullPageScreenshot(page: Page, path: string) {
+  const handle = await page.addStyleTag({
+    content: "footer[data-site-footer]{position:static !important}",
+  });
+  try {
+    await page.screenshot({ path, fullPage: true, timeout: 30_000 });
+  } finally {
+    await handle.evaluate((el) => (el as unknown as HTMLElement).remove()).catch(() => {});
+  }
+}
+
 async function exists(p: string) {
   try {
     await access(p);
@@ -526,7 +545,7 @@ async function runJob(browser: Browser, job: Job, opts: Options, allow: AllowEnt
 
     // 3. First-paint capture
     const fullInitial = path.join(dir, "full-initial.png");
-    await page.screenshot({ path: fullInitial, fullPage: true, timeout: 30_000 });
+    await fullPageScreenshot(page, fullInitial);
     result.screenshots.fullInitial = rel(fullInitial);
     if (job.rm) {
       result.stuckFirstPaint = await page.evaluate(stuckProbe);
@@ -558,7 +577,7 @@ async function runJob(browser: Browser, job: Job, opts: Options, allow: AllowEnt
     await page.evaluate(jumpTo, 0);
     await sleep(400);
     const fullRevealed = path.join(dir, "full-revealed.png");
-    await page.screenshot({ path: fullRevealed, fullPage: true, timeout: 30_000 });
+    await fullPageScreenshot(page, fullRevealed);
     result.screenshots.fullRevealed = rel(fullRevealed);
     result.timings.scrollMs = Date.now() - tScroll;
 
