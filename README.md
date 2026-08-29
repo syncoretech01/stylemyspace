@@ -100,4 +100,40 @@ pnpm qa:webgl               # real-Chrome WebGL context check
 | Preloader | `qa/preloader.spec.ts` asserts it runs once per session, finishes inside 2.5 s, never reappears on navigation and never renders under reduced motion. |
 | Bundles | `pnpm qa:bundle --strict` asserts three.js, GSAP, Lenis and the content loader are absent from every route's initial JS. |
 
+### Lighthouse (release2, HTTP/2, median of 2 runs per cell)
+
+**24 of 24 cells pass.** Thresholds: Performance ≥ 85 desktop / ≥ 75 mobile, Accessibility ≥ 95,
+Best Practices ≥ 95, SEO ≥ 95, LCP < 2500 ms, CLS < 0.1.
+
+| Route | Mode | Perf | A11y | BP | SEO | LCP | CLS | TBT | Status |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---|
+| / | desktop | 99 | 100 | 100 | 100 | 600 ms | 0.001 | 0 ms | PASS |
+| / | mobile | 98 | 100 | 100 | 100 | 2,361 ms | 0.000 | 19 ms | PASS |
+| /portfolio | desktop | 100 | 100 | 100 | 100 | 483 ms | 0.000 | 0 ms | PASS |
+| /portfolio | mobile | 98 | 100 | 100 | 100 | 2,253 ms | 0.000 | 6 ms | PASS |
+| /portfolio/oceanside | desktop | 100 | 100 | 100 | 100 | 571 ms | 0.000 | 0 ms | PASS |
+| /portfolio/oceanside | mobile | 97 | 100 | 100 | 100 | 2,404 ms | 0.000 | 6 ms | PASS |
+| /portfolio/las-olas | desktop | 100 | 100 | 100 | 100 | 532 ms | 0.000 | 0 ms | PASS |
+| /portfolio/las-olas | mobile | 98 | 100 | 100 | 100 | 2,254 ms | 0.000 | 5 ms | PASS |
+| /portfolio/aromatherapy-and-natural-elements | desktop | 99 | 100 | 100 | 100 | 611 ms | 0.000 | 0 ms | PASS |
+| /portfolio/aromatherapy-and-natural-elements | mobile | 98 | 100 | 100 | 100 | 2,357 ms | 0.000 | 5 ms | PASS |
+| /portfolio/wellness-space-with-city-view | desktop | 100 | 100 | 100 | 100 | 479 ms | 0.000 | 0 ms | PASS |
+| /portfolio/wellness-space-with-city-view | mobile | 99 | 100 | 100 | 100 | 1,654 ms | 0.000 | 7 ms | PASS |
+| /portfolio/classroom-designs | desktop | 100 | 100 | 100 | 100 | 544 ms | 0.000 | 0 ms | PASS |
+| /portfolio/classroom-designs | mobile | 98 | 100 | 100 | 100 | 2,236 ms | 0.000 | 5 ms | PASS |
+| /portfolio/wellness-space-designs | desktop | 100 | 100 | 100 | 100 | 584 ms | 0.000 | 0 ms | PASS |
+| /portfolio/wellness-space-designs | mobile | 98 | 100 | 100 | 100 | 2,284 ms | 0.000 | 7 ms | PASS |
+| /portfolio/modern-interior-design | desktop | 100 | 100 | 100 | 100 | 519 ms | 0.000 | 0 ms | PASS |
+| /portfolio/modern-interior-design | mobile | 99 | 100 | 100 | 100 | 1,803 ms | 0.000 | 7 ms | PASS |
+| /services | desktop | 100 | 100 | 100 | 100 | 437 ms | 0.000 | 0 ms | PASS |
+| /services | mobile | 99 | 100 | 100 | 100 | 1,578 ms | 0.000 | 7 ms | PASS |
+| /about | desktop | 100 | 100 | 100 | 100 | 459 ms | 0.000 | 0 ms | PASS |
+| /about | mobile | 98 | 100 | 100 | 100 | 2,209 ms | 0.000 | 9 ms | PASS |
+| /contact | desktop | 100 | 100 | 100 | 100 | 418 ms | 0.000 | 0 ms | PASS |
+| /contact | mobile | 99 | 100 | 100 | 100 | 1,864 ms | 0.000 | 9 ms | PASS |
+
+Reproduce with `pnpm build && pnpm start`, `pnpm qa:h2`, then
+`NODE_TLS_REJECT_UNAUTHORIZED=0 pnpm qa:lighthouse --base-url=https://localhost:3443 --runs=2 --chrome-flags=--ignore-certificate-errors`.
+Full reports (JSON + HTML) land in `qa/lighthouse/<run>/`.
+
 Open questions and every `{{TODO}}` placeholder are tracked in [OPEN-ITEMS.md](OPEN-ITEMS.md). The design direction and reference sites are in [DIRECTION.md](DIRECTION.md).
