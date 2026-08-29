@@ -53,7 +53,7 @@ export function PortfolioGrid({ projects, title, intro }: Props) {
           <header className="grid gap-y-6 lg:grid-cols-12 lg:gap-x-4">
             <div className="lg:col-span-8">
               <Eyebrow data-reveal>Portfolio</Eyebrow>
-              <Heading as="h1" id="portfolio-title" size="h1" className="mt-2" data-reveal>
+              <Heading as="h1" id="portfolio-title" size="h1" className="mt-2" data-reveal data-reveal-lcp>
                 {heading}
               </Heading>
               <p className="measure mt-4 text-lead text-olive" data-reveal>

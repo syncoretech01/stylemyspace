@@ -14,7 +14,7 @@ function proseList(items: readonly string[]): string {
 }
 
 const link =
-  "inline-flex min-h-[2.75rem] items-center rounded-xs text-body decoration-1 underline-offset-6 transition-colors duration-(--dur-micro) hover:underline focus-visible:underline";
+  "inline-flex min-h-[2.75rem] items-center rounded-xs text-body decoration-1 underline-offset-6 transition-colors duration-(--dur-micro) hover:underline focus-visible:underline [overflow-wrap:anywhere]";
 
 /** Page statement — the only h1 on /contact. Copy is Section 2 facts from src/lib/site.ts. */
 export function ContactIntro() {

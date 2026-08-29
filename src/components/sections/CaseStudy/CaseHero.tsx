@@ -37,7 +37,7 @@ export function CaseHero({ project }: { project: Project }) {
             <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
               <Eyebrow data-reveal>{project.category ?? "Project"}</Eyebrow>
             </div>
-            <Heading as="h1" id="case-title" size="h1" className="mt-3 max-w-[14ch]" tabIndex={-1} data-reveal>
+            <Heading as="h1" id="case-title" size="h1" className="mt-3 max-w-[14ch]" tabIndex={-1} data-reveal data-reveal-lcp>
               {project.title}
             </Heading>
             <p className="measure mt-6 text-lead" data-reveal>

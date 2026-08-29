@@ -183,11 +183,23 @@ html[data-motion="mobile"] [data-motion-root]:not([data-motion-ready]) [data-rev
   transform: translateY(-200%);
   transition: transform var(--dur-micro) var(--ease-out-expo);
 }
-.skip-link:focus-visible { transform: translateY(0); outline-color: var(--color-sand); }
+/* The ring stays olive: these links sit on bone/sand, where sand would be 1.23:1. */
+.skip-link:focus-visible { transform: translateY(0); }
 
-/* Sticky footer reveal: <main> scrolls over the footer that waits beneath. */
+/*
+ * Sticky footer reveal: <main> scrolls over the footer waiting beneath it.
+ * Only safe while the footer FITS the viewport — pinned to bottom:0, a taller footer has its top
+ * permanently above the viewport and behind <main> (measured: 973px footer in an 844px viewport at
+ * 390 leaves 129px unreachable). The footer stacks as the viewport narrows, so the guard is
+ * per-breakpoint; anywhere it does not apply, the footer is an ordinary block at the end of the page.
+ */
 main { position: relative; z-index: 10; background: var(--color-bone); }
-footer[data-site-footer] { position: sticky; bottom: 0; z-index: 0; }
+@media (min-width: 64rem) and (min-height: 40rem) {
+  footer[data-site-footer] { position: sticky; bottom: 0; z-index: 0; }
+}
+@media (min-width: 48rem) and (max-width: 63.999rem) and (min-height: 48rem) {
+  footer[data-site-footer] { position: sticky; bottom: 0; z-index: 0; }
+}
 @media (prefers-reduced-motion: reduce) {
   footer[data-site-footer] { position: static; }
 }

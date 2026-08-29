@@ -88,6 +88,7 @@ export function Hero({ headline, lede, image }: Props) {
               id="hero-title"
               size="display"
               data-reveal=""
+              data-reveal-lcp=""
               data-hero="title"
               className="mt-3 max-w-[14ch] text-bone"
             >
