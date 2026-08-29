@@ -43,11 +43,9 @@ export function CaseHero({ project }: { project: Project }) {
             <p className="measure mt-6 text-lead" data-reveal>
               {project.description}
             </p>
-            {project.categoryNote && (
-              <p className="measure mt-4 text-small text-olive" data-reveal>
-                {project.categoryNote}
-              </p>
-            )}
+            {/* project.categoryNote is INTERNAL migration metadata for the client (why a project
+                has, or lacks, a category) and is deliberately not rendered — it is reported in
+                OPEN-ITEMS.md instead. */}
           </div>
 
           <dl

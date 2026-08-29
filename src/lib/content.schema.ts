@@ -33,6 +33,7 @@ export const ProjectSchema = z
     title: z.string().min(1),
     category: CategorySchema.nullable(),
     categorySource: z.enum(["site", "override", "none"]),
+    /** INTERNAL: why this project has (or lacks) a category. Never rendered — see OPEN-ITEMS.md. */
     categoryNote: z.string().nullable().default(null),
     description: z.string().min(1),
     sourceUrl: z.string().url(),
