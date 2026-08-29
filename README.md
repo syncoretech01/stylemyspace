@@ -99,6 +99,8 @@ pnpm qa:webgl               # real-Chrome WebGL context check
 | WebGL | `pnpm qa:webgl` asserts one context at most, disposal on navigation and a clean console in real Chrome. |
 | Preloader | `qa/preloader.spec.ts` asserts it runs once per session, finishes inside 2.5 s, never reappears on navigation and never renders under reduced motion. |
 | Bundles | `pnpm qa:bundle --strict` asserts three.js, GSAP, Lenis and the content loader are absent from every route's initial JS. |
+| Facts | Every rendered route was scanned for fabricated-claim patterns (awards, press logos, testimonials, statistics, founding dates, team sizes, budgets, completion dates, superlatives): zero hits. "Certified MWBE" and "over 5 years of experience" appear only where the live bio is quoted verbatim; the unverifiable press mention is not rendered at all; pricing appears only on `/services` with the three real Book Online figures. |
+| Placeholders | The built HTML contains exactly eight `{{TODO}}` tokens, all of them the Process phase cards on `/` (the firm documents no process anywhere). `pnpm content:check --strict` passes with zero TODO alt text. |
 
 ### Lighthouse (release2, HTTP/2, median of 2 runs per cell)
 
