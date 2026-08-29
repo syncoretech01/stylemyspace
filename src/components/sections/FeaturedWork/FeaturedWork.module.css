@@ -14,7 +14,11 @@
   padding-inline: var(--pad);
   padding-block: 0.5rem 1.5rem; /* room for the focus ring and the scrollbar */
   scroll-padding-inline: var(--pad);
-  scroll-snap-type: x proximity;
+  /*
+   * Mandatory, not proximity: with proximity a short swipe rested wherever momentum died, leaving a
+   * card 46-60% off-screen (or not moving at all), so it took a second swipe to land one card.
+   */
+  scroll-snap-type: x mandatory;
   touch-action: pan-x pan-y;
   overscroll-behavior-x: contain;
   scrollbar-width: thin;
@@ -35,6 +39,8 @@
   flex: 0 0 auto;
   width: var(--card-w);
   scroll-snap-align: start;
+  /* One swipe advances exactly one card: a fling cannot pass a snap point and skip cards. */
+  scroll-snap-stop: always;
 }
 
 @media (min-width: 48rem) {

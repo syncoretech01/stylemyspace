@@ -45,7 +45,7 @@ export function CaseGallery({ project }: { project: Project }) {
             data-gallery-slide
             aria-roledescription="slide"
             aria-label={`${i + 1} of ${gallery.length}`}
-            className="w-[84vw] shrink-0 snap-start sm:w-[60vw] lg:w-[44vw] lg:max-w-[56rem]"
+            className="w-[84vw] shrink-0 snap-start [scroll-snap-stop:always] sm:w-[60vw] lg:w-[44vw] lg:max-w-[56rem]"
           >
             <figure tabIndex={0} aria-label={img.alt} className="rounded-xs" data-reveal>
               <SmartImage
