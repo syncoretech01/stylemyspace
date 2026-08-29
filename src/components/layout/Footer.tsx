@@ -3,6 +3,7 @@ import { SITE } from "@/lib/site";
 import { getContent } from "@/lib/content";
 import { Wordmark } from "@/components/ui/Wordmark";
 import { Eyebrow } from "@/components/ui/Eyebrow";
+import { BackToTop } from "./BackToTop";
 
 /** "a, b, c and d" — prose join for Section 2 lists. */
 function proseList(items: readonly string[]): string {
@@ -100,11 +101,14 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-6 flex flex-col gap-1 border-t border-bone/20 pt-4 text-small text-sand md:flex-row md:items-center md:justify-between md:gap-4">
+        <div className="mt-6 flex flex-col gap-3 border-t border-bone/20 pt-4 text-small text-sand md:flex-row md:items-center md:justify-between md:gap-4">
           <p>Serving the {proseList(SITE.serviceAreas)}.</p>
-          <p>
-            © {new Date().getFullYear()} {SITE.name}
-          </p>
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2 md:justify-end">
+            <p>
+              © {new Date().getFullYear()} {SITE.name}
+            </p>
+            <BackToTop />
+          </div>
         </div>
       </div>
     </footer>

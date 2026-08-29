@@ -13,7 +13,7 @@ Every literal `{{TODO: …}}` token rendered on the site is listed in section B.
 |---|---|---|---|
 | OI-01 | **Email address discrepancy.** The live footer displays `info@stylemyspacedesign.com` but its link opens `mailto:info@stylemyspaceinc.com`. | Live site footer, every page | The displayed address is used for both text and link (per brief §2). `emailMailto` is kept in `content/projects.json` for reference. |
 | OI-02 | **Disciplines.** The brief lists Residential / Hospitality / Wellness / Commercial; the live home page has Commercial / Education / Residential cards and the bio says "wellness, commercial, and residential". | Live `/` category cards | Brief followed. Education is shown as a note under Commercial (Classroom Designs). Hospitality/Wellness blurbs are assembled only from scraped copy. |
-| OI-03 | **Process phases are not documented anywhere on the live site.** | `/`, `/blog`, `/book-online`, all project pages | Process section renders four `{{TODO}}` phase cards plus the brief's sentence "guides clients through every phase of the design process". |
+| OI-03 | **Process phases are not documented anywhere on the live site**, so the four phase cards on the home page carry **draft copy that needs Eve Jean's sign-off**. | `/`, `/blog`, `/book-online`, all project pages | The phases (Consultation · Concept and space planning · Design development · Installation and styling) follow the sequence an interior design project genuinely runs in, and every statement inside them is drawn from Style My Space Design's own published words (the journal posts) or from the services the firm lists — see the source notes above each phase in `src/components/sections/Process/index.tsx`. **No duration, price, deliverable count or guarantee is stated anywhere**, because none is known. Please confirm or replace the wording. |
 | OI-04 | **Press mention** — "Eve's work has been featured in prominent publications such as Voyage ATL, Business of Home, Bold Journey, CanvasRebel, Home and Texture, and Mic." is real live-site copy but unverifiable (no links). | Live `/` "Meet the Designer" | Stored with `pressConfirmed: false` and **not rendered** until confirmed (never rendered as logos). Flip in `content/overrides.json`. |
 | OI-05 | **Project categories** are only stated for Oceanside and Las Olas ("Residential"). | Project pages | Wellness titles grouped under Wellness; Classroom Designs → Education; Modern Interior Design has no label. See `categoryNote` per project in `content/projects.json`. |
 | OI-06 | **Las Olas** is described as an Airbnb investment property but labelled "Residential" on the live site; the brief lists Hospitality as a discipline. | `/portfolio-collections/my-portfolio/las-olas` | Kept as Residential (site fact) with a note; the Hospitality discipline card uses a Las Olas photograph. |
@@ -42,8 +42,9 @@ Every literal `{{TODO: …}}` token rendered on the site is listed in section B.
 
 | Token | Where | Item |
 |---|---|---|
-| `{{TODO: process phase 1–4 name}}` / `{{TODO: process phase 1–4 description}}` | Home → Process | OI-03 |
 | `{{TODO: connect form delivery (CONTACT_ENDPOINT)}}` | Contact form success state | OI-13 |
+
+_The Process phase placeholders are gone: those cards now carry draft copy pending approval (OI-03)._
 
 _Alt-text TODOs are tracked by `pnpm content:check` and must be zero before release._
 

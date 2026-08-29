@@ -101,7 +101,7 @@ pnpm qa:webgl               # real-Chrome WebGL context check
 | Screenshot QA | `pnpm qa` covers 13 routes × 5 widths plus reduced-motion and keyboard-focus passes — 91 cells, **0 FAIL / 0 WARN** on the final run. |
 | Bundles | `pnpm qa:bundle --strict` asserts three.js, GSAP, Lenis and the content loader are absent from every route's initial JS. |
 | Facts | Every rendered route was scanned for fabricated-claim patterns (awards, press logos, testimonials, statistics, founding dates, team sizes, budgets, completion dates, superlatives): zero hits. "Certified MWBE" and "over 5 years of experience" appear only where the live bio is quoted verbatim; the unverifiable press mention is not rendered at all; pricing appears only on `/services` with the three real Book Online figures. |
-| Placeholders | The built HTML contains exactly eight `{{TODO}}` tokens, all of them the Process phase cards on `/` (the firm documents no process anywhere). `pnpm content:check --strict` passes with zero TODO alt text. |
+| Placeholders | **No `{{TODO}}` token renders anywhere** on the site. The Process phase cards now carry draft copy pending the client's sign-off (OPEN-ITEMS OI-03), sourced from the firm's own journal posts and listed services; the only remaining placeholder is the contact form's delivery note, which appears solely in the form's success state. `pnpm content:check --strict` passes with zero TODO alt text. |
 
 ### Lighthouse (`final`, HTTP/2, median of 2 runs per cell)
 
