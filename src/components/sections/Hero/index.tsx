@@ -4,6 +4,8 @@ import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Heading } from "@/components/ui/Heading";
 import { Button } from "@/components/ui/Button";
 import { SmartImage } from "@/components/ui/SmartImage";
+import { HeroCanvasSlot } from "./HeroCanvasSlot";
+import { HeroMotionRoot } from "./HeroMotionRoot";
 import { ScrollCue } from "./ScrollCue";
 
 type Props = {
@@ -18,11 +20,12 @@ type Props = {
 /**
  * Home hero. Full-bleed photograph, text anchored bottom-left, scroll cue bottom-right.
  *
- * DOM contract for P3 (do not restructure):
- *  - <section data-hero-root> … the motion scope
+ * DOM contract (do not restructure — Hero.motion.ts and HeroCanvas depend on it):
+ *  - <section data-hero-root data-motion-root> … the motion scope (HeroMotionRoot)
  *  - img[data-lcp]            … the plane texture for <HeroCanvas /> and the LCP element
+ *  - <HeroCanvasSlot />       … <HeroCanvas /> directly after the image; absolute inset-0 host, full tier only
  *  - h1[data-hero="title"]    … SplitText lines (mask:'lines'), data-reveal
- *  - [data-hero="lede"], [data-hero="ctas"] … data-reveal
+ *  - [data-hero="eyebrow"], [data-hero="lede"], [data-hero="ctas"] … data-reveal
  *  - a[data-hero="cue"]       … fades after the first 50 px of scroll
  *
  * The photograph is bright (white stone, white cabinetry), so the scrim is a pair of gradients
@@ -31,7 +34,7 @@ type Props = {
  */
 export function Hero({ headline, lede, image }: Props) {
   return (
-    <section
+    <HeroMotionRoot
       id="hero"
       aria-labelledby="hero-title"
       data-hero-root=""
@@ -39,11 +42,11 @@ export function Hero({ headline, lede, image }: Props) {
       className="relative isolate overflow-clip bg-olive-deep text-bone"
     >
       {/* ---- Photograph ------------------------------------------------ */}
+      {/*
+        Image wrapper: a top band below lg, absolute inset-0 from lg (where the canvas can mount).
+        -z-10 inside the isolated section keeps both the image and the canvas beneath the copy.
+      */}
       <div aria-hidden={image ? undefined : true} className="absolute inset-x-0 top-0 -z-10 h-[62svh] lg:inset-0 lg:h-auto">
-        {/*
-          P3 SLOT — <HeroCanvas /> mounts here, ABOVE the image (it lifts img[data-lcp] onto a
-          displacement plane on the "full" tier only). Do not import it before P3.
-        */}
         <SmartImage
           image={image}
           sizes="100vw"
@@ -53,6 +56,12 @@ export function Hero({ headline, lede, image }: Props) {
           className="h-full w-full"
           placeholderTodo="hero photograph (Oceanside dining) — pending image pipeline"
         />
+        {/*
+          WebGL displacement plane over the photograph: full tier only, after the preloader, when
+          hardware GL is available. Its host is absolute inset-0 and fades in once the plane is ready;
+          the scrims below stay above it in paint order.
+        */}
+        <HeroCanvasSlot />
         {/*
           Scrim. Below lg the photograph is a top band that dissolves into the olive-deep ground
           the type sits on; from lg it is full-bleed and the vertical fade only weights the floor.
@@ -103,6 +112,6 @@ export function Hero({ headline, lede, image }: Props) {
           </div>
         </div>
       </Container>
-    </section>
+    </HeroMotionRoot>
   );
 }

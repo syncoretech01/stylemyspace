@@ -6,6 +6,7 @@ import { Section } from "@/components/ui/Section";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Heading } from "@/components/ui/Heading";
 import { SmartImage } from "@/components/ui/SmartImage";
+import { MaterialsMotionRoot } from "./MaterialsMotionRoot";
 
 /**
  * Intro line — verbatim from the firm's blog post "Tranquil and Functional Interior Design:
@@ -43,88 +44,91 @@ const CENTRE = [200, 150] as const;
 /**
  * "Materials & palette": four square crops of real project photography sit in their exploded
  * positions with thin connector lines from a centre point. Below `lg` they stack as a 2×2 grid
- * with the connectors hidden. Static end state — P3 adds the assemble → explode scrub.
+ * with the connectors hidden. This markup is the end state; Materials.motion.ts adds the assembled
+ * start (stack at the stage centre) and scrubs the explosion, connector draw and caption fade.
  */
 export function Materials({ materials }: { materials: Material[] }) {
   const items = (materials.length ? materials : FALLBACK).slice(0, 4);
 
   return (
     <Section id="materials" aria-labelledby="materials-title">
-      <Container>
-        <div className="grid gap-6 lg:grid-cols-12 lg:gap-x-4 lg:gap-y-0">
-          <div className="lg:col-span-7">
-            <Eyebrow data-reveal>Materials &amp; palette</Eyebrow>
-            <Heading id="materials-title" className="mt-2 max-w-[18ch]" data-reveal>
-              Warm wood, stone, soft textiles and a note of brass.
-            </Heading>
+      <MaterialsMotionRoot>
+        <Container>
+          <div className="grid gap-6 lg:grid-cols-12 lg:gap-x-4 lg:gap-y-0">
+            <div className="lg:col-span-7">
+              <Eyebrow data-reveal>Materials &amp; palette</Eyebrow>
+              <Heading id="materials-title" className="mt-2 max-w-[18ch]" data-reveal>
+                Warm wood, stone, soft textiles and a note of brass.
+              </Heading>
+            </div>
+            <blockquote className="self-end lg:col-span-4 lg:col-start-9" data-reveal>
+              <p className="text-body text-ink">“{INTRO_QUOTE}”</p>
+              <footer className="mt-2 text-small text-olive">
+                From the Style My Space Design blog, <cite className="not-italic">{INTRO_SOURCE}</cite>
+              </footer>
+            </blockquote>
           </div>
-          <blockquote className="self-end lg:col-span-4 lg:col-start-9" data-reveal>
-            <p className="text-body text-ink">“{INTRO_QUOTE}”</p>
-            <footer className="mt-2 text-small text-olive">
-              From the Style My Space Design blog, <cite className="not-italic">{INTRO_SOURCE}</cite>
-            </footer>
-          </blockquote>
-        </div>
 
-        <div
-          className="relative mt-10 grid grid-cols-2 gap-x-3 gap-y-6 md:mt-12 lg:mt-16 lg:block lg:aspect-[10/9] xl:aspect-[5/4]"
-          data-materials-stage
-        >
-          {/* Connector lines: same 400×300 coordinate system as the % positions above. Desktop only. */}
-          <svg
-            viewBox="0 0 400 300"
-            preserveAspectRatio="none"
-            aria-hidden
-            className="pointer-events-none absolute inset-0 hidden h-full w-full lg:block"
+          <div
+            className="relative mt-10 grid grid-cols-2 gap-x-3 gap-y-6 md:mt-12 lg:mt-16 lg:block lg:aspect-[10/9] xl:aspect-[5/4]"
+            data-materials-stage
           >
-            {SLOTS.map((slot, i) => (
-              <path
-                key={i}
-                d={`M${CENTRE[0]} ${CENTRE[1]} L${slot.anchor[0]} ${slot.anchor[1]}`}
-                pathLength={1}
-                fill="none"
-                stroke="var(--color-taupe)"
-                strokeWidth={1}
-                vectorEffect="non-scaling-stroke"
-                data-materials-connector
-              />
-            ))}
-            <circle cx={CENTRE[0]} cy={CENTRE[1]} r={2.5} fill="var(--color-brass)" data-materials-centre />
-          </svg>
-
-          {items.map((m, i) => {
-            const slot = SLOTS[i] ?? SLOTS[0];
-            const image = resolveImage(m.image);
-            const credit = m.image ? getProject(m.image.slug)?.title : null;
-            return (
-              <figure
-                key={m.id}
-                className={cn("relative lg:absolute lg:w-[27%]", slot.figure)}
-                data-reveal
-                data-materials-swatch={m.id}
-              >
-                <SmartImage
-                  image={image}
-                  sizes="(min-width: 1024px) 30vw, 50vw"
-                  className="aspect-square"
-                  objectPosition={m.objectPosition}
-                  placeholderTodo={`${m.label} swatch — pending image pipeline`}
+            {/* Connector lines: same 400×300 coordinate system as the % positions above. Desktop only. */}
+            <svg
+              viewBox="0 0 400 300"
+              preserveAspectRatio="none"
+              aria-hidden
+              className="pointer-events-none absolute inset-0 hidden h-full w-full lg:block"
+            >
+              {SLOTS.map((slot, i) => (
+                <path
+                  key={i}
+                  d={`M${CENTRE[0]} ${CENTRE[1]} L${slot.anchor[0]} ${slot.anchor[1]}`}
+                  pathLength={1}
+                  fill="none"
+                  stroke="var(--color-taupe)"
+                  strokeWidth={1}
+                  vectorEffect="non-scaling-stroke"
+                  data-materials-connector
                 />
-                <figcaption className="mt-2">
-                  <span className="eyebrow flex items-baseline gap-1.5 text-olive">
-                    <span aria-hidden className="text-brass">
-                      {String(i + 1).padStart(2, "0")}
+              ))}
+              <circle cx={CENTRE[0]} cy={CENTRE[1]} r={2.5} fill="var(--color-brass)" data-materials-centre />
+            </svg>
+
+            {items.map((m, i) => {
+              const slot = SLOTS[i] ?? SLOTS[0];
+              const image = resolveImage(m.image);
+              const credit = m.image ? getProject(m.image.slug)?.title : null;
+              return (
+                <figure
+                  key={m.id}
+                  className={cn("relative lg:absolute lg:w-[27%]", slot.figure)}
+                  data-reveal
+                  data-materials-swatch={m.id}
+                >
+                  <SmartImage
+                    image={image}
+                    sizes="(min-width: 1024px) 30vw, 50vw"
+                    className="aspect-square"
+                    objectPosition={m.objectPosition}
+                    placeholderTodo={`${m.label} swatch — pending image pipeline`}
+                  />
+                  <figcaption className="mt-2">
+                    <span className="eyebrow flex items-baseline gap-1.5 text-olive">
+                      <span aria-hidden className="text-brass">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      {credit && <span>{credit}</span>}
                     </span>
-                    {credit && <span>{credit}</span>}
-                  </span>
-                  <span className="mt-1 block font-display text-h3 text-ink">{m.label}</span>
-                  {m.quote && <p className="mt-1 text-small text-olive text-pretty">“{m.quote}”</p>}
-                </figcaption>
-              </figure>
-            );
-          })}
-        </div>
-      </Container>
+                    <span className="mt-1 block font-display text-h3 text-ink">{m.label}</span>
+                    {m.quote && <p className="mt-1 text-small text-olive text-pretty">“{m.quote}”</p>}
+                  </figcaption>
+                </figure>
+              );
+            })}
+          </div>
+        </Container>
+      </MaterialsMotionRoot>
     </Section>
   );
 }

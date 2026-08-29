@@ -1,8 +1,9 @@
 /*
  * Disciplines — pure CSS column slider.
- * Mobile / tablet: stacked rows, everything visible, no hover dependency.
- * ≥ lg (64rem): four full-height columns; :hover / :focus-within expands one,
- * siblings dim via :has(). Global prefers-reduced-motion zeroes the transitions.
+ * Mobile / tablet: stacked rows, everything visible without JS; after hydration each row's blurb is an
+ * accordion panel (DisciplineRow sets data-accordion / data-expanded) whose height animates with a
+ * grid-template-rows transition. ≥ lg (64rem): four full-height columns; :hover / :focus-within
+ * expands one, siblings dim via :has(). Global prefers-reduced-motion zeroes the transitions.
  */
 
 .row {
@@ -81,10 +82,76 @@
   gap: 1rem;
 }
 
+.panel {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows var(--dur-short) var(--ease-out-expo);
+}
+
 .blurb {
+  min-height: 0;
+  overflow: clip;
   transition:
     opacity var(--dur-short) var(--ease-out-expo),
     transform var(--dur-short) var(--ease-out-expo);
+}
+
+/* Accordion toggle — only rendered useful on the stacked layout after hydration. */
+.toggle {
+  display: none;
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 1;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--color-bone) 45%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-olive-deep) 55%, transparent);
+  color: var(--color-bone);
+  cursor: pointer;
+  transition: background-color var(--dur-micro) var(--ease-out-expo);
+}
+
+.toggle:hover {
+  background: color-mix(in srgb, var(--color-olive-deep) 85%, transparent);
+}
+
+.toggleIcon {
+  position: absolute;
+  inset: 0;
+  transition: transform var(--dur-micro) var(--ease-out-expo);
+}
+
+.toggleIcon::before,
+.toggleIcon::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0.875rem;
+  height: 1px;
+  background: currentColor;
+  transform: translate(-50%, -50%);
+}
+
+.toggleIcon::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.toggle[aria-expanded="true"] .toggleIcon {
+  transform: rotate(45deg);
+}
+
+@media (max-width: 63.98rem) {
+  .col[data-accordion] .toggle {
+    display: block;
+  }
+
+  .col[data-accordion]:not([data-expanded="true"]) .panel {
+    grid-template-rows: 0fr;
+  }
 }
 
 @media (min-width: 64rem) {
@@ -147,11 +214,14 @@
     max-height: 100%;
   }
 
-  /* Visible at rest (final state by default); expanding the column brings it to full strength. */
-  .blurb {
+  .panel {
     flex: none;
     width: 30ch;
     max-width: calc(100% - 6rem);
+  }
+
+  /* Visible at rest (final state by default); expanding the column brings it to full strength. */
+  .blurb {
     opacity: 0.8;
   }
 
