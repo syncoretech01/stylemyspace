@@ -159,7 +159,7 @@ export function ContactForm() {
         <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
       </div>
 
-      <div className="relative">
+      <div className="relative" data-reveal>
         <input
           id="name"
           name="name"
@@ -180,7 +180,7 @@ export function ContactForm() {
         </p>
       </div>
 
-      <div className="relative">
+      <div className="relative" data-reveal>
         <input
           id="email"
           name="email"
@@ -201,7 +201,7 @@ export function ContactForm() {
         </p>
       </div>
 
-      <div className="relative">
+      <div className="relative" data-reveal>
         <input
           id="phone"
           name="phone"
@@ -223,7 +223,7 @@ export function ContactForm() {
         </p>
       </div>
 
-      <div className="relative">
+      <div className="relative" data-reveal>
         <label htmlFor="projectType" className={fixedLabel}>
           Project type (optional)
         </label>
@@ -242,7 +242,7 @@ export function ContactForm() {
         <p className={errorText} aria-hidden />
       </div>
 
-      <div className="relative md:col-span-2">
+      <div className="relative md:col-span-2" data-reveal>
         <textarea
           id="message"
           name="message"
@@ -275,7 +275,7 @@ export function ContactForm() {
         </p>
       )}
 
-      <div className="flex flex-wrap items-center gap-3 md:col-span-2">
+      <div className="flex flex-wrap items-center gap-3 md:col-span-2" data-reveal>
         <span data-magnet className="inline-block">
           <Button type="submit" disabled={pending} cursor="Send" className="disabled:cursor-progress disabled:opacity-60">
             {pending ? "Sending…" : "Send message"}

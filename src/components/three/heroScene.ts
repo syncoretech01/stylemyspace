@@ -75,9 +75,24 @@ const FRAG = /* glsl */ `
   }
 `;
 
+/**
+ * The texture source must report its BITMAP dimensions. An `<img>` laid out by next/image with
+ * `fill` reports its rendered CSS box in `.width`/`.height`, which three uses to allocate the
+ * texture — it would then upload the (larger) real bitmap and log
+ * "GL_INVALID_VALUE: glTexSubImage2DRobustANGLE: Offset overflows texture dimensions".
+ * `HeroSource` therefore carries an ImageBitmap (preferred) or a detached image plus its true size.
+ */
+export type HeroSource = {
+  source: ImageBitmap | HTMLImageElement;
+  width: number;
+  height: number;
+  /** True when the source was decoded already flipped (ImageBitmap ignores UNPACK_FLIP_Y_WEBGL). */
+  preFlipped?: boolean;
+};
+
 export function createHeroScene(
   host: HTMLElement,
-  image: HTMLImageElement,
+  image: HeroSource,
   opts: { maxOffsetPx?: number; onReady?: () => void } = {},
 ): HeroScene | null {
   const r = getRenderer();
@@ -86,11 +101,14 @@ export function createHeroScene(
   const canvas = r.domElement;
   host.appendChild(canvas);
 
-  const texture = new Texture(image);
+  const texture = new Texture();
+  texture.image = image.source;
   texture.colorSpace = NoColorSpace; // pass-through pixels: the canvas matches the <img> beneath it
   texture.minFilter = LinearFilter;
   texture.magFilter = LinearFilter;
   texture.generateMipmaps = false;
+  // WebGL's flip-Y unpack option is ignored for ImageBitmap sources, so those arrive pre-flipped.
+  texture.flipY = !image.preFlipped;
   texture.needsUpdate = true;
 
   const geometry = new PlaneGeometry(2, 2);
@@ -102,7 +120,7 @@ export function createHeroScene(
     uniforms: {
       uMap: { value: texture },
       uPlane: { value: new Vector2(1, 1) },
-      uImage: { value: new Vector2(image.naturalWidth || 1, image.naturalHeight || 1) },
+      uImage: { value: new Vector2(image.width || 1, image.height || 1) },
       uPointer: { value: new Vector2(0, 0) },
       uAmp: { value: new Vector2(0, 0) },
     },
@@ -189,6 +207,7 @@ export function createHeroScene(
       geometry.dispose();
       material.dispose();
       texture.dispose();
+      if (typeof ImageBitmap !== "undefined" && image.source instanceof ImageBitmap) image.source.close();
       // Keep the renderer (and its single context) alive for the next mount; detach the canvas.
       r.clear();
       canvas.remove();

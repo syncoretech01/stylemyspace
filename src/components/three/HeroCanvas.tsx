@@ -38,10 +38,24 @@ export function HeroCanvas({ imageSelector = "img[data-lcp]" }: Props) {
         await img.decode().catch(() => {});
       }
       if (disposed) return;
+      // Hand three a source whose reported size IS the bitmap size (see HeroSource in heroScene.ts).
+      const width = img.naturalWidth;
+      const height = img.naturalHeight;
+      if (!width || !height) return;
+      let source: ImageBitmap | HTMLImageElement = img;
+      if (typeof createImageBitmap === "function") {
+        // Pre-flip here: WebGL cannot flip an ImageBitmap at upload time.
+        source = await createImageBitmap(img, { imageOrientation: "flipY" }).catch(() => img);
+      }
+      if (disposed) {
+        if (typeof ImageBitmap !== "undefined" && source instanceof ImageBitmap) source.close();
+        return;
+      }
       const load = import("./heroScene");
       const mod = await (isPreloaderPending() ? track(load, 15) : load);
       if (disposed) return;
-      scene = mod.createHeroScene(host, img, {
+      const preFlipped = typeof ImageBitmap !== "undefined" && source instanceof ImageBitmap;
+      scene = mod.createHeroScene(host, { source, width, height, preFlipped }, {
         onReady: () => host.classList.add("is-ready"),
       });
       if (!scene) return;
