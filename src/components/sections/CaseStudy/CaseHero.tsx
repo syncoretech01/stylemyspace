@@ -3,6 +3,7 @@ import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Heading } from "@/components/ui/Heading";
 import { SmartImage } from "@/components/ui/SmartImage";
+import { CaseHeroMotionRoot } from "./CaseHeroMotionRoot";
 import { focal, getCaseImages } from "./images";
 
 const SOURCE_HOST = "stylemyspacedesign.com";
@@ -16,7 +17,7 @@ export function CaseHero({ project }: { project: Project }) {
   const imageCount = project.images.length;
 
   return (
-    <header aria-labelledby="case-title" className="bg-bone">
+    <CaseHeroMotionRoot slug={project.slug} aria-labelledby="case-title" className="bg-bone">
       <div className="relative">
         <SmartImage
           image={cover}
@@ -72,6 +73,6 @@ export function CaseHero({ project }: { project: Project }) {
           </dl>
         </div>
       </Container>
-    </header>
+    </CaseHeroMotionRoot>
   );
 }

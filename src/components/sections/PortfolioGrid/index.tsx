@@ -78,7 +78,7 @@ export function PortfolioGrid({ projects, title, intro }: Props) {
               return (
                 <li
                   key={p.slug}
-                  className={cn("tile", SPAN_CLASS[span], stepped && "lg:mt-16")}
+                  className={cn("tile relative", SPAN_CLASS[span], stepped && "lg:mt-16")}
                   data-reveal
                 >
                   <FlipLink
@@ -104,8 +104,18 @@ export function PortfolioGrid({ projects, title, intro }: Props) {
                         <div className="min-w-0">
                           {p.category ? <Eyebrow>{p.category}</Eyebrow> : <span aria-hidden="true" className="eyebrow block">&nbsp;</span>}
                           <h2 className="mt-1 font-display text-h3 text-ink">
-                            <span className="tile-name-mask inline-block overflow-clip align-bottom">
-                              <span className="tile-name inline-block">{p.title}</span>
+                            {/* The title is the resting state; a duplicate waits under the mask and rolls in
+                                on hover / keyboard focus. Nothing here ever hides the name itself. */}
+                            <span className="tile-name-mask relative inline-block overflow-clip align-bottom leading-[1.35]">
+                              <span className="tile-name block transition-transform duration-(--dur-short) ease-(--ease-out-expo) group-hover:-translate-y-full group-focus-visible:-translate-y-full">
+                                {p.title}
+                              </span>
+                              <span
+                                aria-hidden="true"
+                                className="tile-name absolute left-0 top-full block w-full text-olive transition-transform duration-(--dur-short) ease-(--ease-out-expo) group-hover:-translate-y-full group-focus-visible:-translate-y-full"
+                              >
+                                {p.title}
+                              </span>
                             </span>
                           </h2>
                         </div>

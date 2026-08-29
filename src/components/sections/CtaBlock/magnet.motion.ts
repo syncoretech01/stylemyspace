@@ -40,14 +40,11 @@ export function attachMagnets(root: HTMLElement): () => void {
       gsap.to(target, { x: 0, y: 0, duration: dur.short, ease: ease.out });
     };
 
-    const onMove = (e: PointerEvent) => {
-      if (e.pointerType !== "mouse") return;
+    /** Re-aim at a viewport point. Also called on scroll so a stationary pointer stays honest. */
+    const track = (clientX: number, clientY: number) => {
       const r = wrapper.getBoundingClientRect();
       const inside =
-        e.clientX >= r.left - ZONE &&
-        e.clientX <= r.right + ZONE &&
-        e.clientY >= r.top - ZONE &&
-        e.clientY <= r.bottom + ZONE;
+        clientX >= r.left - ZONE && clientX <= r.right + ZONE && clientY >= r.top - ZONE && clientY <= r.bottom + ZONE;
       if (!inside) return release();
       if (!engaged) {
         engaged = true;
@@ -55,16 +52,36 @@ export function attachMagnets(root: HTMLElement): () => void {
         xTo = gsap.quickTo(target, "x", { duration: dur.micro, ease: ease.out });
         yTo = gsap.quickTo(target, "y", { duration: dur.micro, ease: ease.out });
       }
-      xTo?.(clamp((e.clientX - (r.left + r.width / 2)) * PULL));
-      yTo?.(clamp((e.clientY - (r.top + r.height / 2)) * PULL));
+      xTo?.(clamp((clientX - (r.left + r.width / 2)) * PULL));
+      yTo?.(clamp((clientY - (r.top + r.height / 2)) * PULL));
+    };
+
+    let last: { x: number; y: number } | null = null;
+    const onMove = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse") return;
+      last = { x: e.clientX, y: e.clientY };
+      track(last.x, last.y);
+    };
+    // The page can move under a still pointer (wheel, Lenis, a focus() scroll): without this the
+    // button would keep a stale offset until the next mouse move. Only measures while engaged.
+    const onScroll = () => {
+      if (engaged && last) track(last.x, last.y);
+    };
+    const onLeave = () => {
+      last = null;
+      release();
     };
 
     document.addEventListener("pointermove", onMove, { passive: true });
-    window.addEventListener("blur", release);
+    document.addEventListener("pointerleave", onLeave, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("blur", onLeave);
 
     return () => {
       document.removeEventListener("pointermove", onMove);
-      window.removeEventListener("blur", release);
+      document.removeEventListener("pointerleave", onLeave);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("blur", onLeave);
       gsap.killTweensOf(target, "x,y");
       gsap.set(target, { x: 0, y: 0 });
     };

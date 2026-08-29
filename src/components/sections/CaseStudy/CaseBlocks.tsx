@@ -3,6 +3,7 @@ import { cn } from "@/components/ui/cn";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { SmartImage } from "@/components/ui/SmartImage";
+import { CaseBlocksMotionRoot } from "./CaseBlocksMotionRoot";
 import { focal, getCaseImages, orientation, pad2 } from "./images";
 
 /** Column span + frame ratio per orientation (12-col grid at lg). */
@@ -50,28 +51,32 @@ export function CaseBlocks({ project }: { project: Project }) {
     if (!cover) return null;
     return (
       <Section flush className="pb-12 md:pb-16 lg:pb-24">
-        <Container>
-          <figure className="mx-auto lg:w-8/12" data-reveal>
-            <SmartImage
-              image={cover}
-              alt=""
-              sizes="(max-width: 1023px) 100vw, 67vw"
-              className={cn("w-full", FRAME[orientation(cover)].ratio)}
-            />
-            <figcaption className="mt-2 text-small text-olive">Full frame</figcaption>
-          </figure>
-        </Container>
+        <CaseBlocksMotionRoot>
+          <Container>
+            <figure className="mx-auto lg:w-8/12" data-reveal>
+              <SmartImage
+                image={cover}
+                alt=""
+                sizes="(max-width: 1023px) 100vw, 67vw"
+                className={cn("w-full", FRAME[orientation(cover)].ratio)}
+              />
+              <figcaption className="mt-2 text-small text-olive">Full frame</figcaption>
+            </figure>
+          </Container>
+        </CaseBlocksMotionRoot>
       </Section>
     );
   }
 
   return (
     <Section flush className="pb-12 md:pb-16 lg:pb-24">
-      <Container className="flex flex-col gap-10 md:gap-12 lg:gap-16">
-        {blocks.map((img, i) => (
-          <Block key={img.mediaId} img={img} index={i} total={blocks.length} title={project.title} />
-        ))}
-      </Container>
+      <CaseBlocksMotionRoot>
+        <Container className="flex flex-col gap-10 md:gap-12 lg:gap-16">
+          {blocks.map((img, i) => (
+            <Block key={img.mediaId} img={img} index={i} total={blocks.length} title={project.title} />
+          ))}
+        </Container>
+      </CaseBlocksMotionRoot>
     </Section>
   );
 }

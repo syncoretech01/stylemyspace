@@ -4,7 +4,17 @@ import { usePathname } from "next/navigation";
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { useMotionPreference } from "@/components/motion/useMotionPreference";
 
-type Pending = { slug: string; href: string; clone: HTMLImageElement; timeout: number; startedAt: number };
+type Pending = {
+  slug: string;
+  href: string;
+  clone: HTMLImageElement;
+  timeout: number;
+  startedAt: number;
+  /** The tile image we hid behind the clone; restored on every exit path. */
+  source: HTMLImageElement;
+  /** The destination hero, hidden while the clone flies so the two never double up. */
+  hero?: HTMLImageElement;
+};
 
 type Api = {
   /** Begin a Flip transition from `img` (a tile image) toward the case-study hero for `slug`. */
@@ -31,12 +41,18 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const { tier } = useMotionPreference();
 
+  /** Every exit path runs through here: the clone goes and both hidden images come back. */
   const clear = (fade = true) => {
     const p = pendingRef.current;
     if (!p) return;
     pendingRef.current = null;
     window.clearTimeout(p.timeout);
-    const remove = () => p.clone.remove();
+    p.hero?.style.removeProperty("visibility");
+    const remove = () => {
+      p.clone.remove();
+      // Restore the tile last: while the clone is fading it still covers the tile's slot.
+      p.source.style.removeProperty("visibility");
+    };
     if (!fade) return remove();
     import("@/lib/gsap").then(({ gsap }) => gsap.to(p.clone, { autoAlpha: 0, duration: 0.3, onComplete: remove }), remove);
   };
@@ -60,7 +76,7 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
         Flip.fit(clone, img, { absolute: true, scale: false });
         img.style.visibility = "hidden";
         const timeout = window.setTimeout(() => clear(true), ABORT_MS);
-        pendingRef.current = { slug, href, clone, timeout, startedAt: performance.now() };
+        pendingRef.current = { slug, href, clone, timeout, startedAt: performance.now(), source: img };
       });
     },
     isPending: (slug) => pendingRef.current?.slug === slug,
@@ -78,9 +94,16 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
     const raf = requestAnimationFrame(async () => {
       const hero = document.querySelector<HTMLImageElement>(`img[data-flip-target="${CSS.escape(p.slug)}"]`);
       if (!hero || cancelled) return clear(true);
+      // The new route paints its hero immediately; without this the viewer sees the full-bleed hero
+      // AND the travelling clone at once. Recorded on the pending record so clear() always restores it.
+      p.hero = hero;
+      hero.style.visibility = "hidden";
       const decode = hero.complete && hero.naturalWidth > 0 ? Promise.resolve() : hero.decode().catch(() => {});
       await Promise.race([decode, new Promise((r) => setTimeout(r, DECODE_RACE_MS))]);
-      if (cancelled || pendingRef.current !== p) return;
+      if (cancelled || pendingRef.current !== p) {
+        hero.style.removeProperty("visibility");
+        return;
+      }
       const { loadFlip } = await import("@/lib/plugins");
       const Flip = await loadFlip();
       const { ease } = await import("@/lib/motion/tokens");
@@ -91,9 +114,13 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
         duration: DURATION,
         ease: ease.inOut,
         onComplete: () => {
+          hero.style.removeProperty("visibility");
           p.clone.remove();
+          p.source.style.removeProperty("visibility");
           if (pendingRef.current === p) pendingRef.current = null;
           hero.dispatchEvent(new CustomEvent("flip:done", { bubbles: true }));
+          // The click moved the reader to a new page; a normal <Link> would have reset focus.
+          document.querySelector<HTMLElement>("#case-title")?.focus({ preventScroll: true });
         },
       });
     });

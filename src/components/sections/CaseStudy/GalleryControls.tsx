@@ -11,8 +11,14 @@ type Props = { scrollerId: string; total: number };
 const getScroller = (id: string) => document.getElementById(id);
 
 /**
- * Prev/next for the native scroll-snap strip plus an "Image n of N" live region.
- * Static markup renders without JS; the buttons simply scroll the list by one slide.
+ * Prev/next for the gallery plus an "Image n of N" live region.
+ *
+ * Static markup renders without JS. Two transports, so the same buttons drive both states of the
+ * gallery without this component ever importing GSAP:
+ *  - a cancelable `gallery:step` is dispatched on the track; CaseGallery.motion.ts (full tier)
+ *    claims it with preventDefault() and moves the 3D slider,
+ *  - if nothing claims it, the buttons scroll the native scroll-snap strip by one slide.
+ * The index follows `gallery:change` from the slider, or the strip's own scroll position.
  */
 export function GalleryControls({ scrollerId, total }: Props) {
   const [index, setIndex] = useState(0);
@@ -31,17 +37,27 @@ export function GalleryControls({ scrollerId, total }: Props) {
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(update);
     };
+    const onChange = (event: Event) => {
+      const next = (event as CustomEvent<{ index?: number }>).detail?.index;
+      if (typeof next === "number") setIndex((prev) => (prev === next ? prev : next));
+    };
     el.addEventListener("scroll", onScroll, { passive: true });
+    el.addEventListener("gallery:change", onChange);
     return () => {
       el.removeEventListener("scroll", onScroll);
+      el.removeEventListener("gallery:change", onChange);
       if (raf) cancelAnimationFrame(raf);
     };
   }, [scrollerId, total]);
 
   const step = (dir: -1 | 1) => {
     const el = getScroller(scrollerId);
-    const first = el?.firstElementChild as HTMLElement | null;
-    if (!el || !first) return;
+    if (!el) return;
+    // Claimed by the perspective slider? Then it has already moved.
+    const claimed = !el.dispatchEvent(new CustomEvent("gallery:step", { detail: { dir }, cancelable: true }));
+    if (claimed) return;
+    const first = el.firstElementChild as HTMLElement | null;
+    if (!first) return;
     const stride = first.offsetWidth + parseFloat(getComputedStyle(el).columnGap || "0");
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     el.scrollBy({ left: dir * stride, behavior: reduced ? "auto" : "smooth" });

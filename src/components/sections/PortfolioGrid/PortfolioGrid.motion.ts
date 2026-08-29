@@ -18,7 +18,7 @@ import { markReady, revealIn } from "@/lib/motion/reveal";
 type Ctx = { tier: "full" | "mobile"; fine: boolean };
 type QuickTo = ReturnType<typeof gsap.quickTo>;
 
-/** Matches the CSS `perspective` the design was drawn at: shallow enough that 6° stays subtle. */
+/** Brief §5 tilt perspective: shallow enough that 6° reads as a lean, not a swivel. */
 const PERSPECTIVE = 900;
 
 const cardOf = (tile: HTMLElement) => tile.querySelector<HTMLElement>("figure");
@@ -77,10 +77,12 @@ export default function mount(root: HTMLElement, ctx: Ctx) {
         });
       };
 
-      const onMove = (e: PointerEvent) => {
-        if (e.pointerType === "touch") return;
-        const r = card.getBoundingClientRect();
+      /** Re-aim at a viewport point. The untransformed tile is measured, never the tilted card:
+       *  a rotated card's bounding rect grows with its own tilt and would feed back into the angle. */
+      const track = (clientX: number, clientY: number) => {
+        const r = tile.getBoundingClientRect();
         if (!r.width || !r.height) return;
+        if (clientX < r.left || clientX > r.right || clientY < r.top || clientY > r.bottom) return release();
         if (!engaged) {
           engaged = true;
           gsap.killTweensOf(card, "rotationX,rotationY");
@@ -93,20 +95,42 @@ export default function mount(root: HTMLElement, ctx: Ctx) {
         }
         // Pointer right of centre tips the right edge away (rotationY +), pointer above centre
         // tips the top edge toward the viewer (rotationX +).
-        xTo?.(clamp(((e.clientX - r.left) / r.width - 0.5) * 2 * dist.tiltDeg));
-        yTo?.(clamp((0.5 - (e.clientY - r.top) / r.height) * 2 * dist.tiltDeg));
+        xTo?.(clamp(((clientX - r.left) / r.width - 0.5) * 2 * dist.tiltDeg));
+        yTo?.(clamp((0.5 - (clientY - r.top) / r.height) * 2 * dist.tiltDeg));
+      };
+
+      let last: { x: number; y: number } | null = null;
+      const onMove = (e: PointerEvent) => {
+        if (e.pointerType === "touch") return;
+        last = { x: e.clientX, y: e.clientY };
+        track(last.x, last.y);
+      };
+      // The card slides under a still pointer whenever the page scrolls (wheel, Lenis, a focus()
+      // jump): without this it would hold a stale angle until the next mouse move.
+      const onScroll = () => {
+        if (engaged && last) track(last.x, last.y);
+      };
+      const onLeave = () => {
+        last = null;
+        release();
       };
 
       tile.addEventListener("pointermove", onMove, { passive: true });
-      tile.addEventListener("pointerleave", release);
-      tile.addEventListener("pointercancel", release);
-      window.addEventListener("blur", release);
+      tile.addEventListener("pointerleave", onLeave);
+      tile.addEventListener("pointercancel", onLeave);
+      window.addEventListener("scroll", onScroll, { passive: true });
+      window.addEventListener("blur", onLeave);
       teardown.push(() => {
         tile.removeEventListener("pointermove", onMove);
-        tile.removeEventListener("pointerleave", release);
-        tile.removeEventListener("pointercancel", release);
-        window.removeEventListener("blur", release);
+        tile.removeEventListener("pointerleave", onLeave);
+        tile.removeEventListener("pointercancel", onLeave);
+        window.removeEventListener("scroll", onScroll);
+        window.removeEventListener("blur", onLeave);
         gsap.killTweensOf(card, "rotationX,rotationY");
+        // Drop the transform outright. gsap.context().revert() would try to restore rotationX and
+        // rotationY individually and warn "not eligible for reset" (they are components of one
+        // matrix), which would break the site's zero-console-warning rule.
+        gsap.set(card, { clearProps: "transform,transformPerspective,transformOrigin,willChange" });
       });
     });
   }, root);

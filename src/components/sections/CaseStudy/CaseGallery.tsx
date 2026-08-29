@@ -2,12 +2,16 @@ import type { Project } from "@/lib/content.schema";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Heading } from "@/components/ui/Heading";
 import { SmartImage } from "@/components/ui/SmartImage";
+import { CaseGalleryMotionRoot } from "./CaseGalleryMotionRoot";
 import { GalleryControls } from "./GalleryControls";
 import { focal, getCaseImages, pad2 } from "./images";
 
 /**
- * The remaining images as a native horizontal scroll-snap strip. Announced as a carousel;
- * every slide is reachable by keyboard. P3 layers the perspective slider on top of this markup.
+ * The remaining images as a native horizontal scroll-snap strip — the final state under reduced
+ * motion and on the mobile tier. Announced as a carousel; every slide is reachable by keyboard.
+ * On the full tier CaseGallery.motion.ts re-stages this same markup as a 3D perspective slider:
+ * [data-gallery-track] becomes the perspective stage and [data-gallery-slide] the slides. The
+ * section clips the x-axis there because the stage itself must never clip a rotated slide.
  */
 export function CaseGallery({ project }: { project: Project }) {
   const { gallery } = getCaseImages(project);
@@ -15,11 +19,11 @@ export function CaseGallery({ project }: { project: Project }) {
   const scrollerId = `gallery-${project.slug}`;
 
   return (
-    <section
+    <CaseGalleryMotionRoot
       role="region"
       aria-roledescription="carousel"
       aria-label="Project gallery"
-      className="relative bg-sand py-12 text-ink md:py-16 lg:py-24 [--gutter:1.5rem] md:[--gutter:3rem] lg:[--gutter:max(5rem,calc((100%-90rem)/2+5rem))]"
+      className="relative bg-sand py-12 text-ink motion-full:overflow-x-clip md:py-16 lg:py-24 [--gutter:1.5rem] md:[--gutter:3rem] lg:[--gutter:max(5rem,calc((100%-90rem)/2+5rem))]"
     >
       <div className="flex flex-wrap items-end justify-between gap-4 ps-(--gutter) pe-(--gutter)">
         <div>
@@ -34,12 +38,14 @@ export function CaseGallery({ project }: { project: Project }) {
       <ul
         id={scrollerId}
         role="list"
+        data-gallery-track
         data-lenis-prevent
         className="mt-8 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain py-1 ps-(--gutter) pe-(--gutter) scroll-ps-(--gutter) [scrollbar-width:none] [touch-action:pan-x_pan-y] md:gap-4 lg:mt-10 [&::-webkit-scrollbar]:hidden"
       >
         {gallery.map((img, i) => (
           <li
             key={img.mediaId}
+            data-gallery-slide
             aria-roledescription="slide"
             aria-label={`${i + 1} of ${gallery.length}`}
             className="w-[84vw] shrink-0 snap-start sm:w-[60vw] lg:w-[44vw] lg:max-w-[56rem]"
@@ -61,6 +67,6 @@ export function CaseGallery({ project }: { project: Project }) {
           </li>
         ))}
       </ul>
-    </section>
+    </CaseGalleryMotionRoot>
   );
 }
