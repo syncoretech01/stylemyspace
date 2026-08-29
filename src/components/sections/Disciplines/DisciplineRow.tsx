@@ -44,13 +44,13 @@ export function DisciplineRow({ discipline: d, image, index }: Props) {
       <Link href={`/services#${d.id}` as Route} className={styles.link} aria-labelledby={labelId} data-cursor="Open">
         <SmartImage
           image={image}
-          sizes="(min-width: 64rem) 50vw, 100vw"
+          sizes="(min-width: 80rem) 50vw, 100vw"
           className={styles.media}
           placeholderTodo={`${d.label} discipline image — pending image pipeline`}
         />
         <div aria-hidden className={styles.scrim} />
 
-        <div className={`${styles.content} p-3 lg:p-4`}>
+        <div className={`${styles.content} p-3 xl:p-4`}>
           <div className={styles.label}>
             <span aria-hidden className="eyebrow text-sand">
               {String(index + 1).padStart(2, "0")}
@@ -62,9 +62,11 @@ export function DisciplineRow({ discipline: d, image, index }: Props) {
           {/* `inert` only bites on the stacked layout, where .panel is collapsed; on columns it is display-free. */}
           <div id={panelId} className={styles.panel} inert={collapsed ? true : undefined}>
             <div className={styles.blurb}>
-              <div className="pt-2 lg:pt-0">
+              <div className="pt-2 xl:pt-0">
                 <p className="text-body text-bone">{d.blurb}</p>
-                {d.note ? <p className="mt-1 text-small text-sand">{d.note}</p> : null}
+                {/* The sourced scope note is a second sentence of the same blurb, not a smaller aside:
+                    one column of the row must not carry two type sizes when its siblings carry one. */}
+                {d.note ? <p className="mt-2 text-body text-bone">{d.note}</p> : null}
               </div>
             </div>
           </div>

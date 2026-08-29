@@ -27,9 +27,9 @@ export function Process() {
   const total = String(PROCESS_PHASES.length).padStart(2, "0");
   return (
     <ProcessMotionRoot>
-      <Section tone="dark" aria-labelledby="process-title" data-section="process">
+      <Section tone="dark" aria-labelledby="process-title" className="pb-6 md:pb-8 lg:pb-12" data-section="process">
         <Container>
-          <div className="grid gap-4 lg:grid-cols-12 lg:gap-6">
+          <div className="grid gap-4 lg:grid-cols-12 lg:gap-4 xl:gap-6">
             <div className="lg:col-span-7">
               <Eyebrow data-reveal>Process</Eyebrow>
               <Heading id="process-title" className="mt-2 max-w-[18ch]" data-reveal>
@@ -42,7 +42,7 @@ export function Process() {
           </div>
 
           <ol
-            className="mt-10 pb-[14vh] [--stack-offset:10px] md:mt-14 md:[--stack-offset:14px] lg:mt-16"
+            className="mt-10 pb-4 [--stack-offset:10px] md:mt-14 md:pb-6 md:[--stack-offset:14px] lg:mt-16 lg:pb-8"
             role="list"
             data-process-stack
           >
@@ -50,7 +50,7 @@ export function Process() {
               <li
                 key={phase.number}
                 data-process-card
-                className="flex min-h-[48svh] flex-col rounded-xs border border-taupe bg-bone p-3 text-ink motion-on:sticky md:min-h-[60svh] md:p-6 lg:p-8"
+                className="flex min-h-[44svh] flex-col rounded-xs border border-taupe bg-bone p-3 text-ink motion-on:sticky md:min-h-[52svh] md:p-6 lg:p-8"
                 style={
                   {
                     top: "calc(var(--header-h) + var(--i) * var(--stack-offset))",
@@ -68,7 +68,7 @@ export function Process() {
                     </span>
                   </div>
 
-                  <div className="grid flex-1 gap-3 pt-4 md:grid-cols-12 md:gap-6 md:pt-6" data-reveal>
+                  <div className="grid flex-1 content-center gap-3 pt-4 md:grid-cols-12 md:gap-4 md:pt-6 lg:gap-6" data-reveal>
                     <span
                       className="font-display text-display leading-none text-brass tabular-nums md:col-span-4 lg:col-span-3"
                       aria-hidden

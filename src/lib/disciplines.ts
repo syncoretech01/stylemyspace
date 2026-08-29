@@ -33,14 +33,15 @@ export const DISCIPLINES: Discipline[] = [
     label: "Wellness",
     blurb: "Environments that support well-being through natural light, biophilic design and calming color palettes.",
     source: "Blog post: Residential Wellness Spaces",
-    image: { slug: "wellness-space-designs", mediaId: "6af838_6a3ac52f7536496eaa3c50b75be96de1" },
+    // The yoga room evidences the blurb (daylight, timber, calm palette); the cover lounge did not.
+    image: { slug: "wellness-space-designs", mediaId: "6af838_2c26386f93924bfea1018d162a4036b5" },
   },
   {
     id: "commercial",
     label: "Commercial",
-    blurb: "Workplaces and learning environments that prioritize productivity and aesthetics.",
+    blurb: "Learning environments and workplaces that prioritize productivity and aesthetics.",
     source: "Live home page, Commercial and Education cards",
-    image: { slug: "classroom-designs", mediaId: "6af838_8850314cc2ca4ec9a7abde0b5961df2f" },
+    image: { slug: "classroom-designs", mediaId: "6af838_cb0e4a1301dc4aa99a95409ebf0b5703" },
     note: "Including education centers: engaging and stimulating environments tailored to all learners.",
   },
 ];

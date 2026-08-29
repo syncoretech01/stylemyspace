@@ -7,12 +7,6 @@ import { Heading } from "@/components/ui/Heading";
 import { ContactForm as ContactFormFields } from "./ContactForm";
 import { ContactMotionRoot } from "./ContactMotionRoot";
 
-/** "a, b, c and d" — prose join for Section 2 lists. */
-function proseList(items: readonly string[]): string {
-  if (items.length <= 1) return items[0] ?? "";
-  return `${items.slice(0, -1).join(", ")} and ${items[items.length - 1] ?? ""}`;
-}
-
 const link =
   "inline-flex min-h-[2.75rem] items-center rounded-xs text-body decoration-1 underline-offset-6 transition-colors duration-(--dur-micro) hover:underline focus-visible:underline [overflow-wrap:anywhere]";
 
@@ -31,10 +25,7 @@ export function ContactIntro() {
             </div>
             <div className="lg:col-span-7 lg:col-start-6">
               <p className="measure text-lead" data-reveal>
-                {SITE.approach}
-              </p>
-              <p className="measure mt-4 text-olive" data-reveal>
-                {`Serving the ${proseList(SITE.serviceAreas)}.`}
+                {SITE.approachProse}
               </p>
             </div>
           </div>
@@ -44,7 +35,10 @@ export function ContactIntro() {
   );
 }
 
-/** The form, beside a short aside with the direct lines. */
+/**
+ * The form. The aside carries the invitation only: the phone, email and socials are stated once on
+ * this route, in ContactDetails below (the footer repeats them as site chrome).
+ */
 export function ContactForm() {
   return (
     <Section flush aria-labelledby="form-title" className="pb-12 md:pb-16 lg:pb-24" data-section="contact-form">
@@ -54,23 +48,8 @@ export function ContactForm() {
             <div className="lg:col-span-4">
               <Eyebrow data-reveal>Send a message</Eyebrow>
               <Heading id="form-title" size="h3" className="mt-2 max-w-[16ch]" data-reveal>
-                Start with a few details.
+                Start with a&nbsp;few details.
               </Heading>
-              <p className="mt-3 text-body text-olive" data-reveal>
-                Prefer to talk?
-              </p>
-              <ul className="mt-1" role="list" data-reveal>
-                <li>
-                  <a href={SITE.phoneHref} className={`${link} text-ink`}>
-                    {SITE.phone}
-                  </a>
-                </li>
-                <li>
-                  <a href={`mailto:${SITE.email}`} className={`${link} text-ink`}>
-                    {SITE.email}
-                  </a>
-                </li>
-              </ul>
             </div>
             <div className="lg:col-span-7 lg:col-start-6">
               <ContactFormFields />
@@ -97,8 +76,8 @@ export function ContactDetails() {
             </Heading>
           </div>
 
-          <div className="grid gap-6 sm:grid-cols-3 lg:col-span-8">
-            <div data-reveal>
+          <div className="grid gap-6 sm:grid-cols-2 lg:col-span-8 xl:grid-cols-3">
+            <div className="min-w-0" data-reveal>
               <Eyebrow>Address</Eyebrow>
               <address className="mt-2 text-body not-italic leading-relaxed">
                 {SITE.address.street}
@@ -107,7 +86,7 @@ export function ContactDetails() {
               </address>
             </div>
 
-            <div data-reveal>
+            <div className="min-w-0" data-reveal>
               <Eyebrow>Reach us</Eyebrow>
               <ul className="mt-1" role="list">
                 <li>
@@ -123,7 +102,7 @@ export function ContactDetails() {
               </ul>
             </div>
 
-            <div data-reveal>
+            <div className="min-w-0" data-reveal>
               <Eyebrow>Follow</Eyebrow>
               <ul className="mt-1" role="list">
                 {socials.map((s) => (

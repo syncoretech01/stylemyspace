@@ -66,7 +66,7 @@ export function GalleryControls({ scrollerId, total }: Props) {
   return (
     <div className="flex items-center gap-2">
       <p className="eyebrow mr-1 text-olive tabular-nums" aria-hidden>
-        {pad2(index + 1)} <span className="text-taupe">/</span> {pad2(total)}
+        {pad2(index + 1)} / {pad2(total)}
       </p>
       <p className="visually-hidden" aria-live="polite" aria-atomic>
         Image {index + 1} of {total}

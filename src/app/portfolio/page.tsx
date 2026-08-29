@@ -15,7 +15,7 @@ export default function PortfolioPage() {
   const { portfolio } = getContent();
   return (
     <>
-      <PortfolioGrid projects={getProjects()} title="Portfolio" intro={portfolio.intro} />
+      <PortfolioGrid projects={getProjects()} title={portfolio.title} intro={portfolio.intro} />
       <CtaBlock />
     </>
   );

@@ -6,7 +6,6 @@
  *                                  journey through the viewport. Function-based values so a resize
  *                                  re-measures (invalidateOnRefresh).
  *  - [data-reveal]                 figures fade-rise in.
- *  The sticky running title is pure CSS.
  */
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { dist, ease } from "@/lib/motion/tokens";

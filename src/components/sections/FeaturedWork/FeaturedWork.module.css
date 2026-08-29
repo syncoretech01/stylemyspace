@@ -56,3 +56,30 @@
     --card-w: clamp(20rem, min(42vw, calc((100svh - 26rem) * 0.8)), 44rem);
   }
 }
+
+/*
+ * Reduced motion never loads FeaturedWork.motion.ts, so the pinned track never happens and the
+ * static markup is the finished layout. A clipped horizontal scroller is not that layout — it left
+ * projects 04 and 05 off-screen behind a 4px scrollbar. Below lg the same list is a touch scroller
+ * (a swipe, not an animation), so only the pointer widths need re-laying out: three covers on the
+ * first line, two wider ones on the second, no empty cell and nothing off-screen.
+ */
+@media (prefers-reduced-motion: reduce) and (min-width: 64rem) {
+  .track {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 2.5rem 1.5rem;
+    overflow: visible;
+    scroll-snap-type: none;
+  }
+
+  .card {
+    width: auto;
+    grid-column: span 2;
+  }
+
+  .card:nth-child(4),
+  .card:nth-child(5) {
+    grid-column: span 3;
+  }
+}

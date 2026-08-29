@@ -70,6 +70,17 @@ export function Manifesto({ image }: { image: ProjectImage | null }) {
           </Container>
         </div>
       </ManifestoMotionRoot>
+      {/*
+        Seam bleed. The Hero's ground is solid olive-deep at its bottom edge, so the two dark
+        sections met on a hard full-width line (#363B2B abutting the photograph's ~#5F6254). This
+        carries the hero's ground into the top of the image so the pair reads as one dark movement
+        instead of two stacked panels. It sits outside the pinned element, so it stays at the top of
+        the section rather than travelling with the pin.
+      */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 z-10 h-32 bg-linear-to-b from-olive-deep to-transparent lg:h-40"
+      />
     </Section>
   );
 }

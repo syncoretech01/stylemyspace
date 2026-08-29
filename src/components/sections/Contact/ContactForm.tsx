@@ -48,11 +48,16 @@ function humanMessage(el: Control): string | null {
 const subscribe = () => () => {};
 const useHydrated = () => useSyncExternalStore(subscribe, () => true, () => false);
 
+// The rest-state rule is olive/75 (3.4:1 on bone): taupe reads 1.72:1 there, under the 3:1 a
+// control boundary needs, so the fields were four near-invisible hairlines until focus.
 const field =
-  "peer block w-full min-h-6 rounded-xs border-b border-taupe bg-transparent pb-1.5 pt-4 text-body text-ink transition-colors duration-(--dur-micro) focus:border-olive aria-[invalid=true]:border-clay";
-const floating =
-  "pointer-events-none absolute left-0 top-4 origin-left text-body text-olive transition-[top,font-size,letter-spacing] duration-(--dur-micro) ease-(--ease-out-expo) peer-focus:top-0 peer-focus:eyebrow peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:eyebrow";
-const fixedLabel = "pointer-events-none absolute left-0 top-0 eyebrow text-olive";
+  "peer block w-full min-h-6 rounded-xs border-b border-olive/75 bg-transparent pb-1.5 pt-4 text-body text-ink transition-colors duration-(--dur-micro) focus:border-olive aria-[invalid=true]:border-clay";
+const floatBase =
+  "pointer-events-none absolute left-0 top-4 origin-left text-body text-olive transition-[top,font-size,letter-spacing] duration-(--dur-micro) ease-(--ease-out-expo) peer-focus:top-0 peer-focus:eyebrow";
+const floating = `${floatBase} peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:eyebrow`;
+// A <select> never matches :placeholder-shown, so its "filled" state is a data attribute instead;
+// the attribute selector outranks the resting top-4 in the same way peer-focus: does.
+const floatingSelect = `${floatBase} data-[filled=true]:top-0 data-[filled=true]:eyebrow`;
 const errorText = "mt-1 min-h-3 text-small text-clay";
 
 export function ContactForm() {
@@ -65,6 +70,10 @@ export function ContactForm() {
 
   // Client-side messages layered over the server's; reset whenever a new server state arrives.
   const [overrides, setOverrides] = useState<Overrides>({});
+  const [projectType, setProjectType] = useState("");
+  // Fields the visitor has typed in (or that failed a submit). Blur validates only these, so
+  // simply tabbing through an untouched form never puts it into an error state.
+  const touched = useRef<Set<FieldKey>>(new Set());
   const [seenState, setSeenState] = useState(state);
   if (seenState !== state) {
     setSeenState(state);
@@ -121,14 +130,20 @@ export function ContactForm() {
 
   const onInvalid = (e: InvalidEvent<Control>) => {
     e.preventDefault(); // suppress the native bubble; the message is rendered inline instead
-    if (isFieldKey(e.currentTarget.name)) setFieldError(e.currentTarget.name, humanMessage(e.currentTarget));
+    if (!isFieldKey(e.currentTarget.name)) return;
+    touched.current.add(e.currentTarget.name); // a failed submit makes every field reportable
+    setFieldError(e.currentTarget.name, humanMessage(e.currentTarget));
   };
   const onBlur = (e: FocusEvent<Control>) => {
-    if (isFieldKey(e.currentTarget.name)) setFieldError(e.currentTarget.name, humanMessage(e.currentTarget));
+    if (!isFieldKey(e.currentTarget.name)) return;
+    if (!touched.current.has(e.currentTarget.name)) return;
+    setFieldError(e.currentTarget.name, humanMessage(e.currentTarget));
   };
   const onInput = (e: FormEvent<Control>) => {
+    if (!isFieldKey(e.currentTarget.name)) return;
+    touched.current.add(e.currentTarget.name);
     // Clear a shown error as soon as the field becomes valid again.
-    if (isFieldKey(e.currentTarget.name) && errorFor(e.currentTarget.name) && e.currentTarget.validity.valid) {
+    if (errorFor(e.currentTarget.name) && e.currentTarget.validity.valid) {
       setFieldError(e.currentTarget.name, null);
     }
   };
@@ -224,17 +239,23 @@ export function ContactForm() {
       </div>
 
       <div className="relative" data-reveal>
-        <label htmlFor="projectType" className={fixedLabel}>
-          Project type (optional)
-        </label>
-        <select id="projectType" name="projectType" defaultValue="" className={cn(field, "cursor-pointer appearance-none pr-4")}>
-          <option value="">Select a project type</option>
+        <select
+          id="projectType"
+          name="projectType"
+          defaultValue=""
+          onChange={(e) => setProjectType(e.currentTarget.value)}
+          className={cn(field, "cursor-pointer appearance-none pr-4")}
+        >
+          <option value="" />
           {SITE.disciplines.map((d) => (
             <option key={d} value={d}>
               {d}
             </option>
           ))}
         </select>
+        <label htmlFor="projectType" className={floatingSelect} data-filled={projectType !== ""}>
+          Project type (optional)
+        </label>
         <span
           aria-hidden
           className="pointer-events-none absolute right-0 top-[2.9rem] block size-[0.5rem] -translate-y-1/2 rotate-45 border-b border-r border-olive"

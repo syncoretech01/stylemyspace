@@ -1,4 +1,4 @@
-/* Service areas — one-line rows with a brass underline that draws in on hover / focus. */
+/* Service areas — one-line rows with a brass hairline that draws in on hover / focus. */
 
 .word {
   background-image: linear-gradient(var(--color-brass), var(--color-brass));
@@ -14,13 +14,24 @@
   background-size: 100% 1px;
 }
 
+/*
+ * Where the row can only be tapped — no pointer to hover with, or a viewport too narrow for the
+ * "Get in touch" label — the hairline is drawn at rest so the row still reads as a link.
+ */
+@media (max-width: 47.99rem), (hover: none) {
+  .word {
+    background-size: 100% 1px;
+  }
+}
+
 .hint {
   transition:
     opacity var(--dur-micro) var(--ease-out-expo),
     transform var(--dur-micro) var(--ease-out-expo);
 }
 
-@media (min-width: 64rem) {
+/* Hidden at rest only where there is a pointer to reveal it with — the same rule at every width. */
+@media (hover: hover) {
   .hint {
     opacity: 0;
     transform: translateX(-0.5rem);

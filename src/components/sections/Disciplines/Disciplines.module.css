@@ -2,8 +2,9 @@
  * Disciplines — pure CSS column slider.
  * Mobile / tablet: stacked rows, everything visible without JS; after hydration each row's blurb is an
  * accordion panel (DisciplineRow sets data-accordion / data-expanded) whose height animates with a
- * grid-template-rows transition. ≥ lg (64rem): four full-height columns; :hover / :focus-within
- * expands one, siblings dim via :has(). Global prefers-reduced-motion zeroes the transitions.
+ * grid-template-rows transition. ≥ xl (80rem): four full-height columns; :hover / :focus-within
+ * expands one, siblings dim via :has(). Below xl the four-up prose column measures ~10ch, so the
+ * columns only engage once there is room for them. Global prefers-reduced-motion zeroes transitions.
  */
 
 .row {
@@ -61,9 +62,10 @@
   pointer-events: none;
   background: linear-gradient(
     to top,
-    color-mix(in srgb, var(--color-olive-deep) 92%, transparent) 0%,
-    color-mix(in srgb, var(--color-olive-deep) 70%, transparent) 45%,
-    color-mix(in srgb, var(--color-olive-deep) 25%, transparent) 100%
+    color-mix(in srgb, var(--color-olive-deep) 94%, transparent) 0%,
+    color-mix(in srgb, var(--color-olive-deep) 86%, transparent) 55%,
+    color-mix(in srgb, var(--color-olive-deep) 55%, transparent) 78%,
+    color-mix(in srgb, var(--color-olive-deep) 20%, transparent) 100%
   );
 }
 
@@ -144,7 +146,7 @@
   transform: rotate(45deg);
 }
 
-@media (max-width: 63.98rem) {
+@media (max-width: 79.98rem) {
   .col[data-accordion] .toggle {
     display: block;
   }
@@ -154,7 +156,7 @@
   }
 }
 
-@media (min-width: 64rem) {
+@media (min-width: 80rem) {
   .row {
     flex-direction: row;
     height: clamp(34rem, 76svh, 54rem);
@@ -165,6 +167,11 @@
     border-left: 1px solid color-mix(in srgb, var(--color-bone) 18%, transparent);
   }
 
+  /*
+   * The blurb sits in the bottom ~50% of the column, so that band has to stay dark enough for
+   * bone body copy to clear 4.5:1 over any of the four photographs (the brightest is the
+   * classroom window wall). 82% olive-deep measures 6:1 even against a blown-out white frame.
+   */
   .scrim {
     background:
       linear-gradient(
@@ -174,9 +181,10 @@
       ),
       linear-gradient(
         to top,
-        color-mix(in srgb, var(--color-olive-deep) 90%, transparent) 0%,
-        color-mix(in srgb, var(--color-olive-deep) 45%, transparent) 40%,
-        transparent 68%
+        color-mix(in srgb, var(--color-olive-deep) 94%, transparent) 0%,
+        color-mix(in srgb, var(--color-olive-deep) 84%, transparent) 50%,
+        color-mix(in srgb, var(--color-olive-deep) 42%, transparent) 72%,
+        transparent 90%
       );
   }
 
@@ -218,15 +226,5 @@
     flex: none;
     width: 30ch;
     max-width: calc(100% - 6rem);
-  }
-
-  /* Visible at rest (final state by default); expanding the column brings it to full strength. */
-  .blurb {
-    opacity: 0.8;
-  }
-
-  .col:hover .blurb,
-  .col:focus-within .blurb {
-    opacity: 1;
   }
 }

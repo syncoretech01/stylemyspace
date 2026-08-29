@@ -1,8 +1,8 @@
 /**
  * Materials — the exploding-object moment (brief §5).
  * The exploded layout rendered by index.tsx IS the end state. On the desktop stage (≥ lg) this
- * module adds the assembled start: every swatch is offset to the stage centre with a slight
- * rotation, then a scrubbed timeline explodes them outward, draws the SVG connectors and finally
+ * module adds the assembled start: every swatch is offset onto the connectors' centre dot with a
+ * slight rotation, then a scrubbed timeline explodes them outward, draws the connectors and finally
  * fades the captions in. Below lg the stage is a 2×2 grid without connectors — a plain reveal.
  * Reduced motion never loads this file.
  */
@@ -12,6 +12,7 @@ import { dur, ease, stagger } from "@/lib/motion/tokens";
 import { markReady, revealIn } from "@/lib/motion/reveal";
 
 const SWATCH = "[data-materials-swatch]";
+const CENTRE = "[data-materials-centre]";
 const ROTATION_STEP = 3; // deg per swatch in the stack: −4.5, −1.5, 1.5, 4.5
 const CAPTION_RISE = 8; // px
 
@@ -35,9 +36,19 @@ export default function mount(root: HTMLElement) {
       // Header reveals only — the swatches are driven by the timeline below (both animate y).
       revealIn(root, `[data-reveal]:not(${SWATCH})`);
 
-      // Assembled stack: each swatch image (the square top of the figure) centred on the stage.
-      const centreX = () => stage.clientWidth / 2;
-      const centreY = () => stage.clientHeight / 2;
+      // Assembled stack: each swatch image (the square top of the figure) centred on the point the
+      // connectors radiate from, so the explosion reads as coming out of the brass dot. Measured
+      // rather than assumed — the dot's position is derived from the stage geometry in index.tsx.
+      const dot = root.querySelector<HTMLElement>(CENTRE);
+      const origin = () => {
+        const s = stage.getBoundingClientRect();
+        const d = dot?.getBoundingClientRect();
+        return d && d.width
+          ? { x: d.left + d.width / 2 - s.left, y: d.top + d.height / 2 - s.top }
+          : { x: s.width / 2, y: s.height / 2 };
+      };
+      const centreX = () => origin().x;
+      const centreY = () => origin().y;
       const fromX = (i: number, el: Element) => {
         const s = el as HTMLElement;
         return centreX() - (s.offsetLeft + s.offsetWidth / 2);

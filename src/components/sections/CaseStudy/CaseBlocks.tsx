@@ -6,52 +6,68 @@ import { SmartImage } from "@/components/ui/SmartImage";
 import { CaseBlocksMotionRoot } from "./CaseBlocksMotionRoot";
 import { focal, getCaseImages, orientation, pad2 } from "./images";
 
-/** Column span + frame ratio per orientation (12-col grid at lg). */
+/**
+ * Column span + frame ratio per orientation (12-col grid at lg).
+ * The column gap only applies from lg, where the grid actually places things side by side: at 390
+ * the container is 342px and eleven 32px gaps alone would be 352px, so every track would collapse
+ * to zero and each col-span-12 child would overhang the container by 10px.
+ */
 const FRAME = {
   landscape: { span: "lg:col-span-8", ratio: "aspect-[3/2]", sizes: "(max-width: 1023px) 100vw, 67vw" },
   portrait: { span: "lg:col-span-5", ratio: "aspect-[4/5]", sizes: "(max-width: 1023px) 100vw, 45vw" },
   square: { span: "lg:col-span-6", ratio: "aspect-square", sizes: "(max-width: 1023px) 100vw, 50vw" },
 } as const;
 
-function Block({ img, index, total, title }: { img: ProjectImage; index: number; total: number; title: string }) {
+/** A lone block has no alternating partner: it takes a wider frame and hangs from the left edge. */
+const SOLO = { span: "lg:col-span-8 lg:col-start-1", sizes: "(max-width: 1023px) 100vw, 67vw" } as const;
+
+function Block({ img, index, total }: { img: ProjectImage; index: number; total: number }) {
   const frame = FRAME[orientation(img)];
   const imageLeft = index % 2 === 0;
+  const solo = total === 1;
+  // The counter is the block's own label; with a single block it could only ever read "01 / 01".
+  const counter = total > 1 ? `${pad2(index + 1)} / ${pad2(total)}` : null;
+
   return (
-    <div className="grid grid-cols-12 gap-x-4 gap-y-3" data-block>
-      <figure className={cn("col-span-12", frame.span, imageLeft ? "lg:col-start-1" : "lg:col-end-13")} data-reveal>
+    <div className="grid grid-cols-12 gap-y-3 lg:gap-x-4" data-block>
+      <figure
+        className={cn(
+          "col-span-12",
+          solo ? SOLO.span : cn(frame.span, imageLeft ? "lg:col-start-1" : "lg:col-end-13"),
+        )}
+        data-reveal
+      >
         <div className={cn("overflow-clip", frame.ratio)} data-parallax-frame>
           {/* The parallax layer is scaled up by CaseBlocks.motion.ts on motion tiers so the scrubbed
               travel can never expose an edge; the static markup is an exact fit. */}
           <SmartImage
             image={img}
-            sizes={frame.sizes}
+            sizes={solo ? SOLO.sizes : frame.sizes}
             objectPosition={focal(img)}
             className="h-full w-full"
           />
         </div>
-        {img.caption && <figcaption className="mt-2 text-small text-olive">{img.caption}</figcaption>}
-      </figure>
-
-      {/* Sticky running title — decorative (the h1 already names the project). */}
-      <div
-        aria-hidden
-        className={cn(
-          "sticky top-[calc(var(--header-h)+1rem)] hidden self-start lg:col-span-3 lg:row-start-1 lg:block",
-          imageLeft ? "lg:col-start-10" : "lg:col-start-1",
+        {/* Caption line at every width (the counter used to live in an lg-only sticky rail that also
+            repeated the h1 verbatim on every block and left its column empty below the first line). */}
+        {(counter || img.caption) && (
+          <figcaption className="mt-2 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-small text-olive">
+            {counter && (
+              <span className="eyebrow tabular-nums" aria-hidden>
+                {counter}
+              </span>
+            )}
+            {img.caption && <span>{img.caption}</span>}
+          </figcaption>
         )}
-      >
-        <p className="eyebrow text-olive tabular-nums">
-          {pad2(index + 1)} <span className="text-taupe">/</span> {pad2(total)}
-        </p>
-        <p className="mt-2 font-display text-h3 text-ink">{title}</p>
-      </div>
+      </figure>
     </div>
   );
 }
 
 /**
  * Editorial alternating image/text blocks. Cover-only projects get the cover again at its full
- * frame (the hero crops the square masters to 16:9).
+ * frame — the hero crops the square masters to 16:9, so this is the only place the whole photograph
+ * is shown. It hangs from the container's left edge like everything else on the page.
  */
 export function CaseBlocks({ project }: { project: Project }) {
   const { cover, blocks } = getCaseImages(project);
@@ -59,17 +75,16 @@ export function CaseBlocks({ project }: { project: Project }) {
   if (!blocks.length) {
     if (!cover) return null;
     return (
-      <Section flush className="pb-12 md:pb-16 lg:pb-24">
+      <Section flush className="pb-10 md:pb-12 lg:pb-16">
         <CaseBlocksMotionRoot>
           <Container>
-            <figure className="mx-auto lg:w-8/12" data-reveal>
+            <figure className="w-full lg:max-w-[53rem]" data-reveal>
               <SmartImage
                 image={cover}
                 alt=""
-                sizes="(max-width: 1023px) 100vw, 67vw"
+                sizes="(max-width: 1023px) 100vw, 848px"
                 className={cn("w-full", FRAME[orientation(cover)].ratio)}
               />
-              <figcaption className="mt-2 text-small text-olive">Full frame</figcaption>
             </figure>
           </Container>
         </CaseBlocksMotionRoot>
@@ -78,11 +93,11 @@ export function CaseBlocks({ project }: { project: Project }) {
   }
 
   return (
-    <Section flush className="pb-12 md:pb-16 lg:pb-24">
+    <Section flush className="pb-10 md:pb-12 lg:pb-16">
       <CaseBlocksMotionRoot>
         <Container className="flex flex-col gap-10 md:gap-12 lg:gap-16">
           {blocks.map((img, i) => (
-            <Block key={img.mediaId} img={img} index={i} total={blocks.length} title={project.title} />
+            <Block key={img.mediaId} img={img} index={i} total={blocks.length} />
           ))}
         </Container>
       </CaseBlocksMotionRoot>

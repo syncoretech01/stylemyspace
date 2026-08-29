@@ -22,6 +22,23 @@ const CROP: Record<string, string> = {
   oceanside: "64% 50%",
 };
 
+/**
+ * Covers whose master carries the Wix scroll-cue disc burned into its top band.
+ *
+ * The frame is portrait and the master is square, so `object-position` cannot reach the artefact —
+ * a square source in a 4:5 box is cropped on the x axis only. Instead the image layer is made taller
+ * than the frame and pinned to its bottom edge, so the frame window shows the bottom 1/1.4 of the
+ * photograph and the disc (17%–25% of the square's height) never enters it. `sizes` states the
+ * layer's real rendered width, which is 1.4x the frame, so the srcset stays sharp.
+ * Remove once a retouched master ships (see the asset request in OPEN-ITEMS).
+ */
+const ARTEFACT_CROP: Record<string, { layer: string; sizes: string }> = {
+  "wellness-space-with-city-view": {
+    layer: "absolute bottom-0 left-0 h-[140%] w-full motion-on:w-[126%]! motion-on:-left-[13%]!",
+    sizes: "(min-width: 1024px) 74vw, 149vw",
+  },
+};
+
 type Featured = { project: Project; cover: ProjectImage };
 
 /**
@@ -69,13 +86,15 @@ export function FeaturedWork({ projects }: { projects: Project[] }) {
                   data-cursor="View"
                 >
                   <figure>
-                    <div className="card-frame aspect-[4/5] overflow-clip bg-taupe/40">
+                    <div className="card-frame relative aspect-[4/5] overflow-clip bg-taupe/40">
                       <SmartImage
                         image={cover}
-                        sizes="(min-width: 1024px) 42vw, 85vw"
+                        sizes={ARTEFACT_CROP[project.slug]?.sizes ?? "(min-width: 1024px) 42vw, 85vw"}
                         // Motion tiers: 13% of slack each side against a max parallax travel of
                         // 10% of the frame width, so an edge can never be exposed. Static/reduced: exact fit.
-                        className="h-full w-full motion-on:w-[126%]! motion-on:-ml-[13%]"
+                        className={
+                          ARTEFACT_CROP[project.slug]?.layer ?? "h-full w-full motion-on:w-[126%]! motion-on:-ml-[13%]"
+                        }
                         imgClassName="transition-transform duration-(--dur-short) ease-(--ease-out-expo) group-hover:scale-[1.04] group-focus-visible:scale-[1.04]"
                         objectPosition={CROP[project.slug]}
                         placeholderTodo={`${project.title} cover — pending image pipeline`}

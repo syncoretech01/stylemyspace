@@ -3,8 +3,8 @@ import type { Project, ProjectImage } from "@/lib/content.schema";
 import { getCover } from "@/lib/content";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
-import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Heading } from "@/components/ui/Heading";
+import { Eyebrow } from "@/components/ui/Eyebrow";
 import { SmartImage } from "@/components/ui/SmartImage";
 import { cn } from "@/components/ui/cn";
 import { FlipLink } from "@/components/transition/FlipLink";
@@ -32,6 +32,13 @@ const SIZES: Record<Span, string> = {
   4: "(min-width: 1024px) 34vw, (min-width: 768px) 50vw, 100vw",
 };
 
+/** The md-orphan tile spans the whole 2-up row, so it renders full-bleed between 768 and 1024. */
+const SIZES_ORPHAN: Record<Span, string> = {
+  7: "(min-width: 1024px) 58vw, 100vw",
+  5: "(min-width: 1024px) 42vw, 100vw",
+  4: "(min-width: 1024px) 34vw, 100vw",
+};
+
 /** Frame ratio follows the cover's own orientation so no subject is fought by the crop. */
 function frameRatio(cover: ProjectImage | null): string {
   if (!cover) return "aspect-[4/5]";
@@ -41,19 +48,36 @@ function frameRatio(cover: ProjectImage | null): string {
   return "aspect-square";
 }
 
+/** The lg restatement of each ratio, for the tile that widens to two columns at md. */
+const RATIO_LG: Record<string, string> = {
+  "aspect-[4/5]": "lg:aspect-[4/5]",
+  "aspect-[4/3]": "lg:aspect-[4/3]",
+  "aspect-square": "lg:aspect-square",
+};
+
+/**
+ * Covers whose master carries the Wix scroll-cue disc burned into its top band: the frame is cut
+ * landscape and anchored to the bottom edge so the artefact falls outside every crop. The disc sits
+ * between 17% and 25% of the square's height, so a 7/5 frame (top 28.6% dropped) clears it at every
+ * width. Remove the entry once a retouched master ships (see the asset request in OPEN-ITEMS).
+ */
+const ARTEFACT_CROP: Record<string, { ratio: string; position: string }> = {
+  "wellness-space-with-city-view": { ratio: "aspect-[7/5]", position: "50% 100%" },
+};
+
 export function PortfolioGrid({ projects, title, intro }: Props) {
-  // The live site titles the page "My Portfolio"; the h1 drops the possessive.
-  const heading = title.replace(/^my\s+/i, "") || "Portfolio";
+  const heading = title || "Portfolio";
   const count = projects.length;
+  // With an odd tile count the last tile would sit alone in the 2-up md grid beside an empty cell.
+  const orphanAtMd = projects.length % 2 === 1;
 
   return (
     <PortfolioGridMotionRoot>
-      <Section aria-labelledby="portfolio-title" className="pt-16 md:pt-20 lg:pt-24">
+      <Section aria-labelledby="portfolio-title">
         <Container>
           <header className="grid gap-y-6 lg:grid-cols-12 lg:gap-x-4">
             <div className="lg:col-span-8">
-              <Eyebrow data-reveal>Portfolio</Eyebrow>
-              <Heading as="h1" id="portfolio-title" size="h1" className="mt-2" data-reveal data-reveal-lcp>
+              <Heading as="h1" id="portfolio-title" size="h1" data-reveal data-reveal-lcp>
                 {heading}
               </Heading>
               <p className="measure mt-4 text-lead text-olive" data-reveal>
@@ -75,10 +99,18 @@ export function PortfolioGrid({ projects, title, intro }: Props) {
               // The 5-col tile of each two-up row steps down for an editorial stagger (desktop only).
               const pos = i % PATTERN.length;
               const stepped = pos === 1 || pos === 2;
+              const isLast = i === projects.length - 1;
+              const crop = ARTEFACT_CROP[p.slug];
+              const ratio = crop?.ratio ?? frameRatio(cover);
               return (
                 <li
                   key={p.slug}
-                  className={cn("tile relative", SPAN_CLASS[span], stepped && "lg:mt-16")}
+                  className={cn(
+                    "tile relative",
+                    SPAN_CLASS[span],
+                    stepped && "lg:mt-16",
+                    orphanAtMd && isLast && "md:col-span-2",
+                  )}
                   data-reveal
                 >
                   <FlipLink
@@ -88,22 +120,32 @@ export function PortfolioGrid({ projects, title, intro }: Props) {
                     data-cursor="View"
                   >
                     <figure>
-                      <div className={cn("tile-frame overflow-clip bg-taupe/40", frameRatio(cover))}>
+                      <div
+                        className={cn(
+                          "tile-frame overflow-clip bg-taupe/40",
+                          ratio,
+                          // The last tile fills the md row, so its frame turns landscape there.
+                          orphanAtMd && isLast && `md:aspect-[3/2] ${RATIO_LG[ratio] ?? ""}`,
+                        )}
+                      >
                         <SmartImage
                           image={cover}
-                          sizes={SIZES[span]}
+                          sizes={orphanAtMd && isLast ? SIZES_ORPHAN[span] : SIZES[span]}
                           lcp={i === 0}
                           quality={i === 0 ? 85 : 75}
                           className="h-full w-full"
                           imgClassName="transition-transform duration-(--dur-short) ease-(--ease-out-expo) group-hover:scale-[1.04] group-focus-visible:scale-[1.04]"
                           imgProps={{ "data-flip-id": p.slug }}
+                          objectPosition={crop?.position}
                           placeholderTodo={`${p.title} cover — pending image pipeline`}
                         />
                       </div>
                       <figcaption className="mt-2 flex items-start justify-between gap-3">
                         <div className="min-w-0">
                           {p.category ? <Eyebrow>{p.category}</Eyebrow> : <span aria-hidden="true" className="eyebrow block">&nbsp;</span>}
-                          <h2 className="mt-1 font-display text-h3 text-ink">
+                          {/* The 4-col tile is only ~266px wide at 1024; at h3 every title there
+                              breaks to a one-word second line, so the size steps down for that band. */}
+                          <h2 className="mt-1 font-display text-h3 text-ink lg:text-lead xl:text-h3">
                             {/* The title is the resting state; a duplicate waits under the mask and rolls in
                                 on hover / keyboard focus. Nothing here ever hides the name itself. */}
                             <span className="tile-name-mask relative inline-block overflow-clip align-bottom leading-[1.35]">

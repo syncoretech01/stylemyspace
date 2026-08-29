@@ -24,20 +24,23 @@ export function AboutIntro() {
   const areas = proseList(SITE.serviceAreas);
   return (
     <AboutMotionRoot>
-      <Section aria-labelledby="about-title" className="lg:pt-32" data-section="about-intro">
+      <Section aria-labelledby="about-title" className="lg:pt-24" data-section="about-intro">
         <Container>
-          <div className="grid gap-6 lg:grid-cols-12 lg:gap-8">
+          <div className="grid gap-6 lg:grid-cols-12 lg:gap-4 xl:gap-8">
             <div className="lg:col-span-10">
-              <Eyebrow data-reveal>About</Eyebrow>
+              <Eyebrow>About</Eyebrow>
+              {/* Drawn from SITE.positioning. Its hyphen/en-dash compounds ("woman-owned",
+                  "New York–based") broke mid-word and orphaned at display size on three of the five
+                  widths and cannot be held together at 390 without overflowing, so the statement
+                  uses the short words of the same sentence; the compounds are carried verbatim by
+                  the positioning line at lead size below. */}
               <Heading as="h1" id="about-title" size="display" className="mt-3 max-w-[13ch]" data-reveal data-reveal-lcp>
-                A woman-owned, New&nbsp;York–based interior design firm.
+                Spaces that balance ease and elegance.
               </Heading>
             </div>
             <div className="lg:col-span-7 lg:col-start-6">
-              <p className="measure text-lead" data-reveal>
-                {SITE.positioning}
-              </p>
-              <p className="measure mt-4 text-olive" data-reveal>
+              <p className="measure text-lead">{SITE.positioning}</p>
+              <p className="measure mt-4 text-olive">
                 {`Our work spans ${disciplines} interiors — ${services} — across the ${areas}.`}
               </p>
             </div>
@@ -54,19 +57,19 @@ export function AboutDesigner({ designer }: { designer: ProjectsFile["home"]["me
     <AboutMotionRoot>
       <Section tone="sand" aria-labelledby="designer-title" data-section="about-designer">
         <Container>
-          <div className="grid gap-6 md:grid-cols-12 md:gap-8 lg:items-start">
-            <div className="md:col-span-5">
+          <div className="grid gap-6 lg:grid-cols-12 lg:items-start lg:gap-4 xl:gap-8">
+            <div className="md:w-7/12 lg:col-span-6 lg:w-auto xl:col-span-5">
               <SmartImage
                 image={designer.portrait}
                 lcp
                 quality={85}
-                sizes="(min-width: 768px) 40vw, 100vw"
+                sizes="(min-width: 1024px) 40vw, (min-width: 768px) 60vw, 100vw"
                 className="aspect-[3/4]"
                 objectPosition="50% 35%"
                 placeholderTodo="portrait of Eve Jean — pending image pipeline"
               />
             </div>
-            <div className="md:col-span-6 md:col-start-7 lg:pt-6">
+            <div className="lg:col-span-6 lg:col-start-7 lg:pt-6 xl:col-span-7 xl:col-start-6">
               <Eyebrow data-reveal>{designer.heading}</Eyebrow>
               <Heading id="designer-title" className="mt-3" data-reveal>
                 <span className="whitespace-nowrap">{designer.role}:</span> {designer.name}
@@ -106,7 +109,7 @@ export function AboutApproach() {
     <AboutMotionRoot>
       <Section aria-labelledby="approach-title" data-section="about-approach">
         <Container>
-          <div className="grid gap-4 lg:grid-cols-12 lg:gap-8">
+          <div className="grid gap-4 lg:grid-cols-12 lg:gap-4 xl:gap-8">
             <div className="lg:col-span-5">
               <Eyebrow data-reveal>Approach</Eyebrow>
               <Heading id="approach-title" className="mt-3 max-w-[12ch]" data-reveal>
@@ -118,7 +121,7 @@ export function AboutApproach() {
             </p>
           </div>
 
-          <ol className="mt-10 grid gap-6 md:mt-14 md:grid-cols-3 md:gap-4" role="list">
+          <ol className="mt-10 grid gap-6 sm:grid-cols-2 md:mt-14 md:gap-4 lg:grid-cols-3" role="list">
             {PRINCIPLES.map((p, i) => (
               <li key={p.title} className="border-t border-taupe pt-3" data-reveal>
                 <span className="font-display text-h2 leading-none text-brass tabular-nums" aria-hidden>
@@ -142,6 +145,7 @@ export function AboutApproach() {
                   className="rounded-xs underline decoration-1 underline-offset-4 transition-colors duration-(--dur-micro) hover:text-ink"
                 >
                   &ldquo;{post.title}&rdquo;
+                  <span className="visually-hidden"> (opens in a new tab)</span>
                 </a>
               </>
             )}

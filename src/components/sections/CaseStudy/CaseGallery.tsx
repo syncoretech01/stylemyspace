@@ -1,5 +1,4 @@
 import type { Project } from "@/lib/content.schema";
-import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Heading } from "@/components/ui/Heading";
 import { SmartImage } from "@/components/ui/SmartImage";
 import { CaseGalleryMotionRoot } from "./CaseGalleryMotionRoot";
@@ -26,12 +25,10 @@ export function CaseGallery({ project }: { project: Project }) {
       className="relative bg-sand py-12 text-ink motion-full:overflow-x-clip md:py-16 lg:py-24 [--gutter:1.5rem] md:[--gutter:3rem] lg:[--gutter:max(5rem,calc((100%-90rem)/2+5rem))]"
     >
       <div className="flex flex-wrap items-end justify-between gap-4 ps-(--gutter) pe-(--gutter)">
-        <div>
-          <Eyebrow data-reveal>Gallery</Eyebrow>
-          <Heading size="h2" className="mt-2" data-reveal>
-            {project.title}
-          </Heading>
-        </div>
+        {/* "Gallery", not the project title: the h1 two screens up already names the project. */}
+        <Heading size="h2" data-reveal>
+          Gallery
+        </Heading>
         <GalleryControls scrollerId={scrollerId} total={gallery.length} />
       </div>
 
