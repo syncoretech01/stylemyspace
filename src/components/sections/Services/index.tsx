@@ -24,7 +24,7 @@ export function ServicesIntro() {
           <div className="grid gap-6 lg:grid-cols-12 lg:gap-8">
             <div className="lg:col-span-10">
               <Eyebrow data-reveal>Services</Eyebrow>
-              <Heading as="h1" id="services-title" size="display" className="mt-3 max-w-[13ch]" data-reveal>
+              <Heading as="h1" id="services-title" size="display" className="mt-3 max-w-[13ch]" data-reveal data-reveal-lcp>
                 Interior design for how you live and&nbsp;work.
               </Heading>
             </div>

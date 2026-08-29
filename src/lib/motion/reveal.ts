@@ -7,10 +7,16 @@
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { dist, dur, ease, stagger } from "@/lib/motion/tokens";
 
+/** True for a reveal that is (or wraps) the LCP candidate — see the matching rule in globals.css. */
+const carriesLcp = (el: HTMLElement) => el.hasAttribute("data-reveal-lcp") || !!el.querySelector("[data-lcp]");
+
 export function revealIn(root: HTMLElement, selector = "[data-reveal]") {
   const targets = Array.from(root.querySelectorAll<HTMLElement>(selector));
   if (!targets.length) return;
-  gsap.set(targets, { opacity: 0, y: dist.rise });
+  // An opacity-0 paint is not an LCP candidate, so the LCP element only ever rises — never fades.
+  const [lcp, rest] = [targets.filter(carriesLcp), targets.filter((el) => !carriesLcp(el))];
+  if (rest.length) gsap.set(rest, { opacity: 0, y: dist.rise });
+  if (lcp.length) gsap.set(lcp, { opacity: 1, y: dist.rise });
   const show = (els: Element[]) =>
     gsap.to(els, { opacity: 1, y: 0, duration: dur.enter, ease: ease.out, stagger: stagger.items, overwrite: true });
   ScrollTrigger.batch(targets, { start: "top 92%", once: true, batchMax: 6, onEnter: show });

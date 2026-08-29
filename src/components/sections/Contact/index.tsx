@@ -25,7 +25,7 @@ export function ContactIntro() {
           <div className="grid gap-6 lg:grid-cols-12 lg:gap-8">
             <div className="lg:col-span-10">
               <Eyebrow data-reveal>Contact</Eyebrow>
-              <Heading as="h1" id="contact-title" size="display" className="mt-3 max-w-[12ch]" data-reveal>
+              <Heading as="h1" id="contact-title" size="display" className="mt-3 max-w-[12ch]" data-reveal data-reveal-lcp>
                 Tell us about your&nbsp;space.
               </Heading>
             </div>

@@ -29,7 +29,7 @@ export function AboutIntro() {
           <div className="grid gap-6 lg:grid-cols-12 lg:gap-8">
             <div className="lg:col-span-10">
               <Eyebrow data-reveal>About</Eyebrow>
-              <Heading as="h1" id="about-title" size="display" className="mt-3 max-w-[13ch]" data-reveal>
+              <Heading as="h1" id="about-title" size="display" className="mt-3 max-w-[13ch]" data-reveal data-reveal-lcp>
                 A woman-owned, New&nbsp;York–based interior design firm.
               </Heading>
             </div>

@@ -153,6 +153,17 @@ html[data-motion="mobile"] [data-motion-root]:not([data-motion-ready]) [data-rev
   translate: 0 24px;
   animation: reveal-fallback 500ms var(--ease-out-expo) 4s forwards;
 }
+
+/*
+ * …except a reveal that IS or CONTAINS the page's LCP candidate. Chrome does not treat an
+ * opacity-0 paint as an LCP candidate, so hiding it until the motion chunk loads pushes LCP out by
+ * about a second on text-led routes. These still rise into place; they are simply never transparent.
+ */
+html[data-motion="full"] [data-motion-root]:not([data-motion-ready]) [data-reveal]:is([data-reveal-lcp], :has([data-lcp])),
+html[data-motion="mobile"] [data-motion-root]:not([data-motion-ready]) [data-reveal]:is([data-reveal-lcp], :has([data-lcp])) {
+  opacity: 1;
+}
+
 @keyframes reveal-fallback {
   to { opacity: 1; translate: 0 0; }
 }
