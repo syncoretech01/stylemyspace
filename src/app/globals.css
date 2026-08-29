@@ -26,7 +26,8 @@
   --breakpoint-2xl: 96rem;
 
   --container-content: 90rem;
-  --container-prose: 68ch;
+  /* Tuned against rendered copy: 68ch measured ~93 characters at body size, over the 60–75 target. */
+  --container-prose: 52ch;
 
   --radius-*: initial;
   --radius-xs: 2px;
@@ -104,7 +105,13 @@
   }
   p { text-wrap: pretty; }
   ::selection { background: var(--color-sand); color: var(--color-ink); }
-  :focus-visible { outline: 2px solid var(--color-olive); outline-offset: 4px; border-radius: 2px; }
+  :focus-visible {
+    outline: 2px solid var(--color-olive);
+    outline-offset: 4px;
+    border-radius: 2px;
+    /* The ring must paint at its token value on the first frame, never mid-colour-transition. */
+    transition-property: none;
+  }
   :focus:not(:focus-visible) { outline: none; }
   [data-theme="dark"] :focus-visible { outline-color: var(--color-sand); }
   [data-theme="dark"] ::selection { background: var(--color-olive); color: var(--color-bone); }
@@ -126,6 +133,13 @@
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+/* Anything scrolled to by focus or an anchor clears the sticky header. */
+@layer base {
+  :where(a, button, [tabindex], :target, [id]) {
+    scroll-margin-top: calc(var(--header-h) + 1.5rem);
+  }
 }
 
 @utility measure {
@@ -171,8 +185,9 @@ html[data-motion="mobile"] [data-motion-root]:not([data-motion-ready]) [data-rev
 /* Skip link */
 .skip-link {
   position: fixed;
-  top: 1rem;
-  left: 1rem;
+  /* Below the sticky header (it used to cover the wordmark) and squared to the content container. */
+  top: calc(var(--header-h) + 0.75rem);
+  left: max(0.75rem, calc((100vw - var(--container-content)) / 2 + 2.5rem));
   z-index: 200;
   padding: 0.75rem 1.25rem;
   background: var(--color-olive);
@@ -180,7 +195,7 @@ html[data-motion="mobile"] [data-motion-root]:not([data-motion-ready]) [data-rev
   font-size: var(--text-small);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  transform: translateY(-200%);
+  transform: translateY(calc(-100% - var(--header-h) - 1.5rem));
   transition: transform var(--dur-micro) var(--ease-out-expo);
 }
 /* The ring stays olive: these links sit on bone/sand, where sand would be 1.23:1. */
@@ -193,7 +208,13 @@ html[data-motion="mobile"] [data-motion-root]:not([data-motion-ready]) [data-rev
  * 390 leaves 129px unreachable). The footer stacks as the viewport narrows, so the guard is
  * per-breakpoint; anywhere it does not apply, the footer is an ordinary block at the end of the page.
  */
-main { position: relative; z-index: 10; background: var(--color-bone); }
+main {
+  position: relative;
+  z-index: 10;
+  background: var(--color-bone);
+  /* Short pages (404) would otherwise let the pinned footer show through the first viewport. */
+  min-block-size: calc(100svh - var(--header-h));
+}
 @media (min-width: 64rem) and (min-height: 40rem) {
   footer[data-site-footer] { position: sticky; bottom: 0; z-index: 0; }
 }

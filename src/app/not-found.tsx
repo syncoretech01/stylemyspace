@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/Button";
 
 export default function NotFound() {
   return (
-    <Section className="min-h-[70svh]">
+    <Section className="grid min-h-[70svh] content-center">
       <Container>
         <Eyebrow>404</Eyebrow>
         <Heading as="h1" size="h1" className="mt-2">
