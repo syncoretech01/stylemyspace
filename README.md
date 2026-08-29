@@ -98,11 +98,12 @@ pnpm qa:webgl               # real-Chrome WebGL context check
 | Keyboard | `pnpm qa` tabs each route at 1440, screenshots every focus state and asserts the skip link comes first and focus is never lost. |
 | WebGL | `pnpm qa:webgl` asserts one context at most, disposal on navigation and a clean console in real Chrome. |
 | Preloader | `qa/preloader.spec.ts` asserts it runs once per session, finishes inside 2.5 s, never reappears on navigation and never renders under reduced motion. |
+| Screenshot QA | `pnpm qa` covers 13 routes × 5 widths plus reduced-motion and keyboard-focus passes — 91 cells, **0 FAIL / 0 WARN** on the final run. |
 | Bundles | `pnpm qa:bundle --strict` asserts three.js, GSAP, Lenis and the content loader are absent from every route's initial JS. |
 | Facts | Every rendered route was scanned for fabricated-claim patterns (awards, press logos, testimonials, statistics, founding dates, team sizes, budgets, completion dates, superlatives): zero hits. "Certified MWBE" and "over 5 years of experience" appear only where the live bio is quoted verbatim; the unverifiable press mention is not rendered at all; pricing appears only on `/services` with the three real Book Online figures. |
 | Placeholders | The built HTML contains exactly eight `{{TODO}}` tokens, all of them the Process phase cards on `/` (the firm documents no process anywhere). `pnpm content:check --strict` passes with zero TODO alt text. |
 
-### Lighthouse (release2, HTTP/2, median of 2 runs per cell)
+### Lighthouse (`final`, HTTP/2, median of 2 runs per cell)
 
 **24 of 24 cells pass.** Thresholds: Performance ≥ 85 desktop / ≥ 75 mobile, Accessibility ≥ 95,
 Best Practices ≥ 95, SEO ≥ 95, LCP < 2500 ms, CLS < 0.1.
@@ -110,29 +111,29 @@ Best Practices ≥ 95, SEO ≥ 95, LCP < 2500 ms, CLS < 0.1.
 | Route | Mode | Perf | A11y | BP | SEO | LCP | CLS | TBT | Status |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---|
 | / | desktop | 99 | 100 | 100 | 100 | 600 ms | 0.001 | 0 ms | PASS |
-| / | mobile | 98 | 100 | 100 | 100 | 2,361 ms | 0.000 | 19 ms | PASS |
-| /portfolio | desktop | 100 | 100 | 100 | 100 | 483 ms | 0.000 | 0 ms | PASS |
-| /portfolio | mobile | 98 | 100 | 100 | 100 | 2,253 ms | 0.000 | 6 ms | PASS |
-| /portfolio/oceanside | desktop | 100 | 100 | 100 | 100 | 571 ms | 0.000 | 0 ms | PASS |
-| /portfolio/oceanside | mobile | 97 | 100 | 100 | 100 | 2,404 ms | 0.000 | 6 ms | PASS |
-| /portfolio/las-olas | desktop | 100 | 100 | 100 | 100 | 532 ms | 0.000 | 0 ms | PASS |
-| /portfolio/las-olas | mobile | 98 | 100 | 100 | 100 | 2,254 ms | 0.000 | 5 ms | PASS |
-| /portfolio/aromatherapy-and-natural-elements | desktop | 99 | 100 | 100 | 100 | 611 ms | 0.000 | 0 ms | PASS |
-| /portfolio/aromatherapy-and-natural-elements | mobile | 98 | 100 | 100 | 100 | 2,357 ms | 0.000 | 5 ms | PASS |
-| /portfolio/wellness-space-with-city-view | desktop | 100 | 100 | 100 | 100 | 479 ms | 0.000 | 0 ms | PASS |
-| /portfolio/wellness-space-with-city-view | mobile | 99 | 100 | 100 | 100 | 1,654 ms | 0.000 | 7 ms | PASS |
-| /portfolio/classroom-designs | desktop | 100 | 100 | 100 | 100 | 544 ms | 0.000 | 0 ms | PASS |
-| /portfolio/classroom-designs | mobile | 98 | 100 | 100 | 100 | 2,236 ms | 0.000 | 5 ms | PASS |
-| /portfolio/wellness-space-designs | desktop | 100 | 100 | 100 | 100 | 584 ms | 0.000 | 0 ms | PASS |
-| /portfolio/wellness-space-designs | mobile | 98 | 100 | 100 | 100 | 2,284 ms | 0.000 | 7 ms | PASS |
-| /portfolio/modern-interior-design | desktop | 100 | 100 | 100 | 100 | 519 ms | 0.000 | 0 ms | PASS |
-| /portfolio/modern-interior-design | mobile | 99 | 100 | 100 | 100 | 1,803 ms | 0.000 | 7 ms | PASS |
-| /services | desktop | 100 | 100 | 100 | 100 | 437 ms | 0.000 | 0 ms | PASS |
-| /services | mobile | 99 | 100 | 100 | 100 | 1,578 ms | 0.000 | 7 ms | PASS |
-| /about | desktop | 100 | 100 | 100 | 100 | 459 ms | 0.000 | 0 ms | PASS |
-| /about | mobile | 98 | 100 | 100 | 100 | 2,209 ms | 0.000 | 9 ms | PASS |
-| /contact | desktop | 100 | 100 | 100 | 100 | 418 ms | 0.000 | 0 ms | PASS |
-| /contact | mobile | 99 | 100 | 100 | 100 | 1,864 ms | 0.000 | 9 ms | PASS |
+| / | mobile | 97 | 100 | 100 | 100 | 2,404 ms | 0.000 | 9 ms | PASS |
+| /portfolio | desktop | 100 | 100 | 100 | 100 | 483 ms | 0.001 | 0 ms | PASS |
+| /portfolio | mobile | 99 | 100 | 100 | 100 | 1,878 ms | 0.000 | 6 ms | PASS |
+| /portfolio/oceanside | desktop | 100 | 100 | 100 | 100 | 572 ms | 0.001 | 0 ms | PASS |
+| /portfolio/oceanside | mobile | 97 | 100 | 100 | 100 | 2,403 ms | 0.000 | 5 ms | PASS |
+| /portfolio/las-olas | desktop | 100 | 100 | 100 | 100 | 511 ms | 0.001 | 0 ms | PASS |
+| /portfolio/las-olas | mobile | 98 | 100 | 100 | 100 | 2,208 ms | 0.000 | 6 ms | PASS |
+| /portfolio/aromatherapy-and-natural-elements | desktop | 100 | 100 | 100 | 100 | 610 ms | 0.001 | 0 ms | PASS |
+| /portfolio/aromatherapy-and-natural-elements | mobile | 98 | 100 | 100 | 100 | 2,388 ms | 0.000 | 6 ms | PASS |
+| /portfolio/wellness-space-with-city-view | desktop | 100 | 100 | 100 | 100 | 491 ms | 0.001 | 0 ms | PASS |
+| /portfolio/wellness-space-with-city-view | mobile | 100 | 100 | 100 | 100 | 1,727 ms | 0.000 | 6 ms | PASS |
+| /portfolio/classroom-designs | desktop | 100 | 100 | 100 | 100 | 544 ms | 0.001 | 0 ms | PASS |
+| /portfolio/classroom-designs | mobile | 99 | 100 | 100 | 100 | 1,877 ms | 0.000 | 5 ms | PASS |
+| /portfolio/wellness-space-designs | desktop | 100 | 100 | 100 | 100 | 583 ms | 0.001 | 0 ms | PASS |
+| /portfolio/wellness-space-designs | mobile | 98 | 100 | 100 | 100 | 2,327 ms | 0.000 | 5 ms | PASS |
+| /portfolio/modern-interior-design | desktop | 100 | 100 | 100 | 100 | 521 ms | 0.001 | 0 ms | PASS |
+| /portfolio/modern-interior-design | mobile | 98 | 100 | 100 | 100 | 2,177 ms | 0.000 | 6 ms | PASS |
+| /services | desktop | 100 | 100 | 100 | 100 | 437 ms | 0.001 | 0 ms | PASS |
+| /services | mobile | 99 | 100 | 100 | 100 | 1,982 ms | 0.000 | 5 ms | PASS |
+| /about | desktop | 100 | 100 | 100 | 100 | 457 ms | 0.001 | 0 ms | PASS |
+| /about | mobile | 98 | 100 | 100 | 100 | 2,208 ms | 0.004 | 10 ms | PASS |
+| /contact | desktop | 100 | 100 | 100 | 100 | 417 ms | 0.001 | 0 ms | PASS |
+| /contact | mobile | 99 | 100 | 100 | 100 | 1,862 ms | 0.000 | 8 ms | PASS |
 
 Reproduce with `pnpm build && pnpm start`, `pnpm qa:h2`, then
 `NODE_TLS_REJECT_UNAUTHORIZED=0 pnpm qa:lighthouse --base-url=https://localhost:3443 --runs=2 --chrome-flags=--ignore-certificate-errors`.
