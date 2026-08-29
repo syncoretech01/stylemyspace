@@ -88,4 +88,16 @@ pnpm qa:bundle              # asserts three/gsap/lenis are not in the initial bu
 pnpm qa:webgl               # real-Chrome WebGL context check
 ```
 
+### Verified behaviours
+
+| Path | How it was checked |
+|---|---|
+| Reduced motion | `prefers-reduced-motion: reduce` renders every page in its final state on first paint, with no WebGL, no Lenis and no pinning (`pnpm qa` runs every route at 1440 and 390 in this mode). |
+| Mobile | Touch/narrow viewports drop the 3D hero, the tilt effects and the horizontal pin, and keep native scrolling. |
+| No JavaScript | Every route renders its heading, copy, images (`<noscript>` fallbacks) and the contact form; the preloader stays `display: none`. |
+| Keyboard | `pnpm qa` tabs each route at 1440, screenshots every focus state and asserts the skip link comes first and focus is never lost. |
+| WebGL | `pnpm qa:webgl` asserts one context at most, disposal on navigation and a clean console in real Chrome. |
+| Preloader | `qa/preloader.spec.ts` asserts it runs once per session, finishes inside 2.5 s, never reappears on navigation and never renders under reduced motion. |
+| Bundles | `pnpm qa:bundle --strict` asserts three.js, GSAP, Lenis and the content loader are absent from every route's initial JS. |
+
 Open questions and every `{{TODO}}` placeholder are tracked in [OPEN-ITEMS.md](OPEN-ITEMS.md). The design direction and reference sites are in [DIRECTION.md](DIRECTION.md).
