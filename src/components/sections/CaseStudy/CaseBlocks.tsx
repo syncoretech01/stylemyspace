@@ -17,9 +17,18 @@ function Block({ img, index, total, title }: { img: ProjectImage; index: number;
   const frame = FRAME[orientation(img)];
   const imageLeft = index % 2 === 0;
   return (
-    <div className="grid grid-cols-12 gap-x-4 gap-y-3">
+    <div className="grid grid-cols-12 gap-x-4 gap-y-3" data-block>
       <figure className={cn("col-span-12", frame.span, imageLeft ? "lg:col-start-1" : "lg:col-end-13")} data-reveal>
-        <SmartImage image={img} sizes={frame.sizes} objectPosition={focal(img)} className={cn("w-full", frame.ratio)} />
+        <div className={cn("overflow-clip", frame.ratio)} data-parallax-frame>
+          {/* The parallax layer is scaled up by CaseBlocks.motion.ts on motion tiers so the scrubbed
+              travel can never expose an edge; the static markup is an exact fit. */}
+          <SmartImage
+            image={img}
+            sizes={frame.sizes}
+            objectPosition={focal(img)}
+            className="h-full w-full"
+          />
+        </div>
         {img.caption && <figcaption className="mt-2 text-small text-olive">{img.caption}</figcaption>}
       </figure>
 

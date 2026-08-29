@@ -73,7 +73,9 @@ export function FeaturedWork({ projects }: { projects: Project[] }) {
                       <SmartImage
                         image={cover}
                         sizes="(min-width: 1024px) 42vw, 85vw"
-                        className="h-full w-full"
+                        // Motion tiers: 13% of slack each side against a max parallax travel of
+                        // 10% of the frame width, so an edge can never be exposed. Static/reduced: exact fit.
+                        className="h-full w-full motion-on:w-[126%]! motion-on:-ml-[13%]"
                         imgClassName="transition-transform duration-(--dur-short) ease-(--ease-out-expo) group-hover:scale-[1.04] group-focus-visible:scale-[1.04]"
                         objectPosition={CROP[project.slug]}
                         placeholderTodo={`${project.title} cover — pending image pipeline`}
