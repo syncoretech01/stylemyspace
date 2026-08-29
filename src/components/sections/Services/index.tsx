@@ -40,7 +40,7 @@ export function ServicesIntro() {
                         href={`/services#${d.id}` as Route}
                         className="inline-flex min-h-6 items-center gap-1 rounded-xs eyebrow text-olive underline-offset-6 transition-colors duration-(--dur-micro) hover:text-ink hover:underline"
                       >
-                        <span className="text-brass tabular-nums" aria-hidden>
+                        <span className="text-olive tabular-nums" aria-hidden>
                           {pad(i + 1)}
                         </span>
                         {d.label}
@@ -96,7 +96,7 @@ export function DisciplinesList() {
                   </div>
                   <div className={cn("md:col-span-6", flip ? "md:order-1 md:col-start-1" : "md:col-start-7")}>
                     <span className="eyebrow block text-olive tabular-nums" aria-hidden>
-                      <span className="text-brass">{pad(i + 1)}</span> / {total}
+                      <span className="text-ink">{pad(i + 1)}</span> / {total}
                     </span>
                     <h3 className="mt-3 font-display text-h2">{d.label}</h3>
                     <p className="measure mt-3 text-lead">{d.blurb}</p>
@@ -128,7 +128,7 @@ export function ServiceList() {
             <ol className="border-t border-taupe lg:col-span-8" role="list">
               {SITE.services.map((s, i) => (
                 <li key={s} className="grid grid-cols-12 items-baseline gap-2 border-b border-taupe py-3 md:py-4" data-reveal>
-                  <span className="col-span-2 font-display text-h3 leading-none text-brass tabular-nums md:col-span-1" aria-hidden>
+                  <span className="col-span-2 font-display text-h3 leading-none text-olive tabular-nums md:col-span-1" aria-hidden>
                     {pad(i + 1)}
                   </span>
                   <span className="col-span-10 font-display text-h1 md:col-span-11">{s}</span>

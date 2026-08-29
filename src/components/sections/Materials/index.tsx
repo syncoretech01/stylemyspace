@@ -115,7 +115,7 @@ export function Materials({ materials }: { materials: Material[] }) {
                   />
                   <figcaption className="mt-2">
                     <span className="eyebrow flex items-baseline gap-1.5 text-olive">
-                      <span aria-hidden className="text-brass">
+                      <span aria-hidden className="text-olive">
                         {String(i + 1).padStart(2, "0")}
                       </span>
                       {credit && <span>{credit}</span>}

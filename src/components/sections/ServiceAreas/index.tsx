@@ -35,7 +35,7 @@ export function ServiceAreas() {
                   className={`${styles.link} group flex min-h-6 items-baseline gap-3 py-3 md:gap-4 md:py-4`}
                   data-cursor="Open"
                 >
-                  <span aria-hidden className="eyebrow w-[2.5ch] shrink-0 text-brass">
+                  <span aria-hidden className="eyebrow w-[2.5ch] shrink-0 text-olive">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <span className={`${styles.word} font-display text-h2 text-ink`}>{area}</span>

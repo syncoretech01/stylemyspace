@@ -181,6 +181,14 @@ footer[data-site-footer] { position: sticky; bottom: 0; z-index: 0; }
   footer[data-site-footer] { position: static; }
 }
 
+/*
+ * Brass usage rule (contrast-verified):
+ *   brass on bone 3.05:1 · on olive-deep 3.45:1 · on sand 2.47:1
+ * → brass is allowed ONLY for hairlines, rules, and display-size text (≥ 24px) on bone or olive-deep.
+ *   Never for text under 24px, and never on sand. Use olive (5.81:1 on bone, 4.70:1 on sand)
+ *   or sand (8.52:1 on olive-deep) instead.
+ */
+
 /* Generic hairline rule */
 .rule { height: 1px; background: var(--color-taupe); }
 

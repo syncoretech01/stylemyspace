@@ -107,7 +107,7 @@ export function PortfolioGrid({ projects, title, intro }: Props) {
                           </span>
                         </h2>
                       </div>
-                      <span className="shrink-0 pt-0.5 font-display text-lead text-brass tabular-nums" aria-hidden="true">
+                      <span className="shrink-0 pt-0.5 font-display text-lead text-olive tabular-nums" aria-hidden="true">
                         {String(i + 1).padStart(2, "0")}
                       </span>
                     </figcaption>

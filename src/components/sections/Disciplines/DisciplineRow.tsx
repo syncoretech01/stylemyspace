@@ -52,7 +52,7 @@ export function DisciplineRow({ discipline: d, image, index }: Props) {
 
         <div className={`${styles.content} p-3 lg:p-4`}>
           <div className={styles.label}>
-            <span aria-hidden className="eyebrow text-brass">
+            <span aria-hidden className="eyebrow text-sand">
               {String(index + 1).padStart(2, "0")}
             </span>
             <h3 id={labelId} className="font-display text-h2 text-bone">
