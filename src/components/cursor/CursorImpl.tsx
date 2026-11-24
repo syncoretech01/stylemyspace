@@ -5,88 +5,78 @@ import { useEffect, useRef } from "react";
 import { gsap } from "@/lib/gsap";
 import { dur, ease } from "@/lib/motion/tokens";
 
-/** Set to true to hide the native cursor (see OPEN-ITEMS OI-27). Kept visible for accessibility. */
-export const HIDE_NATIVE_CURSOR = false;
-
-const INTERACTIVE = "a, button, [role='button'], input, textarea, select, summary, label";
-
+/**
+ * A small "View" chip that trails the pointer over project photographs ([data-cursor] frames) and is
+ * not there at all the rest of the time. The native cursor is never hidden. It used to be an opaque
+ * olive disc over every link and button on the site, which covered the label being pointed at.
+ */
 export default function CursorImpl() {
-  const dotRef = useRef<HTMLDivElement>(null);
-  const labelRef = useRef<HTMLSpanElement>(null);
+  const chipRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
   useEffect(() => {
-    const dot = dotRef.current;
-    const label = labelRef.current;
-    if (!dot || !label) return;
+    const chip = chipRef.current;
+    if (!chip) return;
     if (window.matchMedia("(forced-colors: active)").matches) return;
 
     const ctx = gsap.context(() => {
-      gsap.set(dot, { xPercent: -50, yPercent: -50, autoAlpha: 0, scale: 1 });
-      const x = gsap.quickTo(dot, "x", { duration: dur.micro, ease: ease.out });
-      const y = gsap.quickTo(dot, "y", { duration: dur.micro, ease: ease.out });
+      gsap.set(chip, { xPercent: -50, yPercent: -50, autoAlpha: 0, scale: 0.9 });
+      const x = gsap.quickTo(chip, "x", { duration: dur.micro, ease: ease.out });
+      const y = gsap.quickTo(chip, "y", { duration: dur.micro, ease: ease.out });
       let shown = false;
-      let scale = 1;
 
-      const setScale = (next: number, text?: string) => {
-        if (text !== undefined) label.textContent = text;
-        if (next === scale) return;
-        scale = next;
-        gsap.to(dot, { scale: next, duration: dur.micro, ease: ease.out, overwrite: "auto" });
-        gsap.to(label, { autoAlpha: text ? 1 : 0, duration: dur.micro, ease: ease.out, overwrite: "auto" });
+      const show = (text: string, e: PointerEvent) => {
+        chip.textContent = text;
+        if (shown) return;
+        shown = true;
+        gsap.set(chip, { x: e.clientX, y: e.clientY });
+        gsap.to(chip, { autoAlpha: 1, scale: 1, duration: dur.micro, ease: ease.out, overwrite: "auto" });
+      };
+      const hide = () => {
+        if (!shown) return;
+        shown = false;
+        gsap.to(chip, { autoAlpha: 0, scale: 0.9, duration: dur.micro / 2, ease: ease.out, overwrite: "auto" });
       };
 
       const onMove = (e: PointerEvent) => {
-        if (e.pointerType !== "mouse") return;
+        if (e.pointerType !== "mouse" || !shown) return;
         x(e.clientX);
         y(e.clientY);
-        if (!shown) {
-          shown = true;
-          gsap.to(dot, { autoAlpha: 1, duration: dur.micro });
-        }
       };
       const onOver = (e: PointerEvent) => {
-        const target = e.target as Element | null;
-        const labelled = target?.closest<HTMLElement>("[data-cursor]");
-        if (labelled?.dataset.cursor) return setScale(3.5, labelled.dataset.cursor);
-        if (target?.closest(INTERACTIVE)) return setScale(2, "");
-        setScale(1, "");
-      };
-      const hide = () => {
-        shown = false;
-        gsap.to(dot, { autoAlpha: 0, duration: dur.micro });
+        if (e.pointerType !== "mouse") return;
+        const frame = (e.target as Element | null)?.closest<HTMLElement>("[data-cursor]");
+        if (frame?.dataset.cursor) show(frame.dataset.cursor, e);
+        else hide();
       };
       const onVis = () => document.visibilityState === "hidden" && hide();
 
       document.addEventListener("pointermove", onMove, { passive: true });
       document.addEventListener("pointerover", onOver, { passive: true });
       document.addEventListener("pointerleave", hide);
+      document.addEventListener("pointerdown", hide, { passive: true });
       document.addEventListener("visibilitychange", onVis);
-      if (HIDE_NATIVE_CURSOR) document.documentElement.style.cursor = "none";
       return () => {
         document.removeEventListener("pointermove", onMove);
         document.removeEventListener("pointerover", onOver);
         document.removeEventListener("pointerleave", hide);
+        document.removeEventListener("pointerdown", hide);
         document.removeEventListener("visibilitychange", onVis);
-        document.documentElement.style.cursor = "";
       };
     });
     return () => ctx.revert();
   }, []);
 
-  // Route change: whatever was under the pointer is gone; drop the label.
+  // Route change: whatever was under the pointer is gone.
   useEffect(() => {
-    if (labelRef.current) labelRef.current.textContent = "";
-    if (dotRef.current) gsap.to(dotRef.current, { scale: 1, duration: dur.micro });
+    if (chipRef.current) gsap.set(chipRef.current, { autoAlpha: 0 });
   }, [pathname]);
 
   return (
     <div
-      ref={dotRef}
+      ref={chipRef}
       aria-hidden="true"
-      className="pointer-events-none fixed left-0 top-0 z-[90] flex size-3 items-center justify-center rounded-full bg-olive shadow-[0_0_0_1px_rgba(247,244,237,0.55)]"
-    >
-      <span ref={labelRef} className="text-[3px] font-sans uppercase tracking-[0.12em] text-bone opacity-0" />
-    </div>
+      className="eyebrow pointer-events-none invisible fixed top-0 left-0 z-[90] rounded-xs bg-bone px-2 py-1 text-ink"
+    />
   );
 }

@@ -25,6 +25,7 @@ export function localBusinessGraph() {
           addressCountry: SITE.address.country,
         },
         areaServed: SITE.serviceAreas.map((name) => ({ "@type": "Place", name })),
+        founder: { "@type": "Person", name: "Eve Jean", jobTitle: "Founder & Principal Designer" },
         sameAs: [SITE.social.instagram.href, SITE.social.facebook.href, SITE.social.linkedin.href],
         knowsAbout: [...SITE.services],
       },
@@ -58,6 +59,24 @@ export function projectGraph(project: Project) {
       caption: img.caption ?? img.alt,
       creator: { "@id": businessId },
       copyrightHolder: { "@id": businessId },
+    })),
+  };
+}
+
+export function breadcrumbGraph(project: Project) {
+  const trail = [
+    { name: "Home", path: "/" },
+    { name: "Portfolio", path: "/portfolio" },
+    { name: project.title, path: `/portfolio/${project.slug}` },
+  ];
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: trail.map((step, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: step.name,
+      item: absoluteUrl(step.path),
     })),
   };
 }

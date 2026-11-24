@@ -40,6 +40,10 @@ export const ProjectSchema = z
     order: z.number().int().nonnegative(),
     /** Index into images[] used for the tile, the case-study hero and OG image. null when no images. */
     cover: z.number().int().nonnegative().nullable(),
+    /** Images that open the case study's editorial spreads, in order. The rest follow in page order. */
+    lead: z.array(z.string().regex(MEDIA_ID)).default([]),
+    /** Kept on file, never shown: a second frame of a view the case study already has. */
+    nearDuplicates: z.array(z.string().regex(MEDIA_ID)).default([]),
     published: z.boolean().default(true),
     images: z.array(ImageSchema),
   })
@@ -55,6 +59,10 @@ export const MaterialSchema = z.object({
   quoteSource: z.string().url(),
   image: ImageRefSchema.nullable(),
   objectPosition: z.string().default("50% 50%"),
+  /** Square detail to cut from the photograph: centre x, centre y, side as a fraction of the short edge. */
+  crop: z.tuple([z.number(), z.number(), z.number()]).optional(),
+  /** Describes the detail. Without it the whole photograph's alt is used. */
+  alt: z.string().min(1).optional(),
 });
 
 export const ProjectsFileSchema = z.object({

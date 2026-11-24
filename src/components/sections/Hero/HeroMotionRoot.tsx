@@ -11,5 +11,5 @@ const load = () => import("./Hero.motion");
  * via `closest("section")`) and lazily mounts ./Hero.motion.ts on the full / mobile tiers.
  */
 export function HeroMotionRoot(props: ComponentPropsWithoutRef<"section">) {
-  return <MotionRoot as="section" load={load} {...props} />;
+  return <MotionRoot as="section" load={load} early {...props} />;
 }

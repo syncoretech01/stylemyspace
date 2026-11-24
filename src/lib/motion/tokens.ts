@@ -29,7 +29,7 @@ export const stagger = {
 
 export const dist = {
   rise: 32, // px, y offset for fade-up entrances
-  lineRise: 110, // yPercent for masked line reveals (>100 so the padded mask hides it)
+  lineRise: 140, // yPercent for masked line reveals (clears .split-line-mask's 0.26em padding)
   tiltDeg: 6, // max rotateX/rotateY on tilt cards
   magnetPx: 12, // max magnetic displacement
   parallaxPct: 8, // ± yPercent/xPercent for parallax layers

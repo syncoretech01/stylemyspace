@@ -188,8 +188,13 @@ const OverridesSchema = z.object({
         category: CategorySchema.nullable().optional(),
         categoryNote: z.string().nullable().optional(),
         cover: z.string().optional(),
+        /** Media ids that open the case study's spreads, and look-alikes that are never shown. */
+        lead: z.array(z.string()).optional(),
+        nearDuplicates: z.array(z.string()).optional(),
         published: z.boolean().optional(),
         captions: z.record(z.string(), z.string().nullable()).optional(),
+        /** Crop art direction per image, keyed by media id: [x, y] as fractions from the top left. */
+        focalPoints: z.record(z.string(), z.tuple([z.number(), z.number()])).optional(),
       }),
     )
     .optional(),
@@ -612,7 +617,7 @@ async function buildProject(ctx: BuildContext, page: ScrapePage, order: number):
         blurDataURL: m.blurDataURL,
         alt: resolveAlt(ctx.altOverrides, img, `${slug} image ${nn}`),
         caption: resolveCaption(ctx.altOverrides, ctx.overrides, slug, img),
-        focalPoint: img.focalPoint,
+        focalPoint: ctx.overrides.projects?.[slug]?.focalPoints?.[img.mediaId] ?? img.focalPoint,
         role,
         source: img.source === "dom-only" ? "dom-only" : "warmup",
       };
@@ -633,6 +638,13 @@ async function buildProject(ctx: BuildContext, page: ScrapePage, order: number):
     cover = i >= 0 ? i : images.length ? 0 : null;
   }
 
+  const known = (key: "lead" | "nearDuplicates") =>
+    (ov?.[key] ?? []).filter((m) => {
+      const found = images.some((im) => im.mediaId === m);
+      if (!found) warn(`${slug}: overrides ${key} ${m} is not among the project's images — ignored`);
+      return found;
+    });
+
   const project: Project = {
     slug,
     title,
@@ -643,6 +655,8 @@ async function buildProject(ctx: BuildContext, page: ScrapePage, order: number):
     sourceUrl: page.url,
     order,
     cover,
+    lead: known("lead"),
+    nearDuplicates: known("nearDuplicates"),
     published: ov?.published ?? true,
     images,
   };
@@ -1067,7 +1081,16 @@ async function main(): Promise<void> {
     if (m.image && !rawFor(m.image)) {
       throw new Error(`overrides.home.materials[${m.id}].image ${m.image.slug}/${m.image.mediaId} does not resolve to a generated image`);
     }
-    return { id: m.id, label: m.label, quote: m.quote, quoteSource: m.quoteSource, image: m.image, objectPosition: m.objectPosition };
+    return {
+      id: m.id,
+      label: m.label,
+      quote: m.quote,
+      quoteSource: m.quoteSource,
+      image: m.image,
+      objectPosition: m.objectPosition,
+      ...(m.crop ? { crop: m.crop } : {}),
+      ...(m.alt ? { alt: m.alt } : {}),
+    };
   });
   if (!materials.length) warn("home.materials is empty (overrides.home.materials not set)");
 

@@ -2,9 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/Button";
-// Local copy of images.ts#pad2: that module imports the server-side content loader (zod + projects.json)
-// and must never be pulled into a client bundle.
-const pad2 = (n: number) => String(n).padStart(2, "0");
 
 type Props = { scrollerId: string; total: number };
 
@@ -65,16 +62,16 @@ export function GalleryControls({ scrollerId, total }: Props) {
 
   return (
     <div className="flex items-center gap-2">
-      <p className="eyebrow mr-1 text-olive tabular-nums" aria-hidden>
-        {pad2(index + 1)} / {pad2(total)}
+      <p className="mr-1 text-small text-sand tabular-nums" aria-hidden>
+        {index + 1} of {total}
       </p>
       <p className="visually-hidden" aria-live="polite" aria-atomic>
         Image {index + 1} of {total}
       </p>
-      <Button variant="outline" className="size-6 rounded-full px-0" aria-label="Previous image" onClick={() => step(-1)}>
+      <Button variant="outline" className="size-6 px-0" aria-label="Previous image" onClick={() => step(-1)}>
         <span aria-hidden>←</span>
       </Button>
-      <Button variant="outline" className="size-6 rounded-full px-0" aria-label="Next image" onClick={() => step(1)}>
+      <Button variant="outline" className="size-6 px-0" aria-label="Next image" onClick={() => step(1)}>
         <span aria-hidden>→</span>
       </Button>
     </div>

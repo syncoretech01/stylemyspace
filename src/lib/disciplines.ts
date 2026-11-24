@@ -10,6 +10,8 @@ export type Discipline = {
   blurb: string;
   source: string;
   image: ImageRef | null;
+  /** Where a narrow column should hold the photograph (object-position). */
+  focus?: string;
   note?: string;
 };
 
@@ -17,24 +19,28 @@ export const DISCIPLINES: Discipline[] = [
   {
     id: "residential",
     label: "Residential",
-    blurb: "Personalized living spaces that blend elegance with comfort — from cozy retreats to luxurious sanctuaries.",
+    blurb: "Personalized living spaces that blend elegance with comfort, from cozy retreats to luxurious sanctuaries.",
     source: "Live home page, Residential card",
-    image: { slug: "oceanside", mediaId: "6af838_11540b40c17b4fd0a0222d068ac45c0a" },
+    image: { slug: "oceanside", mediaId: "6af838_ac92150204054e37bb93bb791be18a57" },
+    focus: "24% 50%",
   },
   {
     id: "hospitality",
     label: "Hospitality",
     blurb: "Guest-facing interiors, from short-stay properties to boutique settings, designed to offer a memorable experience.",
     source: "Las Olas project description; blog post on commercial wellness spaces",
-    image: { slug: "las-olas", mediaId: "6af838_f8e79c545f2b47778b768e61159a2478" },
+    // The guest bedroom: the short-stay property the blurb describes.
+    image: { slug: "las-olas", mediaId: "6af838_d23334c06dcf4d8ca2d9095d6874c5cc" },
+    focus: "66% 50%",
   },
   {
     id: "wellness",
     label: "Wellness",
     blurb: "Environments that support well-being through natural light, biophilic design and calming color palettes.",
     source: "Blog post: Residential Wellness Spaces",
-    // The yoga room evidences the blurb (daylight, timber, calm palette); the cover lounge did not.
-    image: { slug: "wellness-space-designs", mediaId: "6af838_2c26386f93924bfea1018d162a4036b5" },
+    // The treatment room evidences the blurb (daylight, natural fibre, calm palette); the cover lounge did not.
+    image: { slug: "wellness-space-designs", mediaId: "6af838_df3afeaaae2a48eb8a933dde39fcbb35" },
+    focus: "56% 50%",
   },
   {
     id: "commercial",

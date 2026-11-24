@@ -26,36 +26,53 @@
   --breakpoint-2xl: 96rem;
 
   --container-content: 90rem;
-  /* Tuned against rendered copy: 68ch measured ~93 characters at body size, over the 60–75 target. */
-  --container-prose: 52ch;
+  /* Jost sets narrower than its ch unit suggests: 54ch renders 62–72 characters at body size. */
+  --container-prose: 54ch;
 
   --radius-*: initial;
   --radius-xs: 2px;
   --radius-sm: 4px;
   --radius-full: 9999px;
 
-  /* Fluid editorial type scale (line-height / tracking sub-tokens) */
-  --text-display: clamp(3rem, 1.25rem + 7vw, 8.5rem);
+  /*
+   * Type scale. Cormorant Garamond has a small x-height and fine hairlines, so every serif size sits ~15%
+   * above what a book face would need, and it is set at 500 throughout (the one static instance shipped;
+   * see layout.tsx) so the hairlines never drop out.
+   * --text-hero is also bounded by viewport HEIGHT: the home headline plus its calls to action must
+   * fit the first screen of a 1280×720 laptop.
+   */
+  --text-hero: clamp(3rem, min(8.2vw, 13.5svh), 8.5rem);
+  --text-hero--line-height: 0.96;
+  --text-hero--letter-spacing: -0.028em;
+  --text-hero--font-weight: 500;
+  --text-display: clamp(3.25rem, 1.9rem + 5.4vw, 7rem);
   --text-display--line-height: 0.94;
-  --text-display--letter-spacing: -0.025em;
-  --text-h1: clamp(2.5rem, 1.4rem + 4vw, 5rem);
-  --text-h1--line-height: 1;
-  --text-h1--letter-spacing: -0.02em;
-  --text-h2: clamp(1.875rem, 1.2rem + 2.4vw, 3.25rem);
-  --text-h2--line-height: 1.06;
-  --text-h2--letter-spacing: -0.015em;
-  --text-h3: clamp(1.375rem, 1.1rem + 1.1vw, 1.875rem);
-  --text-h3--line-height: 1.2;
+  --text-display--letter-spacing: -0.026em;
+  --text-display--font-weight: 500;
+  --text-h1: clamp(2.75rem, 1.9rem + 3.4vw, 5rem);
+  --text-h1--line-height: 0.98;
+  --text-h1--letter-spacing: -0.022em;
+  --text-h1--font-weight: 500;
+  --text-h2: clamp(2.25rem, 1.65rem + 2.4vw, 3.75rem);
+  --text-h2--line-height: 1.02;
+  --text-h2--letter-spacing: -0.018em;
+  --text-h2--font-weight: 500;
+  --text-h3: clamp(1.625rem, 1.4rem + 0.95vw, 2.125rem);
+  --text-h3--line-height: 1.12;
   --text-h3--letter-spacing: -0.01em;
-  --text-lead: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
-  --text-lead--line-height: 1.5;
-  --text-body: 1.0625rem;
+  --text-h3--font-weight: 500;
+  --text-lead: clamp(1.375rem, 1.25rem + 0.5vw, 1.6875rem);
+  --text-lead--line-height: 1.34;
+  --text-lead--letter-spacing: -0.005em;
+  --text-lead--font-weight: 500;
+  --text-body: 1.125rem;
   --text-body--line-height: 1.65;
-  --text-small: 0.875rem;
-  --text-small--line-height: 1.5;
-  --text-eyebrow: 0.75rem;
-  --text-eyebrow--line-height: 1.2;
+  --text-small: 0.9375rem;
+  --text-small--line-height: 1.55;
+  --text-eyebrow: 0.8125rem;
+  --text-eyebrow--line-height: 1.25;
   --text-eyebrow--letter-spacing: 0.16em;
+  --text-eyebrow--font-weight: 500;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
@@ -63,8 +80,8 @@
 }
 
 @theme inline {
-  --font-display: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
-  --font-sans: var(--font-inter-tight), "Inter", system-ui, sans-serif;
+  --font-display: var(--font-cormorant), "Iowan Old Style", Garamond, Georgia, serif;
+  --font-sans: var(--font-jost), "Century Gothic", Futura, system-ui, sans-serif;
 }
 
 /* Motion tiers written by the inline <head> script (see layout.tsx) */
@@ -74,6 +91,13 @@
 @custom-variant motion-reduced (&:where(html[data-motion="reduced"] *));
 @custom-variant pointer-fine (&:where(html[data-pointer="fine"] *));
 @custom-variant theme-dark (&:where([data-theme="dark"] *));
+
+/* Phones: the hero headline scales with width so it always breaks into the same three lines. */
+@media (width < 48rem) {
+  :root {
+    --text-hero: clamp(2.4rem, 12.3vw, 4.5rem);
+  }
+}
 
 :root {
   /* CSS mirrors of src/lib/motion/tokens.ts */
@@ -95,14 +119,17 @@
     font-family: var(--font-sans);
     font-size: var(--text-body);
     line-height: var(--text-body--line-height);
+    /* Cormorant defaults to old-style figures; prices, phone numbers and dates read as lining. Set as a
+       feature (not font-variant-numeric) so it composes with the tabular-nums utility. */
+    font-feature-settings: "kern" 1, "liga" 1, "lnum" 1;
     min-height: 100svh;
     background: var(--color-bone);
   }
   h1, h2, h3, h4 {
     font-family: var(--font-display);
-    font-weight: 400;
     text-wrap: balance;
   }
+  em, cite { font-style: italic; }
   p { text-wrap: pretty; }
   ::selection { background: var(--color-sand); color: var(--color-ink); }
   :focus-visible {
@@ -146,12 +173,39 @@
   max-width: var(--container-prose);
 }
 
+/* Tracked caps in Jost: buttons, navigation and metadata labels only. Not a section kicker. */
 @utility eyebrow {
   font-family: var(--font-sans);
   font-size: var(--text-eyebrow);
+  font-weight: var(--text-eyebrow--font-weight);
   line-height: var(--text-eyebrow--line-height);
   letter-spacing: var(--text-eyebrow--letter-spacing);
   text-transform: uppercase;
+}
+
+/* Opening statements: the serif at reading size. */
+@utility lede {
+  font-family: var(--font-display);
+  font-size: var(--text-lead);
+  font-weight: var(--text-lead--font-weight);
+  line-height: var(--text-lead--line-height);
+  letter-spacing: var(--text-lead--letter-spacing);
+}
+
+/* A quiet text link: the rule is always there, and redraws from the left on hover / focus. */
+@utility link-rule {
+  background-image: linear-gradient(currentColor, currentColor), linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 100% 100%, 0 100%;
+  background-size: 100% 1px, 0% 1px;
+  padding-bottom: 0.2em;
+  transition: background-size var(--dur-short) var(--ease-out-expo);
+  &:hover,
+  &:focus-visible,
+  .group:hover &,
+  .group:focus-visible & {
+    background-size: 0% 1px, 100% 1px;
+  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -164,7 +218,7 @@
 html[data-motion="full"] [data-motion-root]:not([data-motion-ready]) [data-reveal],
 html[data-motion="mobile"] [data-motion-root]:not([data-motion-ready]) [data-reveal] {
   opacity: 0;
-  translate: 0 24px;
+  translate: 0 32px; /* = dist.rise in motion/tokens.ts, so the hand-off to GSAP never jumps */
   animation: reveal-fallback 500ms var(--ease-out-expo) 4s forwards;
 }
 
@@ -233,8 +287,6 @@ main {
  *   or sand (8.52:1 on olive-deep) instead.
  */
 
-/* Generic hairline rule */
-.rule { height: 1px; background: var(--color-taupe); }
 
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {
@@ -245,5 +297,27 @@ main {
   }
 }
 
-/* SplitText masked lines: give descenders room inside the clip. */
-.split-line-mask { padding-block: 0.12em; margin-block: -0.12em; }
+/*
+ * SplitText masked lines. Cormorant's descenders reach 0.29em below the baseline and its italics
+ * overhang both sidebearings, so the clip needs real room on every side (0.12em cut "g" and "p" flat).
+ * dist.lineRise in src/lib/motion/tokens.ts is paired with this padding.
+ */
+.split-line-mask {
+  padding: 0.26em 0.12em;
+  margin: -0.26em -0.12em;
+}
+/* Adjacent negative margins collapse to ONE of the two, which left 0.26em of extra leading per line. */
+.split-line-mask + .split-line-mask { margin-top: -0.52em; }
+
+/* Primary navigation: the rule draws in from the left; the current page keeps it. */
+.nav-rule {
+  padding-block: 0.45em;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition: background-size var(--dur-micro) var(--ease-out-expo);
+}
+.nav-rule-active,
+.group:hover > .nav-rule,
+.group:focus-visible > .nav-rule { background-size: 100% 1px; }

@@ -16,7 +16,7 @@ export function Section({ tone = "bone", flush = false, className, children, ...
   return (
     <section
       data-theme={tone === "dark" ? "dark" : undefined}
-      className={cn("relative", tones[tone], !flush && "py-10 md:py-14 lg:py-20", className)}
+      className={cn("relative", tones[tone], !flush && "py-10 md:py-13 lg:py-17", className)}
       {...rest}
     >
       {children}

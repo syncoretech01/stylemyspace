@@ -1,22 +1,18 @@
-import type { Metadata } from "next";
-import { ContactIntro, ContactForm, ContactDetails } from "@/components/sections/Contact";
-import { ServiceAreas } from "@/components/sections/ServiceAreas";
+import { pageMetadata } from "@/lib/metadata";
+import { ContactMain, ContactDetails } from "@/components/sections/Contact";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Contact",
   description:
-    "Get in touch with Style My Space Design — interior design in the New York Tri-State Area, New Jersey, Miami and Atlanta. 516-500-5886.",
-  alternates: { canonical: "/contact" },
-  openGraph: { url: "/contact" },
-};
+    "Get in touch with Style My Space Design: interior design in the New York Tri-State Area, New Jersey, Miami and Atlanta. 516-500-5886.",
+  path: "/contact",
+});
 
 export default function ContactPage() {
   return (
     <>
-      <ContactIntro />
-      <ContactForm />
+      <ContactMain />
       <ContactDetails />
-      <ServiceAreas />
     </>
   );
 }

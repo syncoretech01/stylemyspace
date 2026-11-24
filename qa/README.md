@@ -40,7 +40,8 @@ warnings that are not present in production; grade against `next start`.
    instant), 600 ms settle, viewport capture `scroll-NN.png` each step, until the bottom.
 4. Back to top, 400 ms → `full-revealed.png` (full page, every reveal should have fired).
 5. Probes: stuck elements (anything in `<main>` larger than 40 × 20 px with `opacity: 0` or
-   `visibility: hidden`), horizontal overflow (`scrollWidth > innerWidth + 1`).
+   `visibility: hidden`), a photograph shown more than once in `<main>`, horizontal overflow
+   (`scrollWidth > innerWidth + 1`).
 6. At 1440 (motion mode) unless `--skip-focus`: Tab through up to 120 stops, screenshot each
    (`focus-NN.png`; every 5th when more than 40 focusables), write `focus-order.json`.
 7. Then 1440 and 390 again with `reducedMotion: 'reduce'` (column suffix `-rm`), where hidden
@@ -65,7 +66,7 @@ Everything under `qa/screenshots`, `qa/contact-sheets` and the two reports is gi
 
 | Status | Triggered by (issue `kind`) |
 |---|---|
-| **FAIL** (exit code 1) | `console-error`, `pageerror`, `request-failed`, `http-status` (≥ 400), `unexpected-status`, `preloader-timeout`, `horizontal-overflow`, `focus-lost`, `skip-link-first`, `rm-hidden-first-paint`, `motion-tier` (under rm), `script-error` |
+| **FAIL** (exit code 1) | `console-error`, `pageerror`, `request-failed`, `http-status` (≥ 400), `unexpected-status`, `preloader-timeout`, `repeated-photo`, `horizontal-overflow`, `focus-lost`, `skip-link-first`, `rm-hidden-first-paint`, `motion-tier` (under rm), `script-error` |
 | **WARN** | `console-warning`, `stuck-end-state`, `focus-not-visible`, `focus-order` (ring longer than 120 stops) |
 | info (never counted) | `request-aborted` (`net::ERR_ABORTED` on prefetch / navigation), `networkidle-timeout` |
 
