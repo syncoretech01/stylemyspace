@@ -24,14 +24,24 @@ const FOCUS = "58% 66%";
  * The headline verbatim, with its closing word and its ampersand in the true italic. The split only
  * adds emphasis: the text content is exactly the string it was given. From md it breaks before the
  * ampersand by rule rather than by measurement, so a late italic can never move a word between lines.
+ * The rule is a block-level row, not a <br> hidden on phones: SplitText breaks at a <br> whether or not
+ * it is displayed, which cost a first visit on a phone a fourth line.
  */
 function Headline({ text }: { text: string }) {
   const words = text.split(" ");
-  return words.map((word, i) => (
-    <Fragment key={i}>
-      {i > 0 && " "}
-      {word === "&" && <br className="hidden md:inline" />}
-      {word === "&" || i === words.length - 1 ? <em>{word}</em> : word}
+  const amp = words.indexOf("&");
+  const rows = amp > 0 ? [words.slice(0, amp), words.slice(amp)] : [words];
+  return rows.map((row, r) => (
+    <Fragment key={r}>
+      {r > 0 && " "}
+      <span className="md:block">
+        {row.map((word, i) => (
+          <Fragment key={i}>
+            {i > 0 && " "}
+            {word === "&" || (r === rows.length - 1 && i === row.length - 1) ? <em>{word}</em> : word}
+          </Fragment>
+        ))}
+      </span>
     </Fragment>
   ));
 }

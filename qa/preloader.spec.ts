@@ -63,6 +63,42 @@ test.describe("preloader", () => {
     await context.close();
   });
 
+  // The first visit splits the headline into lines, later visits leave it alone: both must break it alike.
+  for (const viewport of [{ width: 360, height: 640 }, { width: 390, height: 844 }, { width: 1440, height: 900 }]) {
+    test(`the headline breaks the same on a first visit as on a return (${viewport.width})`, async ({ browser }) => {
+      const phone = viewport.width < 768;
+      const context = await browser.newContext({ viewport, isMobile: phone, hasTouch: phone });
+      const p = await context.newPage();
+      const rows = async () => {
+        await expect(p.locator("html")).not.toHaveAttribute("data-preloader", "pending", { timeout: 10_000 });
+        await p.waitForTimeout(2500);
+        return p.locator("h1").evaluate((h1) => {
+          const out: { mid: number; words: string[] }[] = [];
+          const walker = document.createTreeWalker(h1, NodeFilter.SHOW_TEXT);
+          for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+            for (const m of (n.textContent ?? "").matchAll(/\S+/g)) {
+              const range = document.createRange();
+              range.setStart(n, m.index);
+              range.setEnd(n, m.index + m[0].length);
+              const box = range.getBoundingClientRect();
+              const mid = box.top + box.height / 2;
+              const row = out.find((r) => Math.abs(r.mid - mid) < 20);
+              if (row) row.words.push(m[0]);
+              else out.push({ mid, words: [m[0]] });
+            }
+          }
+          return out.map((r) => r.words.join(" "));
+        });
+      };
+      await p.goto("/");
+      const first = await rows();
+      await p.reload();
+      expect(await rows()).toEqual(first);
+      expect(first.length).toBeLessThanOrEqual(3);
+      await context.close();
+    });
+  }
+
   test("never renders under prefers-reduced-motion", async ({ browser }) => {
     const context = await browser.newContext({ reducedMotion: "reduce", viewport: { width: 1440, height: 900 } });
     const p = await context.newPage();

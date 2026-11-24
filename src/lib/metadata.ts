@@ -1,9 +1,20 @@
 import type { Metadata } from "next";
 import { SITE } from "@/lib/site";
 
+/**
+ * Where link previews fetch their picture. It has to be an address that serves this build today, which
+ * SITE.url is not until the client's domain points here. On Vercel the project's production domain is,
+ * and it becomes the client's own domain once that is attached. An explicit NEXT_PUBLIC_SITE_URL wins.
+ * Canonical URLs keep using SITE.url.
+ */
+const IMAGE_ORIGIN =
+  !process.env.NEXT_PUBLIC_SITE_URL && process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : SITE.url;
+
 /** The generated share card (src/app/opengraph-image.tsx). */
 const DEFAULT_IMAGE = {
-  url: "/opengraph-image",
+  url: `${IMAGE_ORIGIN}/opengraph-image`,
   width: 1200,
   height: 630,
   alt: `${SITE.name}, interior design in New York`,
@@ -30,7 +41,7 @@ type PageMeta = {
  * type and share image. Building the full object here keeps every route's link preview complete.
  */
 export function pageMetadata({ title, description, path, image }: PageMeta): Metadata {
-  const images = [image ?? DEFAULT_IMAGE];
+  const images = [image ? { ...image, url: `${IMAGE_ORIGIN}${image.url}` } : DEFAULT_IMAGE];
   const shareTitle = title ? `${title} | ${SITE.name}` : `${SITE.name} | Interior Design, New York`;
   return {
     ...(title ? { title } : {}),
