@@ -36,6 +36,8 @@ export function subscribe(listener: Listener) {
   return () => listeners.delete(listener);
 }
 
+/** The curtain has started to lift; `preloader:done` follows when it is gone. */
+export const PRELOADER_LIFT_EVENT = "preloader:lift";
 export const PRELOADER_DONE_EVENT = "preloader:done";
 
 export function isPreloaderPending() {
@@ -46,6 +48,21 @@ export function markPreloaderDone() {
   document.documentElement.dataset.preloader = "done";
   document.documentElement.dataset.preloaderDone = "true";
   window.dispatchEvent(new Event(PRELOADER_DONE_EVENT));
+}
+
+export function markPreloaderLifting() {
+  document.documentElement.dataset.preloaderLifting = "true";
+  window.dispatchEvent(new Event(PRELOADER_LIFT_EVENT));
+}
+
+/** Run `cb` as the curtain starts to lift (immediately if it already has, or never ran). Returns an unsubscribe. */
+export function onPreloaderLift(cb: () => void) {
+  if (!isPreloaderPending() || document.documentElement.dataset.preloaderLifting) {
+    cb();
+    return () => {};
+  }
+  window.addEventListener(PRELOADER_LIFT_EVENT, cb, { once: true });
+  return () => window.removeEventListener(PRELOADER_LIFT_EVENT, cb);
 }
 
 /** Run `cb` once the preloader has finished (immediately if it never ran). Returns an unsubscribe. */

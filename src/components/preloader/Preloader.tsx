@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { isPreloaderPending, markPreloaderDone, subscribe, track } from "./assetLoader";
+import { isPreloaderPending, markPreloaderDone, markPreloaderLifting, subscribe, track } from "./assetLoader";
 import "./preloader.css";
 
-const MIN_MS = 700; // let the logotype draw
-const EXIT_BY_MS = 1700; // + 800ms curtain = 2.5s hard cap
-const WIPE_MS = 800;
+const MIN_MS = 900; // let the logotype draw
+const EXIT_BY_MS = 1300; // + 700ms curtain = 2 s hard cap
+const WIPE_MS = 700;
+const FACE_WAIT_MS = 400; // draw in the fallback serif rather than hold an empty curtain any longer
 
 /**
  * Runs once per session. The inline <head> script decides (before first paint) whether this
@@ -45,7 +46,12 @@ export function Preloader() {
         : new Promise<void>((r) => window.addEventListener("load", () => r(), { once: true })),
       10,
     );
-    fonts.then(() => el.classList.add("is-drawing"));
+    // The logotype needs the display face only. Waiting for document.fonts.ready held an empty curtain
+    // until the body face and the italic had arrived too.
+    const logo = el.querySelector(".preloader__text");
+    const face = logo && document.fonts ? document.fonts.load(`500 46px ${getComputedStyle(logo).fontFamily}`) : Promise.resolve();
+    const draw = () => el.classList.add("is-drawing");
+    Promise.race([face, new Promise((r) => window.setTimeout(r, FACE_WAIT_MS))]).then(draw, draw);
 
     let target = 0;
     let shown = 0;
@@ -66,6 +72,7 @@ export function Preloader() {
       unsubscribe();
       if (pctRef.current) pctRef.current.textContent = "100%";
       el.classList.add("is-done");
+      markPreloaderLifting();
       const timer = window.setTimeout(finish, WIPE_MS + 60);
       el.addEventListener(
         "transitionend",

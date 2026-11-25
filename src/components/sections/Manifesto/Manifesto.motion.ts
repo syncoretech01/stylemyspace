@@ -2,7 +2,7 @@
  * Manifesto — pinned scroll-storytelling (brief §5).
  * The outer root reserves the pin distance in CSS (220svh full / 170svh mobile, see index.tsx), so
  * pinning the 100svh inner with pinSpacing:false never shifts layout. One scrubbed timeline:
- * words opacity .2 → 1 (finishing at 85 % of the pin) and the background layer scaling 1 → 1.08
+ * words opacity .42 → 1 (finishing at 85 % of the pin) and the background layer scaling 1 → 1.08
  * (1.04 on mobile). Reduced motion never loads this file — the static section is the final state.
  */
 import { gsap } from "@/lib/gsap";
@@ -10,7 +10,7 @@ import { dist, ease, scrub } from "@/lib/motion/tokens";
 import { markReady, revealIn } from "@/lib/motion/reveal";
 
 const WORDS_END = 0.85; // fraction of the pin at which the last word is fully opaque
-const WORD_START_OPACITY = 0.2;
+const WORD_START_OPACITY = 0.42; // 3.2:1 on olive-deep: large text stays legible before it is scrubbed in
 
 type Ctx = { tier: "full" | "mobile"; fine: boolean };
 

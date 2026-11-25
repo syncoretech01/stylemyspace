@@ -19,8 +19,6 @@ type Pending = {
 type Api = {
   /** Begin a Flip transition from `img` (a tile image) toward the case-study hero for `slug`. */
   start(img: HTMLImageElement, slug: string, href: string): void;
-  /** True when a transition is in flight for this slug (the destination hero may delay its own reveal). */
-  isPending(slug: string): boolean;
 };
 
 const Ctx = createContext<Api | null>(null);
@@ -79,7 +77,6 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
         pendingRef.current = { slug, href, clone, timeout, startedAt: performance.now(), source: img };
       });
     },
-    isPending: (slug) => pendingRef.current?.slug === slug,
   }));
 
   // Destination handling: when the route for the pending slug has committed, fit the clone to its hero.

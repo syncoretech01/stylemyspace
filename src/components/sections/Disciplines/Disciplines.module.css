@@ -1,16 +1,16 @@
 /*
- * Disciplines — pure CSS column slider.
- * Mobile / tablet: stacked rows, everything visible without JS; after hydration each row's blurb is an
- * accordion panel (DisciplineRow sets data-accordion / data-expanded) whose height animates with a
- * grid-template-rows transition. ≥ xl (80rem): four full-height columns; :hover / :focus-within
- * expands one, siblings dim via :has(). Below xl the four-up prose column measures ~10ch, so the
- * columns only engage once there is room for them. Global prefers-reduced-motion zeroes transitions.
+ * Disciplines: a pure CSS expanding row.
+ * Stacked (below 80rem, or any touch screen): photographic rows, everything visible without JS; after
+ * hydration each row's blurb is an accordion panel (DisciplineRow sets data-accordion / data-expanded).
+ * Columns (≥ 80rem with a hovering pointer): one column stands open, the first by default; hovering or
+ * focusing another opens it instead. The blurb's width is fixed, so text never reflows mid-transition.
+ * Global prefers-reduced-motion zeroes transitions.
  */
 
 .row {
   display: flex;
   flex-direction: column;
-  background: var(--color-olive-deep);
+  gap: 0.5rem;
 }
 
 .col {
@@ -18,11 +18,10 @@
   display: flex;
   flex: 1 1 0%;
   min-width: 0;
-  min-height: 28svh;
+  min-height: 32svh;
   overflow: clip;
   color: var(--color-bone);
   background: var(--color-olive-deep);
-  transition: flex-grow var(--dur-short) var(--ease-out-expo);
 }
 
 .link {
@@ -39,33 +38,41 @@
   outline-offset: -6px;
 }
 
-.col + .col {
-  border-top: 1px solid color-mix(in srgb, var(--color-bone) 18%, transparent);
-}
-
 .media {
   position: absolute;
   inset: 0;
-  opacity: 0.82;
-  transform: scale(1.001);
-  transition:
-    opacity var(--dur-short) var(--ease-out-expo),
-    transform var(--dur-short) var(--ease-out-expo);
-  will-change: opacity, transform;
 }
 
-/* Olive-deep ramp from the foot of the frame, where the label and blurb sit. Stronger on the
-   short mobile rows (text covers most of the frame), lighter on the tall desktop columns. */
+.media img {
+  transition: transform 1200ms var(--ease-out-expo);
+}
+
+/* Weight only where the type sits: the upper half of every photograph is left untouched. */
 .scrim {
   position: absolute;
   inset: 0;
   pointer-events: none;
   background: linear-gradient(
     to top,
-    color-mix(in srgb, var(--color-olive-deep) 94%, transparent) 0%,
-    color-mix(in srgb, var(--color-olive-deep) 86%, transparent) 55%,
-    color-mix(in srgb, var(--color-olive-deep) 55%, transparent) 78%,
-    color-mix(in srgb, var(--color-olive-deep) 20%, transparent) 100%
+    color-mix(in srgb, var(--color-olive-deep) 90%, transparent) 0%,
+    color-mix(in srgb, var(--color-olive-deep) 78%, transparent) 14%,
+    color-mix(in srgb, var(--color-olive-deep) 26%, transparent) 28%,
+    transparent 42%
+  );
+}
+
+/* A second, taller ramp that arrives with the blurb. */
+.scrim::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transition: opacity var(--dur-short) var(--ease-out-expo);
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--color-olive-deep) 88%, transparent) 0%,
+    color-mix(in srgb, var(--color-olive-deep) 76%, transparent) 26%,
+    color-mix(in srgb, var(--color-olive-deep) 26%, transparent) 44%,
+    transparent 58%
   );
 }
 
@@ -75,49 +82,41 @@
   flex-direction: column;
   justify-content: flex-end;
   width: 100%;
-  transition: opacity var(--dur-short) var(--ease-out-expo);
-}
-
-.label {
-  display: flex;
-  align-items: baseline;
-  gap: 1rem;
 }
 
 .panel {
   display: grid;
   grid-template-rows: 1fr;
-  transition: grid-template-rows var(--dur-short) var(--ease-out-expo);
+  transition:
+    grid-template-rows var(--dur-short) var(--ease-out-expo),
+    opacity var(--dur-short) var(--ease-out-expo);
 }
 
 .blurb {
   min-height: 0;
   overflow: clip;
-  transition:
-    opacity var(--dur-short) var(--ease-out-expo),
-    transform var(--dur-short) var(--ease-out-expo);
 }
 
-/* Accordion toggle — only rendered useful on the stacked layout after hydration. */
+/* Accordion toggle: only used on the stacked layout, after hydration. */
 .toggle {
   display: none;
   position: absolute;
   top: 0.75rem;
   right: 0.75rem;
   z-index: 1;
-  width: 2.75rem;
-  height: 2.75rem;
+  width: 3rem;
+  height: 3rem;
   padding: 0;
-  border: 1px solid color-mix(in srgb, var(--color-bone) 45%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-bone) 55%, transparent);
   border-radius: 999px;
-  background: color-mix(in srgb, var(--color-olive-deep) 55%, transparent);
+  background: color-mix(in srgb, var(--color-olive-deep) 72%, transparent);
   color: var(--color-bone);
   cursor: pointer;
   transition: background-color var(--dur-micro) var(--ease-out-expo);
 }
 
 .toggle:hover {
-  background: color-mix(in srgb, var(--color-olive-deep) 85%, transparent);
+  background: var(--color-olive-deep);
 }
 
 .toggleIcon {
@@ -146,85 +145,65 @@
   transform: rotate(45deg);
 }
 
-@media (max-width: 79.98rem) {
+@media (max-width: 79.98rem), (hover: none) {
   .col[data-accordion] .toggle {
     display: block;
   }
 
+  /* A closed panel is also `inert` on this layout (DisciplineRow), so it leaves the accessibility tree. */
   .col[data-accordion]:not([data-expanded="true"]) .panel {
     grid-template-rows: 0fr;
+    opacity: 0;
+  }
+
+  .col[data-accordion]:not([data-expanded="true"]) .scrim::after {
+    opacity: 0;
   }
 }
 
-@media (min-width: 80rem) {
+@media (min-width: 80rem) and (hover: hover) {
   .row {
     flex-direction: row;
-    height: clamp(34rem, 76svh, 54rem);
+    gap: 0.75rem;
+    height: clamp(30rem, 70svh, 46rem);
   }
 
-  .col + .col {
-    border-top: 0;
-    border-left: 1px solid color-mix(in srgb, var(--color-bone) 18%, transparent);
-  }
-
-  /*
-   * The blurb sits in the bottom ~50% of the column, so that band has to stay dark enough for
-   * bone body copy to clear 4.5:1 over any of the four photographs (the brightest is the
-   * classroom window wall). 82% olive-deep measures 6:1 even against a blown-out white frame.
-   */
-  .scrim {
-    background:
-      linear-gradient(
-        to bottom,
-        color-mix(in srgb, var(--color-olive-deep) 30%, transparent) 0%,
-        transparent 35%
-      ),
-      linear-gradient(
-        to top,
-        color-mix(in srgb, var(--color-olive-deep) 94%, transparent) 0%,
-        color-mix(in srgb, var(--color-olive-deep) 84%, transparent) 50%,
-        color-mix(in srgb, var(--color-olive-deep) 42%, transparent) 72%,
-        transparent 90%
-      );
-  }
-
-  .col:hover,
-  .col:focus-within {
-    flex-grow: 3;
-  }
-
-  .col:hover .media,
-  .col:focus-within .media {
-    opacity: 1;
-    transform: scale(1.04);
-  }
-
-  /* Siblings of the active column dim. */
-  .row:has(.col:hover) .col:not(:hover) .content,
-  .row:has(.col:focus-within) .col:not(:focus-within) .content {
-    opacity: 0.55;
-  }
-
-  .content {
-    flex-direction: row;
-    align-items: flex-end;
-    justify-content: flex-start;
-    gap: 1.5rem;
-  }
-
-  /* Label reads bottom-to-top along the left edge, like a book spine. */
-  .label {
-    flex-direction: row;
-    align-items: center;
-    flex: none;
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
-    max-height: 100%;
+  .col {
+    min-height: 0;
+    transition: flex-grow 800ms var(--ease-out-expo);
   }
 
   .panel {
-    flex: none;
-    width: 30ch;
-    max-width: calc(100% - 6rem);
+    grid-template-rows: 0fr;
+    opacity: 0;
+    width: 23rem;
+  }
+
+  .scrim::after {
+    opacity: 0;
+  }
+
+  .col:hover,
+  .col:focus-within,
+  .row:not(:has(.col:hover, .col:focus-within)) .col:first-child {
+    flex-grow: 3.6;
+  }
+
+  .col:hover .panel,
+  .col:focus-within .panel,
+  .row:not(:has(.col:hover, .col:focus-within)) .col:first-child .panel {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+
+  .col:hover .scrim::after,
+  .col:focus-within .scrim::after,
+  .row:not(:has(.col:hover, .col:focus-within)) .col:first-child .scrim::after {
+    opacity: 1;
+  }
+
+  .col:hover .media img,
+  .col:focus-within .media img {
+    transform: scale(1.03);
   }
 }

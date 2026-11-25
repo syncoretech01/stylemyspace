@@ -17,11 +17,11 @@ export const SITE = {
     "Office design",
     "Home staging",
   ] as const,
-  /** Brief §2 wording, used where a factual list reads correctly (e.g. a process intro). */
+  /**
+   * Brief §2 facts as a full sentence. (The brief's own wording, "Works across a range of budgets…;
+   * guides clients…", has no subject and read as a broken sentence wherever it was rendered.)
+   */
   approach:
-    "Works across a range of budgets, styles, and timelines; guides clients through every phase of the design process.",
-  /** The same facts as a sentence, for places where the fragment reads as a subjectless clause. */
-  approachProse:
     "The studio works across a range of budgets, styles and timelines, guiding clients through every phase of the design process.",
   serviceAreas: ["New York Tri-State Area", "New Jersey", "Miami", "Atlanta"] as const,
   phone: "516-500-5886",

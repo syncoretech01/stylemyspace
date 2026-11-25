@@ -19,7 +19,7 @@ pnpm build && pnpm start     # production
 |---|---|---|
 | Business facts (NAP, services, areas, socials, nav) | `src/lib/site.ts` | Verbatim from the client brief. |
 | Projects, home copy, blog excerpts, consultations | `content/projects.json` | **Generated** — do not edit by hand. |
-| Editorial decisions (categories, covers, captions, hero/manifesto/material images, pricing flag) | `content/overrides.json` | Hand-edited. |
+| Editorial decisions (categories, covers, case-study lead images, near-duplicates to hide, captions, focal points, hero/manifesto/material images and crops, pricing flag) | `content/overrides.json` | Hand-edited. |
 | Alt text per image | `content/alt-overrides.json` | Hand-edited, keyed by Wix media id. |
 | Discipline blurbs and images | `src/lib/disciplines.ts` | Assembled from scraped copy only. |
 | Optimized images | `public/projects/<slug>/`, `public/site/`, `public/blog/` | WebP masters ≤ 2400 px + OG JPEGs. |
@@ -42,7 +42,7 @@ pnpm content:check    # validates the JSON against src/lib/content.schema.ts, li
 
 ## Brand system
 
-Tokens live in `src/app/globals.css` (`@theme`): palette (`bone`, `sand`, `taupe`, `olive`, `olive-deep`, `ink`, `brass`), an 8 px spacing scale (`p-1` = 8 px), fluid type sizes (`text-display` … `text-eyebrow`), easings. Fonts: Fraunces (display) + Inter Tight (UI) via `next/font`. Primitives in `src/components/ui/`.
+Tokens live in `src/app/globals.css` (`@theme`): palette (`bone`, `sand`, `taupe`, `olive`, `olive-deep`, `ink`, `brass`), an 8 px spacing scale (`p-1` = 8 px), fluid type sizes (`text-hero` … `text-eyebrow`, each carrying its own weight), easings. Fonts: Cormorant Garamond (display, ledes) + Jost (UI, body) via `next/font`. Use `lede` for opening statements, `eyebrow` for buttons and metadata only. Primitives in `src/components/ui/`.
 
 ## Motion architecture
 
@@ -62,20 +62,20 @@ bundle (`pnpm qa:bundle` asserts this). Tokens for easing, duration and distance
 
 | Technique | Where | Notes |
 |---|---|---|
-| Preloader (SVG logotype stroke draw + real asset-progress counter + `clip-path` curtain, ≤ 2.5 s, once per session) | `src/components/preloader/` | CSS-driven; `assetLoader.ts` tracks fonts, the LCP image and the WebGL chunk |
-| Three.js displacement plane on the hero photo (single WebGL context, DPR ≤ 2, IntersectionObserver pause, disposed on unmount) | `src/components/three/` | Mounts on the `full` tier after the preloader when hardware GL is available; the `<img>` beneath stays the LCP element |
-| Headline masked line reveal (SplitText `mask: "lines"`) | `src/lib/motion/split.ts`, Hero, CaseHero | Plays after the preloader / after a Flip lands |
-| Custom cursor (olive halo with labels from `data-cursor`) | `src/components/cursor/` | Fine pointers only; never reacts to keyboard focus |
-| Pinned manifesto (word-by-word scrub, background scale 1 → 1.08) | `sections/Manifesto` | Pin distance reserved in CSS (`motion-full:h-[220svh]`) so pinning never shifts layout |
-| Disciplines column slider | `sections/Disciplines` | Pure CSS `flex-grow` on hover / `:focus-within`; stacked on touch |
-| Horizontal parallax track (pinned, image layers at differing speeds via `containerAnimation`) | `sections/FeaturedWork` | Native scroll-snap list on mobile / reduced |
+| Preloader (SVG logotype stroke draw + real asset-progress counter + `clip-path` curtain, ≤ 2 s, home page only, once per session) | `src/components/preloader/` | CSS-driven; `assetLoader.ts` tracks fonts, the LCP image and the WebGL chunk |
+| Three.js displacement plane on the hero photo (single WebGL context, DPR ≤ 2, IntersectionObserver pause, disposed on unmount) | `src/components/three/` | Mounts on the `full` tier after the preloader when hardware GL is available; crops to the image's own `object-position`; the `<img>` beneath stays the LCP element |
+| Headline masked line reveal (SplitText `mask: "lines"`) | `src/lib/motion/split.ts`, Hero | Split behind the preloader's curtain, played as it lifts. Anywhere a headline is already painted it only rises: no visible text is ever hidden to be re-animated |
+| "View" chip trailing the pointer over project photographs (`data-cursor`) | `src/components/cursor/` | Fine pointers only; the native cursor is never hidden |
+| Pinned manifesto (word-by-word scrub, photograph scale 1 → 1.08) | `sections/Manifesto` | Pin distance reserved in CSS (`motion-full:h-[200svh]`) so pinning never shifts layout |
+| Disciplines expanding columns | `sections/Disciplines` | Pure CSS `flex-grow` on hover / `:focus-within`, first column open at rest; stacked accordion on touch and below 1280 |
+| Horizontal parallax track (pinned, image layers at differing speeds via `containerAnimation`) | `sections/FeaturedWork` | Mounted through `FeaturedWorkMotionRoot`; native scroll-snap list on mobile, grid under reduced motion |
 | Portfolio grid entrance + 3D tilt (≤ 6°) + name mask | `sections/PortfolioGrid` | Tilt on fine pointers only |
 | Cross-route FLIP zoom (tile → case-study hero) | `src/components/transition/` | Persistent overlay clone; abort paths for back/blur/timeout |
 | Case study parallax blocks, sticky title, 3D gallery slider (Observer drag, arrow keys, live region) | `sections/CaseStudy` | Native scroll-snap strip on mobile / reduced |
-| Exploding material swatches with SVG connector lines | `sections/Materials` | Exploded layout is the CSS end state |
+| Material swatches dealt from a stack to a 2 × 2 | `sections/Materials` | The laid-out grid is the CSS end state |
 | Stacked process cards (sticky + scale scrub) | `sections/Process` | No pin |
 | Service-area hover underline draw | `sections/ServiceAreas` | CSS |
-| Magnetic CTA, floating-label form with live validation, footer revealed from beneath `<main>` | `sections/CtaBlock`, `sections/Contact`, `globals.css` | Footer reveal is `position: sticky; bottom: 0` |
+| Magnetic CTA, form with live validation, footer revealed from beneath `<main>` | `sections/CtaBlock`, `sections/Contact`, `globals.css` | Footer reveal is `position: sticky; bottom: 0` |
 
 ## QA
 
@@ -97,43 +97,45 @@ pnpm qa:webgl               # real-Chrome WebGL context check
 | No JavaScript | Every route renders its heading, copy, images (`<noscript>` fallbacks) and the contact form; the preloader stays `display: none`. |
 | Keyboard | `pnpm qa` tabs each route at 1440, screenshots every focus state and asserts the skip link comes first and focus is never lost. |
 | WebGL | `pnpm qa:webgl` asserts one context at most, disposal on navigation and a clean console in real Chrome. |
-| Preloader | `qa/preloader.spec.ts` asserts it runs once per session, finishes inside 2.5 s, never reappears on navigation and never renders under reduced motion. |
-| Screenshot QA | `pnpm qa` covers 13 routes × 5 widths plus reduced-motion and keyboard-focus passes — 91 cells, **0 FAIL / 0 WARN** on the final run. |
+| Preloader | `qa/preloader.spec.ts` asserts it runs once per session on the home page, finishes inside its cap, never reappears on navigation and never renders under reduced motion. |
+| Screenshot QA | `pnpm qa` covers 13 routes × 5 widths plus reduced-motion and keyboard-focus passes — 91 cells, **0 FAIL / 0 WARN** on the final run. It also fails any page that shows one photograph twice. |
 | Bundles | `pnpm qa:bundle --strict` asserts three.js, GSAP, Lenis and the content loader are absent from every route's initial JS. |
 | Facts | Every rendered route was scanned for fabricated-claim patterns (awards, press logos, testimonials, statistics, founding dates, team sizes, budgets, completion dates, superlatives): zero hits. "Certified MWBE" and "over 5 years of experience" appear only where the live bio is quoted verbatim; the unverifiable press mention is not rendered at all; pricing appears only on `/services` with the three real Book Online figures. |
-| Placeholders | **No `{{TODO}}` token renders anywhere** on the site. The Process phase cards now carry draft copy pending the client's sign-off (OPEN-ITEMS OI-03), sourced from the firm's own journal posts and listed services; the only remaining placeholder is the contact form's delivery note, which appears solely in the form's success state. `pnpm content:check --strict` passes with zero TODO alt text. |
+| Placeholders | **No `{{TODO}}` token renders in any state of any route.** The Process phase cards carry draft copy pending the client's sign-off (OPEN-ITEMS OI-03), sourced from the firm's own journal posts and listed services. `pnpm content:check --strict` passes with zero TODO alt text. |
+| Contact form | Delivery success, endpoint failure (every field survives, email fallback offered, retry works), no endpoint configured (honest "not sent yet" state with a prefilled email), honeypot, and a visitor whose clock runs fast. |
+| Link previews | Every route ships a complete Open Graph block with a share image (`src/lib/metadata.ts`). |
 
-### Lighthouse (`final`, HTTP/2, median of 2 runs per cell)
+### Lighthouse (`final-redesign`, HTTP/2, one run per cell, on an idle machine on mains power)
 
 **24 of 24 cells pass.** Thresholds: Performance ≥ 85 desktop / ≥ 75 mobile, Accessibility ≥ 95,
 Best Practices ≥ 95, SEO ≥ 95, LCP < 2500 ms, CLS < 0.1.
 
 | Route | Mode | Perf | A11y | BP | SEO | LCP | CLS | TBT | Status |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---|
-| / | desktop | 99 | 100 | 100 | 100 | 600 ms | 0.001 | 0 ms | PASS |
-| / | mobile | 97 | 100 | 100 | 100 | 2,404 ms | 0.000 | 9 ms | PASS |
-| /portfolio | desktop | 100 | 100 | 100 | 100 | 483 ms | 0.001 | 0 ms | PASS |
-| /portfolio | mobile | 99 | 100 | 100 | 100 | 1,878 ms | 0.000 | 6 ms | PASS |
-| /portfolio/oceanside | desktop | 100 | 100 | 100 | 100 | 572 ms | 0.001 | 0 ms | PASS |
-| /portfolio/oceanside | mobile | 97 | 100 | 100 | 100 | 2,403 ms | 0.000 | 5 ms | PASS |
-| /portfolio/las-olas | desktop | 100 | 100 | 100 | 100 | 511 ms | 0.001 | 0 ms | PASS |
-| /portfolio/las-olas | mobile | 98 | 100 | 100 | 100 | 2,208 ms | 0.000 | 6 ms | PASS |
-| /portfolio/aromatherapy-and-natural-elements | desktop | 100 | 100 | 100 | 100 | 610 ms | 0.001 | 0 ms | PASS |
-| /portfolio/aromatherapy-and-natural-elements | mobile | 98 | 100 | 100 | 100 | 2,388 ms | 0.000 | 6 ms | PASS |
-| /portfolio/wellness-space-with-city-view | desktop | 100 | 100 | 100 | 100 | 491 ms | 0.001 | 0 ms | PASS |
-| /portfolio/wellness-space-with-city-view | mobile | 100 | 100 | 100 | 100 | 1,727 ms | 0.000 | 6 ms | PASS |
-| /portfolio/classroom-designs | desktop | 100 | 100 | 100 | 100 | 544 ms | 0.001 | 0 ms | PASS |
-| /portfolio/classroom-designs | mobile | 99 | 100 | 100 | 100 | 1,877 ms | 0.000 | 5 ms | PASS |
-| /portfolio/wellness-space-designs | desktop | 100 | 100 | 100 | 100 | 583 ms | 0.001 | 0 ms | PASS |
-| /portfolio/wellness-space-designs | mobile | 98 | 100 | 100 | 100 | 2,327 ms | 0.000 | 5 ms | PASS |
-| /portfolio/modern-interior-design | desktop | 100 | 100 | 100 | 100 | 521 ms | 0.001 | 0 ms | PASS |
-| /portfolio/modern-interior-design | mobile | 98 | 100 | 100 | 100 | 2,177 ms | 0.000 | 6 ms | PASS |
-| /services | desktop | 100 | 100 | 100 | 100 | 437 ms | 0.001 | 0 ms | PASS |
-| /services | mobile | 99 | 100 | 100 | 100 | 1,982 ms | 0.000 | 5 ms | PASS |
-| /about | desktop | 100 | 100 | 100 | 100 | 457 ms | 0.001 | 0 ms | PASS |
-| /about | mobile | 98 | 100 | 100 | 100 | 2,208 ms | 0.004 | 10 ms | PASS |
-| /contact | desktop | 100 | 100 | 100 | 100 | 417 ms | 0.001 | 0 ms | PASS |
-| /contact | mobile | 99 | 100 | 100 | 100 | 1,862 ms | 0.000 | 8 ms | PASS |
+| / | desktop | 99 | 100 | 100 | 100 | 635 ms | 0.000 | 1 ms | PASS |
+| / | mobile | 99 | 100 | 100 | 100 | 1,880 ms | 0.021 | 32 ms | PASS |
+| /portfolio | desktop | 100 | 100 | 100 | 100 | 520 ms | 0.000 | 0 ms | PASS |
+| /portfolio | mobile | 99 | 100 | 100 | 100 | 1,954 ms | 0.000 | 30 ms | PASS |
+| /portfolio/oceanside | desktop | 100 | 100 | 100 | 100 | 572 ms | 0.000 | 0 ms | PASS |
+| /portfolio/oceanside | mobile | 99 | 100 | 100 | 100 | 2,255 ms | 0.000 | 44 ms | PASS |
+| /portfolio/las-olas | desktop | 100 | 100 | 100 | 100 | 552 ms | 0.000 | 0 ms | PASS |
+| /portfolio/las-olas | mobile | 99 | 100 | 100 | 100 | 2,255 ms | 0.000 | 36 ms | PASS |
+| /portfolio/aromatherapy-and-natural-elements | desktop | 100 | 100 | 100 | 100 | 499 ms | 0.000 | 0 ms | PASS |
+| /portfolio/aromatherapy-and-natural-elements | mobile | 100 | 100 | 100 | 100 | 1,880 ms | 0.000 | 43 ms | PASS |
+| /portfolio/wellness-space-with-city-view | desktop | 100 | 100 | 100 | 100 | 461 ms | 0.000 | 0 ms | PASS |
+| /portfolio/wellness-space-with-city-view | mobile | 100 | 100 | 100 | 100 | 1,730 ms | 0.000 | 40 ms | PASS |
+| /portfolio/classroom-designs | desktop | 100 | 100 | 100 | 100 | 587 ms | 0.000 | 5 ms | PASS |
+| /portfolio/classroom-designs | mobile | 100 | 100 | 100 | 100 | 1,879 ms | 0.000 | 34 ms | PASS |
+| /portfolio/wellness-space-designs | desktop | 100 | 100 | 100 | 100 | 585 ms | 0.000 | 0 ms | PASS |
+| /portfolio/wellness-space-designs | mobile | 97 | 100 | 100 | 100 | 2,403 ms | 0.000 | 95 ms | PASS |
+| /portfolio/modern-interior-design | desktop | 100 | 100 | 100 | 100 | 570 ms | 0.000 | 7 ms | PASS |
+| /portfolio/modern-interior-design | mobile | 98 | 100 | 100 | 100 | 2,212 ms | 0.000 | 66 ms | PASS |
+| /services | desktop | 100 | 100 | 100 | 100 | 405 ms | 0.019 | 0 ms | PASS |
+| /services | mobile | 99 | 100 | 100 | 100 | 1,806 ms | 0.000 | 74 ms | PASS |
+| /about | desktop | 100 | 100 | 100 | 100 | 519 ms | 0.006 | 1 ms | PASS |
+| /about | mobile | 100 | 100 | 100 | 100 | 1,881 ms | 0.006 | 40 ms | PASS |
+| /contact | desktop | 100 | 100 | 100 | 100 | 456 ms | 0.000 | 0 ms | PASS |
+| /contact | mobile | 99 | 100 | 100 | 100 | 1,655 ms | 0.000 | 82 ms | PASS |
 
 Reproduce with `pnpm build && pnpm start`, `pnpm qa:h2`, then
 `NODE_TLS_REJECT_UNAUTHORIZED=0 pnpm qa:lighthouse --base-url=https://localhost:3443 --runs=2 --chrome-flags=--ignore-certificate-errors`.

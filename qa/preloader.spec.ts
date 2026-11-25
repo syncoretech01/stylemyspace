@@ -1,6 +1,8 @@
 /**
  * Preloader contract (brief §5): logotype draws in with a real-progress counter, curtain wipe into the
- * hero, ≤ 2.5 s, once per session, never on route change, never under prefers-reduced-motion.
+ * hero, ≤ 2.5 s, home page only, once per session, never on route change, never under
+ * prefers-reduced-motion. Durations are read inside the page: wall-clock here includes the cost of
+ * this spec's own screenshots, which on a slow machine is longer than the preloader.
  * Run with: pnpm exec playwright test -c qa/playwright.config.ts qa/preloader.spec.ts
  */
 import { test, expect } from "@playwright/test";
@@ -13,7 +15,11 @@ test.describe("preloader", () => {
   test("runs once per session, exits within 2.5 s, hands off to the hero", async ({ browser }) => {
     const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
     const p = await context.newPage();
-    const start = Date.now();
+    await p.addInitScript(() => {
+      window.addEventListener("preloader:done", () => {
+        (window as unknown as { __doneAt?: number }).__doneAt = performance.now();
+      });
+    });
     await p.goto("/", { waitUntil: "commit" });
     // Pending flag set by the inline head script before first paint.
     await expect(p.locator("html")).toHaveAttribute("data-preloader", "pending");
@@ -25,8 +31,11 @@ test.describe("preloader", () => {
     await p.waitForTimeout(700);
     await p.screenshot({ path: `${OUT}/t1400.png` });
     await expect(p.locator("html")).toHaveAttribute("data-preloader-done", "true", { timeout: 3000 });
-    const elapsed = Date.now() - start;
-    expect(elapsed, "preloader must finish within 2.5 s + wipe").toBeLessThan(3600);
+    const shownFor = await p.evaluate(() => {
+      const fcp = performance.getEntriesByName("first-contentful-paint")[0]?.startTime ?? 0;
+      return ((window as unknown as { __doneAt?: number }).__doneAt ?? Infinity) - fcp;
+    });
+    expect(shownFor, "curtain must be gone within 2.5 s of first paint").toBeLessThan(2500);
     await expect(p.locator("#preloader")).toHaveCount(0);
     await p.screenshot({ path: `${OUT}/t-done.png` });
     // header/main are interactive again
@@ -44,6 +53,51 @@ test.describe("preloader", () => {
     await expect(p.locator("#preloader")).toHaveCount(0);
     await context.close();
   });
+
+  test("never covers a direct landing on another route", async ({ browser }) => {
+    const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+    const p = await context.newPage();
+    await p.goto("/contact", { waitUntil: "domcontentloaded" });
+    expect(await p.locator("html").getAttribute("data-preloader")).not.toBe("pending");
+    await expect(p.locator("#preloader")).toHaveCount(0);
+    await context.close();
+  });
+
+  // The first visit splits the headline into lines, later visits leave it alone: both must break it alike.
+  for (const viewport of [{ width: 360, height: 640 }, { width: 390, height: 844 }, { width: 1440, height: 900 }]) {
+    test(`the headline breaks the same on a first visit as on a return (${viewport.width})`, async ({ browser }) => {
+      const phone = viewport.width < 768;
+      const context = await browser.newContext({ viewport, isMobile: phone, hasTouch: phone });
+      const p = await context.newPage();
+      const rows = async () => {
+        await expect(p.locator("html")).not.toHaveAttribute("data-preloader", "pending", { timeout: 10_000 });
+        await p.waitForTimeout(2500);
+        return p.locator("h1").evaluate((h1) => {
+          const out: { mid: number; words: string[] }[] = [];
+          const walker = document.createTreeWalker(h1, NodeFilter.SHOW_TEXT);
+          for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+            for (const m of (n.textContent ?? "").matchAll(/\S+/g)) {
+              const range = document.createRange();
+              range.setStart(n, m.index);
+              range.setEnd(n, m.index + m[0].length);
+              const box = range.getBoundingClientRect();
+              const mid = box.top + box.height / 2;
+              const row = out.find((r) => Math.abs(r.mid - mid) < 20);
+              if (row) row.words.push(m[0]);
+              else out.push({ mid, words: [m[0]] });
+            }
+          }
+          return out.map((r) => r.words.join(" "));
+        });
+      };
+      await p.goto("/");
+      const first = await rows();
+      await p.reload();
+      expect(await rows()).toEqual(first);
+      expect(first.length).toBeLessThanOrEqual(3);
+      await context.close();
+    });
+  }
 
   test("never renders under prefers-reduced-motion", async ({ browser }) => {
     const context = await browser.newContext({ reducedMotion: "reduce", viewport: { width: 1440, height: 900 } });

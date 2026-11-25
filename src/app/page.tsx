@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
 import { getContent, getProjects, resolveImage } from "@/lib/content";
+import { pageMetadata } from "@/lib/metadata";
 import { SITE } from "@/lib/site";
 import { Hero } from "@/components/sections/Hero";
 import { Manifesto } from "@/components/sections/Manifesto";
@@ -10,10 +10,7 @@ import { Process } from "@/components/sections/Process";
 import { ServiceAreas } from "@/components/sections/ServiceAreas";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/" },
-  openGraph: { url: "/" },
-};
+export const metadata = pageMetadata({ description: SITE.description, path: "/" });
 
 export default function HomePage() {
   const content = getContent();

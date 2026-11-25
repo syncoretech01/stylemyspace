@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { SITE } from "@/lib/site";
 
-export const alt = `${SITE.name} — interior design, New York`;
+export const alt = `${SITE.name}, interior design in New York`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -17,9 +17,10 @@ async function tryReadHomeOg() {
 }
 
 export default async function OpenGraphImage() {
-  const [display, sans, photo] = await Promise.all([
-    readFile(join(process.cwd(), "src/assets/fonts/Fraunces-400.ttf")),
-    readFile(join(process.cwd(), "src/assets/fonts/InterTight-400.ttf")),
+  const [display, italic, sans, photo] = await Promise.all([
+    readFile(join(process.cwd(), "src/assets/fonts/CormorantGaramond-500.ttf")),
+    readFile(join(process.cwd(), "src/assets/fonts/CormorantGaramond-500-Italic.ttf")),
+    readFile(join(process.cwd(), "src/assets/fonts/Jost-400.ttf")),
     tryReadHomeOg(),
   ]);
   const photoSrc = photo ? `data:image/jpeg;base64,${photo.toString("base64")}` : null;
@@ -33,45 +34,57 @@ export default async function OpenGraphImage() {
           display: "flex",
           background: "#363B2B",
           color: "#F7F4ED",
-          fontFamily: "Inter Tight",
+          fontFamily: "Jost",
         }}
       >
-        {photoSrc && (
-           
-          <img src={photoSrc} alt="" width={600} height={630} style={{ objectFit: "cover", width: 600, height: 630 }} />
-        )}
         <div
           style={{
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
-            padding: "56px 64px",
-            width: photoSrc ? 600 : 1200,
+            padding: "56px 56px 52px",
+            width: photoSrc ? 620 : 1200,
           }}
         >
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <div style={{ fontFamily: "Fraunces", fontSize: 28, letterSpacing: "0.18em", textTransform: "uppercase" }}>
+          <div style={{ display: "flex", alignItems: "baseline" }}>
+            <span style={{ fontFamily: "Cormorant Garamond", fontSize: 30, letterSpacing: "0.2em", textTransform: "uppercase" }}>
               Style My Space
-            </div>
-            <div style={{ fontSize: 16, letterSpacing: "0.16em", textTransform: "uppercase", color: "#E7DCCA", marginTop: 8 }}>
+            </span>
+            <span style={{ fontSize: 15, letterSpacing: "0.16em", textTransform: "uppercase", color: "#E7DCCA", marginLeft: 14 }}>
               Design
-            </div>
+            </span>
           </div>
-          <div style={{ fontFamily: "Fraunces", fontSize: photoSrc ? 44 : 64, lineHeight: 1.05, letterSpacing: "-0.02em" }}>
-            Interiors that balance elegance with ease.
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              fontFamily: "Cormorant Garamond",
+              fontSize: 76,
+              lineHeight: 0.98,
+              letterSpacing: "-0.02em",
+            }}
+          >
+            <span>Interiors that</span>
+            <span>balance elegance</span>
+            <span style={{ fontStyle: "italic" }}>with ease.</span>
           </div>
-          <div style={{ fontSize: 18, color: "#E7DCCA", display: "flex", flexDirection: "column", gap: 4 }}>
-            <span>Residential · Hospitality · Wellness · Commercial</span>
-            <span>{SITE.serviceAreas.join(" · ")}</span>
+          <div style={{ fontSize: 20, color: "#E7DCCA", display: "flex", flexDirection: "column", gap: 4 }}>
+            <span>{SITE.disciplines.join(", ")}</span>
+            <span>{SITE.serviceAreas.join(", ")}</span>
           </div>
         </div>
+        {photoSrc && (
+          // eslint-disable-next-line @next/next/no-img-element -- Satori renders plain <img>, not next/image
+          <img src={photoSrc} alt="" width={580} height={630} style={{ objectFit: "cover", objectPosition: "right", width: 580, height: 630 }} />
+        )}
       </div>
     ),
     {
       ...size,
       fonts: [
-        { name: "Fraunces", data: display, style: "normal", weight: 400 },
-        { name: "Inter Tight", data: sans, style: "normal", weight: 400 },
+        { name: "Cormorant Garamond", data: display, style: "normal", weight: 500 },
+        { name: "Cormorant Garamond", data: italic, style: "italic", weight: 500 },
+        { name: "Jost", data: sans, style: "normal", weight: 400 },
       ],
     },
   );

@@ -35,7 +35,7 @@ function getRenderer(): WebGLRenderer | null {
   if (!context) return null;
   renderer = new WebGLRenderer({ canvas, context, antialias: false, alpha: false, powerPreference: "high-performance" });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-  renderer.setClearColor(0x363b2b, 1);
+  renderer.setClearColor(0xf7f4ed, 1);
   return renderer;
 }
 
@@ -54,6 +54,7 @@ const FRAG = /* glsl */ `
   uniform vec2 uImage;    // texture px
   uniform vec2 uPointer;  // -1..1
   uniform vec2 uAmp;      // max offset in uv units
+  uniform vec2 uFocus;    // object-position, 0..1 (y from the top)
   varying vec2 vUv;
 
   vec2 coverUv(vec2 uv) {
@@ -61,8 +62,10 @@ const FRAG = /* glsl */ `
     float imageAspect = uImage.x / uImage.y;
     vec2 s = vec2(1.0);
     if (planeAspect > imageAspect) { s.y = imageAspect / planeAspect; } else { s.x = planeAspect / imageAspect; }
+    // The same window object-fit: cover + object-position would show (uv y points up).
+    vec2 centre = vec2(uFocus.x, 1.0 - uFocus.y) * (1.0 - s) + 0.5 * s;
     // 2% zoom hides the edge pull when the plane is displaced.
-    return (uv - 0.5) * s * 0.98 + 0.5;
+    return centre + (uv - 0.5) * s * 0.98;
   }
 
   void main() {
@@ -88,6 +91,8 @@ export type HeroSource = {
   height: number;
   /** True when the source was decoded already flipped (ImageBitmap ignores UNPACK_FLIP_Y_WEBGL). */
   preFlipped?: boolean;
+  /** The <img>'s object-position as fractions, so the plane crops exactly as the image beneath it. */
+  focus?: readonly [number, number];
 };
 
 export function createHeroScene(
@@ -123,6 +128,7 @@ export function createHeroScene(
       uImage: { value: new Vector2(image.width || 1, image.height || 1) },
       uPointer: { value: new Vector2(0, 0) },
       uAmp: { value: new Vector2(0, 0) },
+      uFocus: { value: new Vector2(image.focus?.[0] ?? 0.5, image.focus?.[1] ?? 0.5) },
     },
   });
   const scene = new Scene();
@@ -179,7 +185,14 @@ export function createHeroScene(
   ro.observe(host);
 
   resize();
-  opts.onReady?.();
+  // Two frames on: the first draw (and its texture upload) has been presented by then. Announcing it
+  // synchronously let slower compositors fade in an empty canvas, darkening the photograph.
+  requestAnimationFrame(() => {
+    render();
+    requestAnimationFrame(() => {
+      if (!disposed) opts.onReady?.();
+    });
+  });
 
   return {
     start() {

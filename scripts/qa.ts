@@ -362,6 +362,19 @@ function stuckProbe(): string[] {
   return out;
 }
 
+/** Photographs that appear more than once in <main>, by source file (after the scroll pass has mounted them all). */
+function repeatedPhotoProbe(): string[] {
+  const seen = new Map<string, number>();
+  for (const img of Array.from(document.querySelectorAll<HTMLImageElement>("main img"))) {
+    if (!img.getClientRects().length) continue; // display: none
+    const url = new URL(img.currentSrc || img.src, location.href);
+    if (url.protocol === "data:") continue;
+    const file = url.searchParams.get("url") ?? url.pathname;
+    seen.set(file, (seen.get(file) ?? 0) + 1);
+  }
+  return Array.from(seen).flatMap(([file, n]) => (n > 1 ? [`${file} ×${n}`] : []));
+}
+
 function overflowProbe(): { docScrollWidth: number; bodyScrollWidth: number; innerWidth: number } {
   return {
     docScrollWidth: document.documentElement.scrollWidth,
@@ -589,6 +602,10 @@ async function runJob(browser: Browser, job: Job, opts: Options, allow: AllowEnt
         level: "warn",
         text: `${result.stuckEndState.length} element(s) still hidden after the scroll pass: ${result.stuckEndState.slice(0, 5).join("; ")}`,
       });
+    }
+    const repeated = await page.evaluate(repeatedPhotoProbe);
+    if (repeated.length) {
+      push({ kind: "repeated-photo", level: "fail", text: `Same photograph more than once on the page: ${repeated.join("; ")}` });
     }
     const ov = await page.evaluate(overflowProbe);
     if (ov.docScrollWidth > ov.innerWidth + 1 || ov.bodyScrollWidth > ov.innerWidth + 1) {

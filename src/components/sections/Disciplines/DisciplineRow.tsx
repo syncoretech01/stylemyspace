@@ -11,28 +11,36 @@ import styles from "./Disciplines.module.css";
 type Props = {
   discipline: Discipline;
   image: ProjectImage | SiteImage | null;
-  index: number;
 };
 
 const subscribeNoop = () => () => {};
 const getClientSnapshot = () => true;
 const getServerSnapshot = () => false;
 
+/** Mirrors the stacked-layout media query in Disciplines.module.css. */
+const STACKED = "(max-width: 79.98rem), (hover: none)";
+const subscribeStacked = (cb: () => void) => {
+  const mq = window.matchMedia(STACKED);
+  mq.addEventListener("change", cb);
+  return () => mq.removeEventListener("change", cb);
+};
+const getStacked = () => window.matchMedia(STACKED).matches;
+
 /**
- * One discipline row / column. The whole row is a link to the service; the blurb sits in a panel next
- * to (≥ lg) or under (stacked) the label. After hydration, on the stacked (mobile / touch) layout the
- * panel collapses and a toggle button with aria-expanded opens it; the height is animated by a CSS
- * grid-template-rows transition (Disciplines.module.css) — no JS animation. Collapsed panels are
- * `inert`. Without JS, or on the column layout, everything is visible and the toggle is hidden.
+ * One discipline row / column. The whole row is a link to the service. On the stacked layout the blurb
+ * collapses after hydration behind a toggle with aria-expanded; on the column layout (a hovering pointer
+ * at ≥ 80rem) CSS opens it on hover / focus. Both are grid-template-rows transitions in
+ * Disciplines.module.css: no JS animation. Without JS everything is visible and the toggle is hidden.
  */
-export function DisciplineRow({ discipline: d, image, index }: Props) {
-  // false on the server and the hydrating render, true afterwards — never a markup mismatch.
+export function DisciplineRow({ discipline: d, image }: Props) {
+  // false on the server and the hydrating render, true afterwards: never a markup mismatch.
   const hydrated = useSyncExternalStore(subscribeNoop, getClientSnapshot, getServerSnapshot);
+  // Only the stacked accordion hides its closed panels from assistive technology: on the column layout
+  // the blurb is revealed by hover / focus on the link that contains it, and must stay readable.
+  const stacked = useSyncExternalStore(subscribeStacked, getStacked, getServerSnapshot);
   const [expanded, setExpanded] = useState(false);
   const toggleId = useId();
-  const labelId = `discipline-${d.id}-label`;
   const panelId = `discipline-${d.id}-panel`;
-  const collapsed = hydrated && !expanded;
 
   return (
     <li
@@ -41,32 +49,27 @@ export function DisciplineRow({ discipline: d, image, index }: Props) {
       data-accordion={hydrated ? "" : undefined}
       data-expanded={hydrated ? String(expanded) : undefined}
     >
-      <Link href={`/services#${d.id}` as Route} className={styles.link} aria-labelledby={labelId} data-cursor="Open">
+      <Link href={`/services#${d.id}` as Route} className={styles.link}>
         <SmartImage
           image={image}
+          // Decorative here: the link's name is its own visible label and blurb.
+          alt=""
           sizes="(min-width: 80rem) 50vw, 100vw"
           className={styles.media}
-          placeholderTodo={`${d.label} discipline image — pending image pipeline`}
+          objectPosition={d.focus}
+          placeholderTodo={`${d.label} discipline image`}
         />
         <div aria-hidden className={styles.scrim} />
 
-        <div className={`${styles.content} p-3 xl:p-4`}>
-          <div className={styles.label}>
-            <span aria-hidden className="eyebrow text-sand">
-              {String(index + 1).padStart(2, "0")}
-            </span>
-            <h3 id={labelId} className="font-display text-h2 text-bone">
-              {d.label}
-            </h3>
-          </div>
-          {/* `inert` only bites on the stacked layout, where .panel is collapsed; on columns it is display-free. */}
-          <div id={panelId} className={styles.panel} inert={collapsed ? true : undefined}>
+        <div className={`${styles.content} p-3`}>
+          <h3 className="font-display text-h3 text-bone xl:text-[clamp(1.625rem,1.95vw,2.125rem)]">
+            {d.label}
+          </h3>
+          <div id={panelId} className={styles.panel} inert={stacked && !expanded}>
             <div className={styles.blurb}>
-              <div className="pt-2 xl:pt-0">
+              <div className="max-w-[40ch] pt-1.5">
                 <p className="text-body text-bone">{d.blurb}</p>
-                {/* The sourced scope note is a second sentence of the same blurb, not a smaller aside:
-                    one column of the row must not carry two type sizes when its siblings carry one. */}
-                {d.note ? <p className="mt-2 text-body text-bone">{d.note}</p> : null}
+                {d.note ? <p className="mt-1.5 text-body text-bone">{d.note}</p> : null}
               </div>
             </div>
           </div>

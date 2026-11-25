@@ -10,6 +10,12 @@ type Props = {
   imageSelector?: string;
 };
 
+/** "58% 72%" → [0.58, 0.72]. Anything that is not a pair of percentages falls back to centre. */
+function readFocus(img: HTMLImageElement): [number, number] {
+  const m = /^([\d.]+)%\s+([\d.]+)%$/.exec(getComputedStyle(img).objectPosition);
+  return m ? [Number(m[1]) / 100, Number(m[2]) / 100] : [0.5, 0.5];
+}
+
 /**
  * Mounts the three.js displacement plane over the hero <img> on the "full" motion tier only,
  * after the preloader has exited, and only when the WebGL probe reports hardware acceleration.
@@ -55,7 +61,7 @@ export function HeroCanvas({ imageSelector = "img[data-lcp]" }: Props) {
       const mod = await (isPreloaderPending() ? track(load, 15) : load);
       if (disposed) return;
       const preFlipped = typeof ImageBitmap !== "undefined" && source instanceof ImageBitmap;
-      scene = mod.createHeroScene(host, { source, width, height, preFlipped }, {
+      scene = mod.createHeroScene(host, { source, width, height, preFlipped, focus: readFocus(img) }, {
         onReady: () => host.classList.add("is-ready"),
       });
       if (!scene) return;

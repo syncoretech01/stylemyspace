@@ -28,8 +28,8 @@ open the image at 100 %. Anything below 0.4 must not be filed.
 
 ### R1 — Type hierarchy
 The page reads as one system: display → h1 → h2 → h3 → lead → body → small → eyebrow, using only
-the fluid tokens (`--text-display` … `--text-eyebrow`) and the two families (Fraunces display,
-Inter Tight sans).
+the fluid tokens (`--text-display` … `--text-eyebrow`) and the two families (Cormorant Garamond display,
+Jost sans).
 
 - **PASS**: one h1 per route; each heading level is visibly distinct from the next (size ratio ≥ 1.2
   or a family/weight change); body measure stays within 60–75 ch; no display text below 40 px on

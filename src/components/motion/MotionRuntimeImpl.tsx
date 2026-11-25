@@ -24,7 +24,14 @@ export default function MotionRuntimeImpl({ tier }: { tier: "full" | "mobile" })
     lenis.on("scroll", ScrollTrigger.update);
     gsap.ticker.add(tick);
     gsap.ticker.lagSmoothing(0);
+    // The footer's "Back to top" announces itself; claiming the event keeps it on the same easing.
+    const onScrollTop = (e: Event) => {
+      e.preventDefault();
+      lenis.scrollTo(0, { duration: 1.1 });
+    };
+    window.addEventListener("site:scroll-top", onScrollTop);
     return () => {
+      window.removeEventListener("site:scroll-top", onScrollTop);
       gsap.ticker.remove(tick);
       lenis.destroy();
       delete window.__lenis;

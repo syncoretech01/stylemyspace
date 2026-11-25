@@ -5,26 +5,45 @@ one confident display serif, photography carrying the weight, restraint everywhe
 
 ## Brand system decisions
 
-- **Type**: Fraunces (optical-size axis; display, wordmark, pull-quotes) + Inter Tight (UI, body,
-  labels). Two families, both self-hosted through `next/font`.
-- **Wordmark**: "STYLE MY SPACE" set in Fraunces at a light weight, letter-spaced `0.18em`, with
-  "Design" as a small-caps sans suffix. Drawn as an SVG outline for the preloader.
+- **Type**: Cormorant Garamond (display, ledes, numerals, wordmark) + Jost (body, UI, labels), both
+  self-hosted through `next/font`. Cormorant is the brief's own named alternative. It was chosen by
+  setting the site's real headlines in nine candidates on the site's palette: it has the warmest
+  contrast, a true calligraphic italic and the best ampersand of the set, which suits "elegance with
+  ease, sophistication with warmth". Jost's geometric capitals are the classic foil for it.
+  - Its weakness is a small x-height and fine hairlines, so it is set at 500 throughout and about 15%
+    larger than a book face would be. One static instance ships (plus the italic), to protect mobile LCP.
+  - The true italic is the only emphasis device: one phrase per headline, never a second typeface.
+  - Lining figures site-wide (`lnum`), because prices and phone numbers are set in the serif.
+  - Tracked capitals (`eyebrow`) are for buttons, navigation and metadata. They are **not** a kicker
+    above every section heading; sections open on their headline.
+- **Wordmark**: "STYLE MY SPACE" in Cormorant Garamond capitals, letter-spaced `0.2em`, with
+  "Design" as a small tracked-sans suffix. Drawn as an SVG outline for the preloader.
 - **Palette**: bone page base, sand for alternate sections, taupe for rules and muted fills, olive
   as the primary (buttons, focus rings, cursor), olive-deep for dark sections and the footer with
   bone text, ink for body copy, brass only as a thin metallic accent (rules, numerals, a single
   hover underline). Never pure black or white.
 - **Spacing**: 8 px scale (`--spacing: 0.5rem`). Section padding 12–20 units desktop, 8–10 mobile.
-- **Type scale**: fluid `clamp()` display down to a 12 px eyebrow floor. Body measure 60–75 ch.
+- **Type scale**: fluid `clamp()` display down to a 13 px label floor, 18 px body, 62–72 character
+  measure. `--text-hero` is also bounded by viewport height so the home headline and its calls to
+  action always share the first screen.
 - **Buttons**: pill-less, 1 px olive rule, uppercase sans label with tracking; filled olive variant
-  for the primary CTA. Forms use floating labels on a 1 px taupe baseline that turns olive on focus.
+  for the primary CTA. Forms use static labels above a 1 px olive baseline that thickens on focus.
+- **One label per intent**: "Start a project" (contact), "View the work" (portfolio).
 
 ## Photography
 
 Oceanside is real photography of a completed house and is, almost literally, the brand palette:
 olive wallpaper, olive velvet, brass pendants, white stone. It anchors the home hero (the "Dining"
-frame), the manifesto background ("Kitchen 2") and the material swatches. Las Olas contributes the
-marble and oak. The five 2500 px square collections are shown with their own descriptions from the
-live site and are never described as completed work (see OPEN-ITEMS).
+frame, shown without any scrim: the headline sits on its white ceiling, which dissolves into the
+page), the manifesto photograph, the Residential discipline, two process cards and two of the material
+swatches. Swatches are tight crops of the masters (`crop` in `content/overrides.json`), so wood reads as
+wood and velvet as velvet. The five 2500 px square collections are shown with their own descriptions from
+the live site and are never described as completed work (see OPEN-ITEMS).
+
+**One photograph, one place.** No photograph appears twice on a page, crops included, and neither do two
+frames of the same view. The home page has twenty photographs in twenty slots; a project with a single
+photograph shows it once, whole, beside its words. `pnpm qa` fails any page that breaks this
+(`repeated-photo`).
 
 ## References (Awwwards gallery, gathered 2026-08-28) — what is borrowed, structurally
 

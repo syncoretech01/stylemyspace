@@ -1,4 +1,4 @@
-/** Media queries shared by gsap.matchMedia() and useMotionPreference(). Keep in sync with globals.css. */
+/** Media queries behind useMotionPreference(). Keep in sync with globals.css and the <head> script in layout.tsx. */
 export const MQ = {
   desktop: "(min-width: 1024px)",
   mobile: "(max-width: 1023.98px)",

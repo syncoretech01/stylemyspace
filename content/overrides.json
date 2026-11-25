@@ -1,23 +1,23 @@
 {
-  "_comment": "Hand-authored decisions merged into projects.json by scripts/optimize-images.ts. Keys: projects.<slug>.{category, categoryNote, cover (mediaId), published, captions{mediaId: string|null}}; home.{hero, manifesto, materials, pressConfirmed}; site.showPricing.",
+  "_comment": "Hand-authored decisions merged into projects.json by scripts/optimize-images.ts. Keys: projects.<slug>.{category, categoryNote, cover (mediaId), lead [mediaId], nearDuplicates [mediaId], published, captions{mediaId: string|null}, focalPoints{mediaId: [x,y]}}; home.{hero, manifesto, materials, pressConfirmed}; site.showPricing.",
   "projects": {
-    "oceanside": { "cover": "6af838_16545cbb3b46414e8d079337dd6f2bd9" },
+    "oceanside": { "cover": "6af838_11540b40c17b4fd0a0222d068ac45c0a", "lead": ["6af838_707a3bcfd3984735b59dc48b13681026", "6af838_16545cbb3b46414e8d079337dd6f2bd9", "6af838_d5e03023a9ca44af8c62582f3846491a", "6af838_6d3b289efb6f4a62b65ecbe1bf0cf28f"], "nearDuplicates": ["6af838_1a14ff52e87343e0b1ee3036348e0503", "6af838_09dea283df7143648f851d8b3ff54567"], "focalPoints": { "6af838_11540b40c17b4fd0a0222d068ac45c0a": [0.5, 0.62] } },
     "las-olas": { "cover": "6af838_4797bd478c3e4a3085c85f2e01c52f12", "categoryNote": "Described on the live site as an investment property used as an Airbnb.", "captions": { "6af838_3198adb0dd8242c5899fc9d7947bcc53": null } },
     "aromatherapy-and-natural-elements": { "category": "Wellness", "categoryNote": "No category on the live site; grouped under Wellness by title." },
-    "wellness-space-with-city-view": { "category": "Wellness", "categoryNote": "No category on the live site; grouped under Wellness by title." },
+    "wellness-space-with-city-view": { "category": "Wellness", "categoryNote": "No category on the live site; grouped under Wellness by title.", "focalPoints": { "6af838_7627bb561c774b9f911e7b3d935a69e0": [0.5, 1] } },
     "classroom-designs": { "category": "Education", "categoryNote": "No category on the live site; the live home page lists an Education card (\"Innovative Learning Spaces\")." },
     "wellness-space-designs": { "category": "Wellness", "categoryNote": "No category on the live site; grouped under Wellness by title." },
     "modern-interior-design": { "category": null, "categoryNote": "No category on the live site and none inferable from the title." }
   },
   "home": {
     "hero": { "slug": "oceanside", "mediaId": "6af838_16545cbb3b46414e8d079337dd6f2bd9" },
-    "manifesto": { "slug": "oceanside", "mediaId": "6af838_ac92150204054e37bb93bb791be18a57" },
+    "manifesto": { "slug": "oceanside", "mediaId": "6af838_707a3bcfd3984735b59dc48b13681026" },
     "pressConfirmed": false,
     "materials": [
-      { "id": "wood", "label": "Wood", "quote": "warm beiges, soft greens, and subtle wood tones", "quoteSource": "https://www.stylemyspacedesign.com/post/functional-and-tranquil-interior-design-solutions-by-style-my-space", "image": { "slug": "las-olas", "mediaId": "6af838_4797bd478c3e4a3085c85f2e01c52f12" }, "objectPosition": "50% 85%" },
-      { "id": "stone", "label": "Stone", "quote": "marble, gold accents, natural light, and elegant decor elements", "quoteSource": "https://www.stylemyspacedesign.com/portfolio-collections/my-portfolio/modern-interior-design", "image": { "slug": "las-olas", "mediaId": "6af838_f8e79c545f2b47778b768e61159a2478" }, "objectPosition": "70% 40%" },
-      { "id": "textile", "label": "Textile", "quote": "textures like soft fabrics and warm wood invite relaxation and productivity", "quoteSource": "https://www.stylemyspacedesign.com/post/elegant-wellness-space-designs-for-commercial-businesses", "image": { "slug": "oceanside", "mediaId": "6af838_707a3bcfd3984735b59dc48b13681026" }, "objectPosition": "10% 80%" },
-      { "id": "brass", "label": "Brass", "quote": "Every color, texture, and material is selected to evoke calm and balance.", "quoteSource": "https://www.stylemyspacedesign.com/post/functional-and-tranquil-interior-design-solutions-by-style-my-space", "image": { "slug": "oceanside", "mediaId": "6af838_ac92150204054e37bb93bb791be18a57" }, "objectPosition": "50% 12%" }
+      { "id": "wood", "label": "Wood", "quote": "warm beiges, soft greens, and subtle wood tones", "quoteSource": "https://www.stylemyspacedesign.com/post/functional-and-tranquil-interior-design-solutions-by-style-my-space", "image": { "slug": "wellness-space-designs", "mediaId": "6af838_2c26386f93924bfea1018d162a4036b5" }, "objectPosition": "50% 50%", "crop": [0.72, 0.43, 0.34], "alt": "Slatted timber wall, its vertical battens lit from one side" },
+      { "id": "stone", "label": "Stone", "quote": "marble, gold accents, natural light, and elegant decor elements", "quoteSource": "https://www.stylemyspacedesign.com/portfolio-collections/my-portfolio/modern-interior-design", "image": { "slug": "modern-interior-design", "mediaId": "6af838_d634610f7fb74719bc5098a425d76981" }, "objectPosition": "50% 50%", "crop": [0.67, 0.49, 0.36], "alt": "Pale veined marble beneath a backlit round of aged gold" },
+      { "id": "textile", "label": "Textile", "quote": "textures like soft fabrics and warm wood invite relaxation and productivity", "quoteSource": "https://www.stylemyspacedesign.com/post/elegant-wellness-space-designs-for-commercial-businesses", "image": { "slug": "oceanside", "mediaId": "6af838_5a2b4ce9517141a09a0c7fb22be0783f" }, "objectPosition": "50% 50%", "crop": [0.58, 0.8, 0.36], "alt": "Emerald velvet chairs around an inlaid black-and-white side table" },
+      { "id": "brass", "label": "Brass", "quote": "Every color, texture, and material is selected to evoke calm and balance.", "quoteSource": "https://www.stylemyspacedesign.com/post/functional-and-tranquil-interior-design-solutions-by-style-my-space", "image": { "slug": "oceanside", "mediaId": "6af838_d5e03023a9ca44af8c62582f3846491a" }, "objectPosition": "50% 50%", "crop": [0.55, 0.2, 0.46], "alt": "Ring pendant in soft gold, glowing inside a slim open cube" }
     ]
   },
   "site": { "showPricing": true }

@@ -8,9 +8,9 @@
   background: var(--color-olive-deep);
   color: var(--color-bone);
   clip-path: inset(0 0 0 0);
-  transition: clip-path 800ms var(--ease-in-out-quart);
+  transition: clip-path 700ms var(--ease-in-out-quart);
   /* Failsafe: if JS never finishes the sequence, the curtain leaves on its own. */
-  animation: preloader-failsafe 800ms var(--ease-in-out-quart) 4s forwards;
+  animation: preloader-failsafe 700ms var(--ease-in-out-quart) 4s forwards;
 }
 html:not([data-preloader="pending"]) #preloader { display: none; }
 #preloader.is-done { clip-path: inset(0 0 100% 0); animation: none; }
@@ -20,12 +20,13 @@ html:not([data-preloader="pending"]) #preloader { display: none; }
 .preloader__logo { width: 100%; height: auto; overflow: visible; }
 .preloader__text {
   font-family: var(--font-display);
-  font-size: 44px;
-  letter-spacing: 0.18em;
+  font-size: 46px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   fill: transparent;
   stroke: var(--color-bone);
-  stroke-width: 0.9;
+  stroke-width: 0.7;
   stroke-linejoin: round;
   stroke-dasharray: 420;
   stroke-dashoffset: 420;
@@ -33,8 +34,8 @@ html:not([data-preloader="pending"]) #preloader { display: none; }
 }
 #preloader.is-drawing .preloader__text {
   animation:
-    logo-draw 1100ms var(--ease-in-out-quart) forwards,
-    logo-fill 500ms ease-out 900ms forwards;
+    logo-draw 850ms var(--ease-in-out-quart) forwards,
+    logo-fill 400ms ease-out 600ms forwards;
 }
 @keyframes logo-draw { from { opacity: 1; stroke-dashoffset: 420; } to { opacity: 1; stroke-dashoffset: 0; } }
 @keyframes logo-fill { to { fill: var(--color-bone); stroke-opacity: 0; } }

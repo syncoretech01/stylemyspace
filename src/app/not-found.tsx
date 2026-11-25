@@ -1,22 +1,23 @@
+import type { Metadata } from "next";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { Heading } from "@/components/ui/Heading";
-import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Button } from "@/components/ui/Button";
+
+export const metadata: Metadata = { title: "Page not found", robots: { index: false, follow: true } };
 
 export default function NotFound() {
   return (
     <Section className="grid min-h-[70svh] content-center">
       <Container>
-        <Eyebrow>404</Eyebrow>
-        <Heading as="h1" size="h1" className="mt-2">
-          This page has moved or never existed.
+        <Heading as="h1" size="display" className="max-w-[12ch]">
+          This page has <em>moved</em> or never existed.
         </Heading>
-        <p className="measure mt-3 text-lead">Explore the portfolio or start a conversation about your project.</p>
-        <div className="mt-6 flex gap-2">
-          <Button href="/portfolio">View the portfolio</Button>
+        <p className="lede mt-4 max-w-[36ch]">Explore the portfolio, or start a conversation about your project.</p>
+        <div className="mt-5 flex flex-wrap gap-2">
+          <Button href="/portfolio">View the work</Button>
           <Button href="/contact" variant="outline">
-            Contact
+            Start a project
           </Button>
         </div>
       </Container>

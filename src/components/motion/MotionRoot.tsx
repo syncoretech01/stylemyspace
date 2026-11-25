@@ -6,6 +6,8 @@ import { useMotionModule, type MotionMount } from "./useMotionModule";
 type Props = ComponentPropsWithoutRef<"div"> & {
   /** Must be a module-level constant: `const load = () => import("./Hero.motion")`. */
   load: () => Promise<{ default: MotionMount }>;
+  /** Mount behind the preloader's curtain when there is one (home hero only). */
+  early?: boolean;
   as?: ElementType;
 };
 
@@ -17,9 +19,9 @@ type Props = ComponentPropsWithoutRef<"div"> & {
  *   const load = () => import("./Hero.motion");
  *   export const HeroMotionRoot = (p) => <MotionRoot load={load} {...p} />;
  */
-export function MotionRoot({ load, as: Tag = "div", children, ...rest }: Props) {
+export function MotionRoot({ load, early = false, as: Tag = "div", children, ...rest }: Props) {
   const ref = useRef<HTMLElement>(null);
-  useMotionModule(ref, load);
+  useMotionModule(ref, load, early);
   return (
     <Tag ref={ref} data-motion-root="" {...rest}>
       {children}

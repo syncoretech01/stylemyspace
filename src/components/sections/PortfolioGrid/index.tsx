@@ -67,32 +67,23 @@ const ARTEFACT_CROP: Record<string, { ratio: string; position: string }> = {
 
 export function PortfolioGrid({ projects, title, intro }: Props) {
   const heading = title || "Portfolio";
-  const count = projects.length;
   // With an odd tile count the last tile would sit alone in the 2-up md grid beside an empty cell.
   const orphanAtMd = projects.length % 2 === 1;
 
   return (
     <PortfolioGridMotionRoot>
-      <Section aria-labelledby="portfolio-title">
+      <Section aria-labelledby="portfolio-title" className="lg:pt-12">
         <Container>
-          <header className="grid gap-y-6 lg:grid-cols-12 lg:gap-x-4">
-            <div className="lg:col-span-8">
-              <Heading as="h1" id="portfolio-title" size="h1" data-reveal data-reveal-lcp>
-                {heading}
-              </Heading>
-              <p className="measure mt-4 text-lead text-olive" data-reveal>
-                {intro}
-              </p>
-            </div>
-            <p className="flex items-end gap-2 lg:col-span-4 lg:justify-end" data-reveal>
-              <span className="font-display text-h2 leading-none text-brass tabular-nums">{count}</span>
-              <span className="eyebrow pb-1 text-olive">{count === 1 ? "project" : "projects"}</span>
+          <header className="grid gap-y-3 lg:grid-cols-12 lg:items-end lg:gap-x-4">
+            <Heading as="h1" id="portfolio-title" size="display" className="lg:col-span-7" data-reveal data-reveal-lcp>
+              {heading}
+            </Heading>
+            <p className="lede max-w-[34ch] lg:col-span-5 lg:pb-1.5" data-reveal>
+              {intro}
             </p>
           </header>
 
-          <div className="rule mt-8 md:mt-10" aria-hidden="true" />
-
-          <ul className="portfolio-grid mt-8 grid grid-cols-1 items-start gap-x-3 gap-y-8 md:grid-cols-2 md:gap-x-4 md:gap-y-10 lg:grid-cols-12 lg:gap-y-16" role="list">
+          <ul className="portfolio-grid mt-6 grid grid-cols-1 items-start gap-x-3 gap-y-7 md:mt-8 md:grid-cols-2 md:gap-x-4 md:gap-y-9 lg:mt-9 lg:grid-cols-12 lg:gap-y-11" role="list">
             {projects.map((p, i) => {
               const span = PATTERN[i % PATTERN.length] ?? 4;
               const cover = getCover(p);
@@ -108,7 +99,7 @@ export function PortfolioGrid({ projects, title, intro }: Props) {
                   className={cn(
                     "tile relative",
                     SPAN_CLASS[span],
-                    stepped && "lg:mt-16",
+                    stepped && "lg:mt-12",
                     orphanAtMd && isLast && "md:col-span-2",
                   )}
                   data-reveal
@@ -117,10 +108,10 @@ export function PortfolioGrid({ projects, title, intro }: Props) {
                     href={`/portfolio/${p.slug}` as Route}
                     slug={p.slug}
                     className="group block rounded-xs"
-                    data-cursor="View"
                   >
                     <figure>
                       <div
+                        data-cursor="View"
                         className={cn(
                           "tile-frame overflow-clip bg-taupe/40",
                           ratio,
@@ -134,36 +125,31 @@ export function PortfolioGrid({ projects, title, intro }: Props) {
                           lcp={i === 0}
                           quality={i === 0 ? 85 : 75}
                           className="h-full w-full"
-                          imgClassName="transition-transform duration-(--dur-short) ease-(--ease-out-expo) group-hover:scale-[1.04] group-focus-visible:scale-[1.04]"
+                          imgClassName="transition-transform duration-[1200ms] ease-(--ease-out-expo) group-hover:scale-[1.03] group-focus-visible:scale-[1.03]"
                           imgProps={{ "data-flip-id": p.slug }}
                           objectPosition={crop?.position}
-                          placeholderTodo={`${p.title} cover — pending image pipeline`}
+                          placeholderTodo={`${p.title} cover`}
                         />
                       </div>
-                      <figcaption className="mt-2 flex items-start justify-between gap-3">
-                        <div className="min-w-0">
-                          {p.category ? <Eyebrow>{p.category}</Eyebrow> : <span aria-hidden="true" className="eyebrow block">&nbsp;</span>}
-                          {/* The 4-col tile is only ~266px wide at 1024; at h3 every title there
-                              breaks to a one-word second line, so the size steps down for that band. */}
-                          <h2 className="mt-1 font-display text-h3 text-ink lg:text-lead xl:text-h3">
-                            {/* The title is the resting state; a duplicate waits under the mask and rolls in
-                                on hover / keyboard focus. Nothing here ever hides the name itself. */}
-                            <span className="tile-name-mask relative inline-block overflow-clip align-bottom leading-[1.35]">
-                              <span className="tile-name block transition-transform duration-(--dur-short) ease-(--ease-out-expo) group-hover:-translate-y-full group-focus-visible:-translate-y-full">
-                                {p.title}
-                              </span>
-                              <span
-                                aria-hidden="true"
-                                className="tile-name absolute left-0 top-full block w-full text-olive transition-transform duration-(--dur-short) ease-(--ease-out-expo) group-hover:-translate-y-full group-focus-visible:-translate-y-full"
-                              >
-                                {p.title}
-                              </span>
+                      <figcaption className="mt-2">
+                        {/* The 4-col tile is only ~266px wide at 1024; at h3 every title there breaks to a
+                            one-word second line, so the size steps down for that band. */}
+                        <h2 className="font-display text-h3 text-ink lg:text-[1.5rem] xl:text-h3">
+                          {/* The title is the resting state; a duplicate waits under the mask and rolls in
+                              on hover / keyboard focus. Nothing here ever hides the name itself. */}
+                          <span className="tile-name-mask relative inline-block overflow-clip align-bottom leading-[1.3]">
+                            <span className="tile-name block transition-transform duration-(--dur-short) ease-(--ease-out-expo) group-hover:-translate-y-full group-focus-visible:-translate-y-full">
+                              {p.title}
                             </span>
-                          </h2>
-                        </div>
-                        <span className="shrink-0 pt-0.5 font-display text-lead text-olive tabular-nums" aria-hidden="true">
-                          {String(i + 1).padStart(2, "0")}
-                        </span>
+                            <span
+                              aria-hidden="true"
+                              className="tile-name absolute top-full left-0 block w-full text-olive italic transition-transform duration-(--dur-short) ease-(--ease-out-expo) group-hover:-translate-y-full group-focus-visible:-translate-y-full"
+                            >
+                              {p.title}
+                            </span>
+                          </span>
+                        </h2>
+                        {p.category && <Eyebrow className="mt-0.5">{p.category}</Eyebrow>}
                       </figcaption>
                     </figure>
                   </FlipLink>

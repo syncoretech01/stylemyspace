@@ -6,7 +6,7 @@
  * drifts at its own amplitude via containerAnimation. Mobile keeps the native scroll-snap list.
  * Reduced motion never loads this module — the static markup is the final state.
  */
-import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { gsap, keepFocus, ScrollTrigger } from "@/lib/gsap";
 import { ease } from "@/lib/motion/tokens";
 import { markReady, revealIn } from "@/lib/motion/reveal";
 
@@ -23,7 +23,9 @@ export default function mount(root: HTMLElement, ctx: Ctx) {
   const cards = Array.from(root.querySelectorAll<HTMLElement>(".card"));
   const restores: Array<() => void> = [];
 
-  const c = gsap.context(() => {
+  const c = gsap.context(() => {});
+  // Creating the pin wraps the stage in a spacer, which would blur a card that already has focus.
+  keepFocus(root, () => c.add(() => {
     revealIn(root);
     if (ctx.tier !== "full" || !stage || !track || cards.length < 2) return;
 
@@ -121,12 +123,14 @@ export default function mount(root: HTMLElement, ctx: Ctx) {
 
     // The root height changed from the CSS estimate to the exact travel: re-measure everything below.
     ScrollTrigger.refresh();
-  }, root);
+  }));
 
   markReady(root);
 
   return () => {
-    c.revert();
-    restores.splice(0).forEach((fn) => fn());
+    keepFocus(root, () => {
+      c.revert();
+      restores.splice(0).forEach((fn) => fn());
+    });
   };
 }

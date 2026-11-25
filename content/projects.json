@@ -12,7 +12,17 @@
       "description": "Welcome to the Oceanside project, a stunning residential development that skillfully combines masculinity, functionality, and elegance. This project features innovative design and luxurious finishes, creating a modern and sophisticated living space that is sure to impress.",
       "sourceUrl": "https://www.stylemyspacedesign.com/portfolio-collections/my-portfolio/oceanside",
       "order": 0,
-      "cover": 12,
+      "cover": 6,
+      "lead": [
+        "6af838_707a3bcfd3984735b59dc48b13681026",
+        "6af838_16545cbb3b46414e8d079337dd6f2bd9",
+        "6af838_d5e03023a9ca44af8c62582f3846491a",
+        "6af838_6d3b289efb6f4a62b65ecbe1bf0cf28f"
+      ],
+      "nearDuplicates": [
+        "6af838_1a14ff52e87343e0b1ee3036348e0503",
+        "6af838_09dea283df7143648f851d8b3ff54567"
+      ],
       "published": true,
       "images": [
         {
@@ -136,7 +146,7 @@
           "caption": "Living Room 4",
           "focalPoint": [
             0.5,
-            0.5
+            0.62
           ],
           "role": "gallery",
           "source": "warmup"
@@ -279,6 +289,8 @@
       "sourceUrl": "https://www.stylemyspacedesign.com/portfolio-collections/my-portfolio/las-olas",
       "order": 1,
       "cover": 8,
+      "lead": [],
+      "nearDuplicates": [],
       "published": true,
       "images": [
         {
@@ -455,6 +467,8 @@
       "sourceUrl": "https://www.stylemyspacedesign.com/portfolio-collections/my-portfolio/aromatherapy-and-natural-elements",
       "order": 2,
       "cover": 0,
+      "lead": [],
+      "nearDuplicates": [],
       "published": true,
       "images": [
         {
@@ -487,6 +501,8 @@
       "sourceUrl": "https://www.stylemyspacedesign.com/portfolio-collections/my-portfolio/wellness-space-with-city-view",
       "order": 3,
       "cover": 0,
+      "lead": [],
+      "nearDuplicates": [],
       "published": true,
       "images": [
         {
@@ -502,7 +518,7 @@
           "caption": null,
           "focalPoint": [
             0.5,
-            0.5
+            1
           ],
           "role": "cover",
           "source": "warmup"
@@ -519,6 +535,8 @@
       "sourceUrl": "https://www.stylemyspacedesign.com/portfolio-collections/my-portfolio/classroom-designs",
       "order": 4,
       "cover": 0,
+      "lead": [],
+      "nearDuplicates": [],
       "published": true,
       "images": [
         {
@@ -569,6 +587,8 @@
       "sourceUrl": "https://www.stylemyspacedesign.com/portfolio-collections/my-portfolio/wellness-space-designs",
       "order": 5,
       "cover": 0,
+      "lead": [],
+      "nearDuplicates": [],
       "published": true,
       "images": [
         {
@@ -637,6 +657,8 @@
       "sourceUrl": "https://www.stylemyspacedesign.com/portfolio-collections/my-portfolio/modern-interior-design",
       "order": 6,
       "cover": 0,
+      "lead": [],
+      "nearDuplicates": [],
       "published": true,
       "images": [
         {
@@ -704,7 +726,7 @@
     },
     "manifesto": {
       "slug": "oceanside",
-      "mediaId": "6af838_ac92150204054e37bb93bb791be18a57"
+      "mediaId": "6af838_707a3bcfd3984735b59dc48b13681026"
     },
     "materials": [
       {
@@ -713,10 +735,16 @@
         "quote": "warm beiges, soft greens, and subtle wood tones",
         "quoteSource": "https://www.stylemyspacedesign.com/post/functional-and-tranquil-interior-design-solutions-by-style-my-space",
         "image": {
-          "slug": "las-olas",
-          "mediaId": "6af838_4797bd478c3e4a3085c85f2e01c52f12"
+          "slug": "wellness-space-designs",
+          "mediaId": "6af838_2c26386f93924bfea1018d162a4036b5"
         },
-        "objectPosition": "50% 85%"
+        "objectPosition": "50% 50%",
+        "crop": [
+          0.72,
+          0.43,
+          0.34
+        ],
+        "alt": "Slatted timber wall, its vertical battens lit from one side"
       },
       {
         "id": "stone",
@@ -724,10 +752,16 @@
         "quote": "marble, gold accents, natural light, and elegant decor elements",
         "quoteSource": "https://www.stylemyspacedesign.com/portfolio-collections/my-portfolio/modern-interior-design",
         "image": {
-          "slug": "las-olas",
-          "mediaId": "6af838_f8e79c545f2b47778b768e61159a2478"
+          "slug": "modern-interior-design",
+          "mediaId": "6af838_d634610f7fb74719bc5098a425d76981"
         },
-        "objectPosition": "70% 40%"
+        "objectPosition": "50% 50%",
+        "crop": [
+          0.67,
+          0.49,
+          0.36
+        ],
+        "alt": "Pale veined marble beneath a backlit round of aged gold"
       },
       {
         "id": "textile",
@@ -736,9 +770,15 @@
         "quoteSource": "https://www.stylemyspacedesign.com/post/elegant-wellness-space-designs-for-commercial-businesses",
         "image": {
           "slug": "oceanside",
-          "mediaId": "6af838_707a3bcfd3984735b59dc48b13681026"
+          "mediaId": "6af838_5a2b4ce9517141a09a0c7fb22be0783f"
         },
-        "objectPosition": "10% 80%"
+        "objectPosition": "50% 50%",
+        "crop": [
+          0.58,
+          0.8,
+          0.36
+        ],
+        "alt": "Emerald velvet chairs around an inlaid black-and-white side table"
       },
       {
         "id": "brass",
@@ -747,9 +787,15 @@
         "quoteSource": "https://www.stylemyspacedesign.com/post/functional-and-tranquil-interior-design-solutions-by-style-my-space",
         "image": {
           "slug": "oceanside",
-          "mediaId": "6af838_ac92150204054e37bb93bb791be18a57"
+          "mediaId": "6af838_d5e03023a9ca44af8c62582f3846491a"
         },
-        "objectPosition": "50% 12%"
+        "objectPosition": "50% 50%",
+        "crop": [
+          0.55,
+          0.2,
+          0.46
+        ],
+        "alt": "Ring pendant in soft gold, glowing inside a slim open cube"
       }
     ],
     "meetTheDesigner": {
